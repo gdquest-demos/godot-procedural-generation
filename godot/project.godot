@@ -1,0 +1,70 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Actor",
+"language": "GDScript",
+"path": "res://RandomWalker/Actors/Actor.gd"
+}, {
+"base": "Node",
+"class": "RandomWalker",
+"language": "GDScript",
+"path": "res://RandomWalker/RandomWalker.gd"
+}, {
+"base": "Node2D",
+"class": "Rooms",
+"language": "GDScript",
+"path": "res://RandomWalker/Rooms.gd"
+} ]
+_global_script_class_icons={
+"Actor": "",
+"RandomWalker": "",
+"Rooms": ""
+}
+
+[application]
+
+config/name="Procedural Generation Demos"
+config/description="Implementations and demos of procedural generation algorithms."
+run/main_scene="res://RandomWalker/RandomWalker.tscn"
+config/icon="res://Main/icon.png"
+
+[display]
+
+window/size/width=1280
+window/size/height=720
+
+[input]
+
+move_left={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":65,"unicode":0,"echo":false,"script":null)
+ ]
+}
+move_right={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"unicode":0,"echo":false,"script":null)
+ ]
+}
+jump={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
+[layer_names]
+
+2d_physics/layer_1="Main"
+2d_physics/layer_2="Danger"
+
+[rendering]
+
+environment/default_environment="res://default-env.tres"

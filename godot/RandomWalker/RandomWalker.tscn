@@ -1,0 +1,88 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://RandomWalker/Levels/Level.tscn" type="PackedScene" id=1]
+[ext_resource path="res://RandomWalker/RandomWalker.gd" type="Script" id=2]
+[ext_resource path="res://UI/theme/fonts/font_title.tres" type="DynamicFont" id=3]
+[ext_resource path="res://RandomWalker/Camera2D.gd" type="Script" id=4]
+[ext_resource path="res://RandomWalker/Levels/background-hills.svg" type="Texture" id=5]
+[ext_resource path="res://RandomWalker/Levels/background-trees.svg" type="Texture" id=6]
+[ext_resource path="res://Main/Menu/Menu.tscn" type="PackedScene" id=7]
+[ext_resource path="res://RandomWalker/Levels/background-gradient.svg" type="Texture" id=8]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 1, 0.921569, 0.607843 )
+
+[node name="LevelGenerator" type="Node2D"]
+pause_mode = 2
+script = ExtResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+smoothing_enabled = true
+smoothing_speed = 10.0
+drag_margin_left = 0.0
+drag_margin_right = 0.0
+script = ExtResource( 4 )
+
+[node name="Tween" type="Tween" parent="Camera2D"]
+
+[node name="Level" parent="." instance=ExtResource( 1 )]
+pause_mode = 1
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.15
+autostart = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Title" type="Label" parent="UI"]
+visible = false
+margin_right = 1024.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 1280, 0 )
+custom_styles/normal = SubResource( 1 )
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.196078, 0.160784, 0.278431, 1 )
+text = "PCG-Random Walker Level Generator-DEMO"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" parent="UI" instance=ExtResource( 7 )]
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -128
+
+[node name="TextureRect" type="TextureRect" parent="BackgroundLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 8 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scroll_ignore_camera_zoom = true
+
+[node name="ParallaxLayerTrees" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.1, 0.1 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayerTrees"]
+texture = ExtResource( 6 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 7980, 1200 )
+
+[node name="ParallaxLayerHills" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.25, 0.1 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayerHills"]
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 7200, 1400 )
+[connection signal="level_completed" from="." to="Camera2D" method="_on_LevelGenerator_level_completed"]
+[connection signal="zoom_changed" from="Camera2D" to="." method="_on_Camera2D_zoom_changed"]
+[connection signal="tween_all_completed" from="Camera2D/Tween" to="." method="_on_Tween_tween_all_completed"]
+[connection signal="tween_step" from="Camera2D/Tween" to="Camera2D" method="_on_Tween_tween_step"]
