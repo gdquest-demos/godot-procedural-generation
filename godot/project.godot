@@ -14,10 +14,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://RandomWalker/Actors/Actor.gd"
 }, {
+"base": "Reference",
+"class": "NoiseUtils",
+"language": "GDScript",
+"path": "res://WorldMap/NoiseUtils.gd"
+}, {
 "base": "Node",
 "class": "RandomWalker",
 "language": "GDScript",
 "path": "res://RandomWalker/RandomWalker.gd"
+}, {
+"base": "Reference",
+"class": "RiverGenerator",
+"language": "GDScript",
+"path": "res://WorldMap/RiverGenerator.gd"
 }, {
 "base": "Node2D",
 "class": "Rooms",
@@ -26,7 +36,9 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Actor": "",
+"NoiseUtils": "",
 "RandomWalker": "",
+"RiverGenerator": "",
 "Rooms": ""
 }
 
