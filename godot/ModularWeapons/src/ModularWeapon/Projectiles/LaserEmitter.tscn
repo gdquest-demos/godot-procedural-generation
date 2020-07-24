@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://src/ModularWeapon/src/Projectile/Laser/LaserTracer.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/ModularWeapon/src/Projectile/Laser/LaserEmitter.gd" type="Script" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Line2D
+
+func _ready() -> void:
+	set_as_toplevel(true)
+"
+
+[node name="LaserEmitter" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Line2D" type="Line2D" parent="."]
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+script = SubResource( 1 )
+
+[node name="LaserTracer" parent="." instance=ExtResource( 1 )]
+visible = false

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://src/ModularWeapon/src/ProjectileMotion/Motions/SineSideMotion.gd" type="Script" id=1]
+
+
+
+
+
+
+
+
+
+[resource]
+script = ExtResource( 1 )
+wobble_amplitude = 125.0
+wobble_frequency = 3

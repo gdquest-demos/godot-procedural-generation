@@ -1,0 +1,20 @@
+# Notes as I work
+
+Just stuff to keep in mind when it comes time to writing tutorials, as I encounter them.
+
+## Infinite gen
+
+- Determinism tips: When a sector is destroyed and then reloaded, with standard one-seed RNG, it would be different than how it used to be. Storing the entire world on disk would be prohibitively expensive, however, so we re-generate it in a deterministic way. This is accomplished by changing the seed on a RNG, which resets the number sequence. So you can do something like:
+
+```glsl
+var base_seed := "hjkl123456"
+var rng := RandomNumberGenerator.new()
+
+func _generate_at(grid_x: int, grid_y: int) -> void:
+	rng.seed = ("%s_%s_%s" % [base_seed, grid_x, grid_y]).hash()
+	rng.randf()
+	rng.randf()
+	rng.randf()
+```
+
+This way, whenever I.E. `_generate_at(5, 8)` is called, the result will always be the same.
