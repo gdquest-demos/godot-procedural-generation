@@ -22,6 +22,10 @@ This project demonstrates a technique for generating world map with biomes and r
 
 ![Generated world map](./images/world-map.png)
 
+### BasicDungeonGenerator
+
+A basic generator to get started with procedural content generation. Creates rectangular rooms, rooms with organic shapes, and corridors connecting the rooms.
+
 ## How to use
 
 Clone the repository. Each demo is in a separate directory.
