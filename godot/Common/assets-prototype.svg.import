@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/topdown-player.svg-19b16ff41129e75cb9d97df5af475348.stex"
+path="res://.import/assets-prototype.svg-63ab5b9a554b14addf8bfc1fc8eff619.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://SpaceInfiniteGeneration/asset/topdown-player.svg"
-dest_files=[ "res://.import/topdown-player.svg-19b16ff41129e75cb9d97df5af475348.stex" ]
+source_file="res://Common/assets-prototype.svg"
+dest_files=[ "res://.import/assets-prototype.svg-63ab5b9a554b14addf8bfc1fc8eff619.stex" ]
 
 [params]
 

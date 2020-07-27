@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/topdown-player.svg-19b16ff41129e75cb9d97df5af475348.stex"
+path="res://.import/discrete-color-map.png-9714d85f2ec6c933888d235010f7d285.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://SpaceInfiniteGeneration/asset/topdown-player.svg"
-dest_files=[ "res://.import/topdown-player.svg-19b16ff41129e75cb9d97df5af475348.stex" ]
+source_file="res://WorldMap/discrete-color-map.png"
+dest_files=[ "res://.import/discrete-color-map.png-9714d85f2ec6c933888d235010f7d285.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

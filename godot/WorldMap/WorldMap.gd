@@ -2,7 +2,6 @@ extends Control
 
 
 var _rng := RandomNumberGenerator.new()
-var river_generator := RiverGenerator.new()
 
 onready var viewer: ColorRect = $Viewer
 onready var post_proces: ColorRect = $PostProcess
@@ -25,22 +24,20 @@ func generate() -> void:
 	moisture_map.noise.seed = _rng.randi()
 
 	height_map = domain_warp(height_map, 10, 0.15)
+	var rivers_level := Vector2(color_map.gradient.offsets[1], color_map.gradient.offsets[-2])
+	var rivers_map := RiverGenerator.generate_rivers(_rng, height_map, 10, rivers_level)
 	var heat_map_minmax := NoiseUtils.get_minmax_noise(heat_map)
 	var moisture_map_minmax := NoiseUtils.get_minmax_noise(moisture_map)
-	var rivers_map := river_generator.generate_rivers(
-		_rng, height_map, 10, Vector2(color_map.gradient.offsets[1], color_map.gradient.offsets[-4])
-	)
 	heat_map_minmax = NoiseUtils.normalize_noise_vector2(heat_map_minmax)
 	moisture_map_minmax = NoiseUtils.normalize_noise_vector2(moisture_map_minmax)
 
-	viewer.material.set_shader_param("texture_pixel_size", Vector2.ONE / viewer.rect_size)
 	viewer.material.set_shader_param("color_map", discrete(color_map))
-	viewer.material.set_shader_param("color_map_offsets", to_uniform(color_map.gradient.offsets))
+	viewer.material.set_shader_param("color_map_offsets", to_sampler2D(color_map.gradient.offsets))
 	viewer.material.set_shader_param("color_map_offsets_n", color_map.gradient.offsets.size())
+	viewer.material.set_shader_param("height_map", height_map)
+	viewer.material.set_shader_param("rivers_map", rivers_map)
 	viewer.material.set_shader_param("heat_map_minmax", heat_map_minmax)
 	viewer.material.set_shader_param("moisture_map_minmax", moisture_map_minmax)
-	viewer.material.set_shader_param("rivers_map", rivers_map)
-	viewer.material.set_shader_param("rivers_level", color_map.gradient.offsets[1])
 
 	post_proces.material.set_shader_param("resolution", get_viewport().size)
 
@@ -96,7 +93,7 @@ static func discrete(gt: GradientTexture) -> ImageTexture:
 
 
 # Converts an array of floating point values to an ImageTexture, to sample with a shader.
-static func to_uniform(array: PoolRealArray) -> ImageTexture:
+static func to_sampler2D(array: PoolRealArray) -> ImageTexture:
 	var bytes := StreamPeerBuffer.new()
 	for x in array:
 		bytes.put_float(x)

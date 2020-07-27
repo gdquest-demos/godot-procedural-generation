@@ -1,8 +1,8 @@
 class_name RiverGenerator
-extends Reference
 
 
-const DIRECTIONS := [
+const OFFSETS := [
+	Vector2.ZERO,
 	Vector2.RIGHT,
 	Vector2.RIGHT + Vector2.UP,
 	Vector2.UP,
@@ -110,14 +110,12 @@ static func _generate_rivers_texture(
 		var step := 1 / distance
 		var t := 0.0
 		while t <= 1:
-			for direction in DIRECTIONS + [Vector2.ZERO]:
-				var offset: Vector2 = river[0].linear_interpolate(river[1], t) + direction
-				if offset.x < 0 or width <= offset.x or offset.y < 0 or height <= offset.y:
+			for offset in OFFSETS:
+				var position: Vector2 = river[0].linear_interpolate(river[1], t) + offset
+				if position.x < 0 or width <= position.x or position.y < 0 or height <= position.y:
 					continue
 
-				var r: float = 0.15 / direction.length_squared() if direction != Vector2.ZERO else 0.45
-				r = min(r + image.get_pixelv(offset).r, 1)
-				image.set_pixelv(offset, Color(r, 0, 0, 0))
+				image.set_pixelv(position, Color(1, 0, 0, 0))
 			t += step
 	image.unlock()
 	image.generate_mipmaps()

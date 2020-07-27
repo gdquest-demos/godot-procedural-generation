@@ -1,4 +1,4 @@
-extends Actor
+extends "Actor.gd"
 
 
 const TIME_DEATH := 0.2

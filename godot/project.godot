@@ -9,50 +9,112 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "KinematicBody2D",
-"class": "Actor",
+"base": "Reference",
+"class": "BasicDungeonGenerator",
 "language": "GDScript",
-"path": "res://RandomWalker/Actors/Actor.gd"
+"path": "res://BasicDungeon/03.Bonus/Generator.gd"
+}, {
+"base": "Reference",
+"class": "BasicDungeonRoom",
+"language": "GDScript",
+"path": "res://BasicDungeon/03.Bonus/Room.gd"
+}, {
+"base": "BasicDungeonRoom",
+"class": "BasicDungeonRoomOrganic",
+"language": "GDScript",
+"path": "res://BasicDungeon/03.Bonus/RoomOrganic.gd"
+}, {
+"base": "Reference",
+"class": "BasicDungeonUtils",
+"language": "GDScript",
+"path": "res://BasicDungeon/03.Bonus/Utils.gd"
+}, {
+"base": "ProjectileMotion",
+"class": "HomingMotion",
+"language": "GDScript",
+"path": "res://ModularWeapons/src/ModularWeapon/src/ProjectileMotion/Motions/HomingMotion.gd"
+}, {
+"base": "Node2D",
+"class": "ModularWeapon",
+"language": "GDScript",
+"path": "res://ModularWeapons/src/ModularWeapon/src/ModularWeapon.gd"
 }, {
 "base": "Reference",
 "class": "NoiseUtils",
 "language": "GDScript",
 "path": "res://WorldMap/NoiseUtils.gd"
 }, {
-"base": "Node",
-"class": "RandomWalker",
+"base": "KinematicBody2D",
+"class": "Projectile",
 "language": "GDScript",
-"path": "res://RandomWalker/RandomWalker.gd"
+"path": "res://ModularWeapons/src/ModularWeapon/src/Projectile/Projectile.gd"
+}, {
+"base": "Node2D",
+"class": "ProjectileEmitter",
+"language": "GDScript",
+"path": "res://ModularWeapons/src/ModularWeapon/src/Projectile/ProjectileEmitter.gd"
+}, {
+"base": "Resource",
+"class": "ProjectileMotion",
+"language": "GDScript",
+"path": "res://ModularWeapons/src/ModularWeapon/src/ProjectileMotion/ProjectileMotion.gd"
 }, {
 "base": "Reference",
 "class": "RiverGenerator",
 "language": "GDScript",
 "path": "res://WorldMap/RiverGenerator.gd"
 }, {
-"base": "Node2D",
-"class": "Rooms",
+"base": "ProjectileMotion",
+"class": "SineSideMotion",
 "language": "GDScript",
-"path": "res://RandomWalker/Rooms.gd"
+"path": "res://ModularWeapons/src/ModularWeapon/src/ProjectileMotion/Motions/SineSideMotion.gd"
+}, {
+"base": "ProjectileMotion",
+"class": "StraightMotion",
+"language": "GDScript",
+"path": "res://ModularWeapons/src/ModularWeapon/src/ProjectileMotion/Motions/StraightMotion.gd"
+}, {
+"base": "Node2D",
+"class": "WorldGenerator",
+"language": "GDScript",
+"path": "res://SpaceInfiniteGeneration/common/WorldGenerator.gd"
+}, {
+"base": "Reference",
+"class": "XXHash",
+"language": "GDScript",
+"path": "res://SpaceInfiniteGeneration/common/XXHash.gd"
 } ]
 _global_script_class_icons={
-"Actor": "",
+"BasicDungeonGenerator": "",
+"BasicDungeonRoom": "",
+"BasicDungeonRoomOrganic": "",
+"BasicDungeonUtils": "",
+"HomingMotion": "",
+"ModularWeapon": "",
 "NoiseUtils": "",
-"RandomWalker": "",
+"Projectile": "",
+"ProjectileEmitter": "",
+"ProjectileMotion": "",
 "RiverGenerator": "",
-"Rooms": ""
+"SineSideMotion": "",
+"StraightMotion": "",
+"WorldGenerator": "",
+"XXHash": ""
 }
 
 [application]
 
 config/name="Procedural Generation Demos"
 config/description="Implementations and demos of procedural generation algorithms."
-run/main_scene="res://RandomWalker/RandomWalker.tscn"
-config/icon="res://Main/icon.png"
+config/icon="res://icon.png"
 
 [display]
 
 window/size/width=1280
 window/size/height=720
+window/size/resizable=false
+window/size/borderless=true
+window/size/always_on_top=true
 
 [input]
 
@@ -79,4 +141,5 @@ jump={
 
 [rendering]
 
-environment/default_environment="res://default-env.tres"
+environment/default_clear_color=Color( 1, 1, 0.921569, 1 )
+environment/default_environment="res://default_env.tres"

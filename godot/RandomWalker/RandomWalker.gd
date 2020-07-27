@@ -1,11 +1,11 @@
 # Procedural level generator based on tilemaps and a random walker algorithm. It uses chunks or
-# rooms designed by hand. See [Rooms].
+# rooms designed by hand. See [Rooms.gd].
 #
 # The generator walks semi-randomly around a grid to draw an unobstructed path from the level's
 # start to its end. It then fills up the remaining cells with random rooms. It also randomizes the
 # rooms.
-class_name RandomWalker
-extends Node
+extends Node2D
+
 
 signal path_completed
 signal level_completed(player_position)
@@ -14,18 +14,18 @@ signal level_completed(player_position)
 # directions, although some rules may override that. See [_update_next_position].
 const STEP := [Vector2.LEFT, Vector2.LEFT, Vector2.RIGHT, Vector2.RIGHT, Vector2.DOWN]
 
-export (PackedScene) var Rooms := preload("res://RandomWalker/Rooms.tscn")
+export (PackedScene) var Rooms := preload("Rooms.tscn")
 export var grid_size := Vector2(8, 6)
 
 var _rng := RandomNumberGenerator.new()
-var _rooms: Rooms = null
+var _rooms: Node2D = null
 var _player: KinematicBody2D = null
 var _state := {}
 var _horizontal_chance := 0.0
 var _camera_limits := {}
 var _resolution := OS.window_size
-var _running := false
 
+onready var scene_tree: SceneTree = get_tree()
 onready var camera: Camera2D = $Camera2D
 onready var tween: Tween = $Camera2D/Tween
 onready var level_main: TileMap = $Level/TileMapMain
@@ -33,8 +33,6 @@ onready var level_danger: TileMap = $Level/TileMapDanger
 onready var level_extra: Node2D = $Level/Extra
 onready var timer: Timer = $Timer
 onready var background: ParallaxBackground = $ParallaxBackground
-onready var menu: Control = $UI/Menu
-onready var scene_tree: SceneTree = get_tree()
 
 
 func _ready() -> void:
@@ -47,6 +45,11 @@ func _ready() -> void:
 		"max": level_main.map_to_world(_grid_to_map(grid_size) + Vector2.ONE)
 	}
 	camera.setup(_resolution, _grid_to_world(grid_size))
+	
+	scene_tree.paused = true
+	generate_level()
+	yield(self, "level_completed")
+	scene_tree.paused = false
 
 
 func _on_Camera2D_zoom_changed(zoom: Vector2) -> void:
@@ -55,18 +58,11 @@ func _on_Camera2D_zoom_changed(zoom: Vector2) -> void:
 
 
 func _on_Tween_tween_all_completed() -> void:
-	scene_tree.paused = _running
 	_player.get_node("RemoteTransform2D").remote_path = camera.get_path()
 	camera.limit_left = _camera_limits.min.x
 	camera.limit_top = _camera_limits.min.y
 	camera.limit_right = _camera_limits.max.x
 	camera.limit_bottom = _camera_limits.max.y
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if not _running and event.is_action_released("ui_select"):
-		menu.visible = false
-		generate_level()
 
 
 # Generates a new level.
@@ -86,9 +82,6 @@ func generate_level() -> void:
 # Resets the _state variable to its default values, and populates its `empty_cells` key with rooms
 # to use.
 func _reset() -> void:
-	_running = true
-	scene_tree.paused = _running
-	
 	_state = {
 		"random_index": -1,
 		"offset": Vector2.ZERO,
@@ -100,12 +93,6 @@ func _reset() -> void:
 	for x in range(grid_size.x):
 		for y in range(grid_size.y):
 			_state.empty_cells[Vector2(x, y)] = 0
-
-	level_main.clear()
-	level_danger.clear()
-	for n in level_extra.get_children():
-		n.queue_free()
-	camera.setup(_resolution, _grid_to_world(grid_size))
 
 
 # Picks a random start position on the first row of the generation grid.
@@ -212,8 +199,6 @@ func _place_side_rooms() -> void:
 	
 	level_main.update_bitmask_region()
 	emit_signal("level_completed", _player.position)
-	
-	_running = false
 
 
 func _copy_room(offset: Vector2, type: int, start: bool) -> void:

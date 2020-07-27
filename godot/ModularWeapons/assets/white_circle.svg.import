@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/white_circle.svg-30bdd50d9d018514e858ced3bfb2b808.stex"
+path="res://.import/white_circle.svg-8c1278c5799785318fd7293a40313cbb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/white_circle.svg"
-dest_files=[ "res://.import/white_circle.svg-30bdd50d9d018514e858ced3bfb2b808.stex" ]
+source_file="res://ModularWeapons/assets/white_circle.svg"
+dest_files=[ "res://.import/white_circle.svg-8c1278c5799785318fd7293a40313cbb.stex" ]
 
 [params]
 

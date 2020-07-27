@@ -1,4 +1,4 @@
-extends Actor
+extends "Actor.gd"
 
 
 onready var visibility_enabler : VisibilityEnabler2D = $VisibilityEnabler2D

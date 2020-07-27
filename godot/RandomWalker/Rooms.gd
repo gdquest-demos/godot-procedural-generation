@@ -1,5 +1,5 @@
-class_name Rooms
 extends Node2D
+
 
 enum Type { SIDE, LR, LRB, LRT, LRTB }
 enum Cell { GROUND, VEGETATION, SPIKES, MAYBE_GROUND, MAYBE_BUSH, MAYBE_TREE, MAYBE_SPIKES }
