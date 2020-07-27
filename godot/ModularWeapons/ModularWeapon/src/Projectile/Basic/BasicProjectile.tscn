@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://ModularWeapons/ModularWeapon/src/Projectile/Projectile.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ModularWeapons/ModularWeapon/src/Projectile/Basic/BasicProjectile.gd" type="Script" id=2]
+[ext_resource path="res://ModularWeapons/ModularWeapon/src/Projectile/Basic/white_circle.svg" type="Texture" id=3]
+
+
+
+
+
+
+
+
+[node name="Projectile" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="." index="1"]
+texture = ExtResource( 3 )
+
+[node name="Timer" type="Timer" parent="." index="2"]
+process_mode = 0
+one_shot = true
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

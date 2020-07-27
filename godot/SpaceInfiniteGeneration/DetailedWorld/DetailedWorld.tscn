@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://SpaceInfiniteGeneration/DetailedWorld/DetailedWorld.gd" type="Script" id=1]
+[ext_resource path="res://SpaceInfiniteGeneration/Shared/GridDrawer.gd" type="Script" id=2]
+[ext_resource path="res://SpaceInfiniteGeneration/Shared/player/Player.tscn" type="PackedScene" id=3]
+
+[node name="DetailedWorld" type="Node2D"]
+script = ExtResource( 1 )
+sector_count = 6
+
+[node name="GridDrawer" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="Player" parent="." instance=ExtResource( 3 )]
