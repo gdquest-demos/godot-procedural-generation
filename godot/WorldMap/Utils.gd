@@ -1,4 +1,4 @@
-class_name NoiseUtils
+class_name WorldMapUtils
 
 
 # Normalizes a value from a noise generator based on the noise's minimum and maximum range.

@@ -25,11 +25,11 @@ func generate() -> void:
 
 	height_map = domain_warp(height_map, 10, 0.15)
 	var rivers_level := Vector2(color_map.gradient.offsets[1], color_map.gradient.offsets[-2])
-	var rivers_map := RiverGenerator.generate_rivers(_rng, height_map, 10, rivers_level)
-	var heat_map_minmax := NoiseUtils.get_minmax_noise(heat_map)
-	var moisture_map_minmax := NoiseUtils.get_minmax_noise(moisture_map)
-	heat_map_minmax = NoiseUtils.normalize_noise_vector2(heat_map_minmax)
-	moisture_map_minmax = NoiseUtils.normalize_noise_vector2(moisture_map_minmax)
+	var rivers_map := WorldMapRiverGenerator.generate_rivers(_rng, height_map, 10, rivers_level)
+	var heat_map_minmax := WorldMapUtils.get_minmax_noise(heat_map)
+	var moisture_map_minmax := WorldMapUtils.get_minmax_noise(moisture_map)
+	heat_map_minmax = WorldMapUtils.normalize_noise_vector2(heat_map_minmax)
+	moisture_map_minmax = WorldMapUtils.normalize_noise_vector2(moisture_map_minmax)
 
 	viewer.material.set_shader_param("color_map", discrete(color_map))
 	viewer.material.set_shader_param("color_map_offsets", to_sampler2D(color_map.gradient.offsets))
@@ -44,7 +44,7 @@ func generate() -> void:
 
 # Uses the 2D noise value as z-axis in the 3D noise function to generate a more realistic
 # height map.
-static func domain_warp(nt: NoiseTexture, strength: float, size: float) -> ImageTexture:
+func domain_warp(nt: NoiseTexture, strength: float, size: float) -> ImageTexture:
 	var out := ImageTexture.new()
 	strength = max(0, strength)
 	size = max(0, size)
@@ -72,7 +72,7 @@ static func domain_warp(nt: NoiseTexture, strength: float, size: float) -> Image
 
 # Converts a smooth gradient to a discrete texture, that is to say,
 # a texture with hard color transitions.
-static func discrete(gt: GradientTexture) -> ImageTexture:
+func discrete(gt: GradientTexture) -> ImageTexture:
 	var out := ImageTexture.new()
 	var image := Image.new()
 
@@ -93,7 +93,7 @@ static func discrete(gt: GradientTexture) -> ImageTexture:
 
 
 # Converts an array of floating point values to an ImageTexture, to sample with a shader.
-static func to_sampler2D(array: PoolRealArray) -> ImageTexture:
+func to_sampler2D(array: PoolRealArray) -> ImageTexture:
 	var bytes := StreamPeerBuffer.new()
 	for x in array:
 		bytes.put_float(x)

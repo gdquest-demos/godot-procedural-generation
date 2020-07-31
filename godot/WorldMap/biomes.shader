@@ -36,7 +36,7 @@ uniform sampler2D color_map_offsets : hint_black;
 uniform sampler2D height_map : hint_black;
 uniform sampler2D heat_map : hint_black;
 uniform sampler2D moisture_map : hint_black;
-// GDScript generated texture with linear rivers for post-processing in the shader.
+// GDScript generated texture for rivers.
 uniform sampler2D rivers_map : hint_black;
 
 // This is the value of `color_map.gradient.offsets.size()`. We need it to get values

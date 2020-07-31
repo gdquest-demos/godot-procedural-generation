@@ -1,4 +1,4 @@
-class_name RiverGenerator
+class_name WorldMapRiverGenerator
 
 
 const OFFSETS := [
