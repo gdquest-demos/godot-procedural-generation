@@ -36,7 +36,7 @@ uniform sampler2D color_map_offsets : hint_black;
 uniform sampler2D height_map : hint_black;
 uniform sampler2D heat_map : hint_black;
 uniform sampler2D moisture_map : hint_black;
-// GDScript generated texture for rivers.
+// GDScript generated texture with linear rivers for post-processing in the shader.
 uniform sampler2D rivers_map : hint_black;
 
 // This is the value of `color_map.gradient.offsets.size()`. We need it to get values
@@ -77,25 +77,28 @@ void fragment() {
 	float moisture = normalized(texture(moisture_map, UV).r, moisture_map_minmax);
 	float uv_perturbation = normalized_remap(height * moisture, SPAN);
 	float river = texture(rivers_map, UV + uv_perturbation).r;
-	
+	float river_blured = textureLod(rivers_map, UV + uv_perturbation, 3.0).r;
+
 	heat *= pow(sin(PI * UV.y), 2.0);
-	moisture = max(moisture, step(UNCERTAINTY, textureLod(rivers_map, UV + uv_perturbation, 3.0).r));
+	moisture = max(moisture, step(UNCERTAINTY, river_blured));
 	float rivers_level = get_array_at(color_map_offsets, 1) + UNCERTAINTY;
 	height = mix(height, rivers_level, river);
 	
-	// Default `biome` to `height` before altering it using the legend table.
+	// Default `biome` to `height` before calculating the type with the legend table.
 	float biome = height;
-	// Define the noise value height above which landmass starts.
+	// Define the height value above which landmass starts.
 	float land_level = get_array_at(color_map_offsets, 2) - UNCERTAINTY;
 	if (height > land_level) {
 		int type = -1;
 		// `ice_level` is the 12th (2nd to last) color stop.
 		float ice_level = get_array_at(color_map_offsets, 11) + UNCERTAINTY;
-		// The rest of the if statements are based on the biome legend table except for this first
-		// test where we assign `ICE` to noise values that satisfy `height > ice_level` as well.
+		// The rest of the if statements are based on the biome legend table except for
+		// this first test where we assign `ICE` to noise values that satisfy
+		// `height > ice_level` as well.
+		//
 		// We follow the same pattern each time:
-		// 1. Test heat noise values (columns in legend)
-		// 2. Test moisture noise values (rows in legend)
+		// 1. Test heat values (columns in the legend)
+		// 2. Test moisture values (rows in the legend)
 		if (heat < COLDEST || height > ice_level) {
 			type = ICE;
 		} else if (heat < COLDER) {
@@ -130,7 +133,7 @@ void fragment() {
 		// At this step we just need to get the appropriate value level for the given biome `type`.
 		biome = get_biome(type);
 	}
-	
-	// Finally assign the appropriate color from `color_map` based on `biome`.
+
+	// NOTE the use of `biome`
 	COLOR = texture(color_map, vec2(biome, 0));
 }
