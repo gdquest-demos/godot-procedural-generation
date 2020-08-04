@@ -20,6 +20,8 @@ static func roundm(n: float, m: float) -> int:
 	return int(floor((n + m - 1) / m) * m)
 
 
+# Tests for approximate equality between two `Vector2`, allowing you to specify an absolute 
+# error margin.
 static func is_approx_equal(v1: Vector2, v2: Vector2, error: float = UNCERTAINTY) -> bool:
 	return abs(v1.x - v2.x) < error and abs(v1.y - v2.y) < error
 
@@ -38,7 +40,7 @@ static func delaunay_to_connections(delaunay: Array) -> Dictionary:
 	return out
 
 
-# Calculates the minimum spanning tree (MST) for 2D data points.
+# Calculates the Minimum Spanning Tree (MST) for 2D data points.
 #
 # `points`: Array
 #           `Vector2` positions corresponding to `connections`
@@ -88,9 +90,12 @@ static func mst(points: Array, connections: Dictionary) -> AStar2D:
 	return out
 
 
+# Removes points and connections from the `connections` dictionary based on `factor`.
 static func cull_points_by(rng: RandomNumberGenerator, connections: Dictionary, factor: float) -> void:
 	var connections_size := connections.size()
-	while connections.size() > int((1 - factor) * connections_size):
+	var cull_threshold = int((1 - factor) * connections_size)
+
+	while connections.size() > cull_threshold:
 		var index := rng.randi_range(0, connections.size() - 1)
 		var point1: int = connections.keys()[index]
 		

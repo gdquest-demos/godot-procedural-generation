@@ -41,7 +41,7 @@ func _ready() -> void:
 
 func _integrate_forces(state: Physics2DDirectBodyState) -> void:
 	if mode == RigidBody2D.MODE_STATIC: return
-
+	
 	if MSTDungeonUtils.is_approx_equal(_previous_xform.origin, state.transform.origin):
 		_consecutive_equalities += 1
 
