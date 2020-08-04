@@ -34,6 +34,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ModularWeapons/ModularWeapon/src/ProjectileMotion/Motions/HomingMotion.gd"
 }, {
+"base": "RigidBody2D",
+"class": "MSTDungeonRoom",
+"language": "GDScript",
+"path": "res://MSTDungeon/Room.gd"
+}, {
+"base": "Reference",
+"class": "MSTDungeonUtils",
+"language": "GDScript",
+"path": "res://MSTDungeon/Utils.gd"
+}, {
 "base": "Node2D",
 "class": "ModularWeapon",
 "language": "GDScript",
@@ -90,6 +100,8 @@ _global_script_class_icons={
 "BasicDungeonRoomOrganic": "",
 "BasicDungeonUtils": "",
 "HomingMotion": "",
+"MSTDungeonRoom": "",
+"MSTDungeonUtils": "",
 "ModularWeapon": "",
 "Projectile": "",
 "ProjectileEmitter": "",
