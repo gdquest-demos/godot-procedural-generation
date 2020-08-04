@@ -1,7 +1,7 @@
 class_name MSTDungeonUtils
 
 
-const UNCERTAINTY := 1e-4
+const UNCERTAINTY := 1e-2
 const DELAUNAY_STRIDE := 3
 
 

@@ -4,7 +4,6 @@ extends RigidBody2D
 
 signal mode_changed
 
-const UNCERTAINTY := 1e-2
 const CONSECUTIVE_MAX_EQUALITIES := 10
 
 const RADIUS := 600
@@ -43,7 +42,7 @@ func _ready() -> void:
 func _integrate_forces(state: Physics2DDirectBodyState) -> void:
 	if mode == RigidBody2D.MODE_STATIC: return
 
-	if MSTDungeonUtils.is_approx_equal(_previous_xform.origin, state.transform.origin, UNCERTAINTY):
+	if MSTDungeonUtils.is_approx_equal(_previous_xform.origin, state.transform.origin):
 		_consecutive_equalities += 1
 
 	if _consecutive_equalities > CONSECUTIVE_MAX_EQUALITIES:

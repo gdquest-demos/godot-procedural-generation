@@ -7,7 +7,7 @@ signal finished
 const Room := preload("Room.tscn")
 
 const MEAN_ROOM_SIZE_WEIGHT := 1.1
-const CULL_FACTOR := 0.55
+const PRUNE_FACTOR := 0.55
 const MAX_ROOMS := 60
 
 var _rng := RandomNumberGenerator.new()
@@ -37,7 +37,7 @@ func _on_rooms_placed() -> void:
 	var delaunay := Geometry.triangulate_delaunay_2d(main_rooms_positions)
 	var main_rooms_connections := MSTDungeonUtils.delaunay_to_connections(delaunay)
 	_path = MSTDungeonUtils.mst(main_rooms_positions, main_rooms_connections)
-	MSTDungeonUtils.cull_points_by(_rng, main_rooms_connections, CULL_FACTOR)
+	MSTDungeonUtils.cull_points_by(_rng, main_rooms_connections, PRUNE_FACTOR)
 
 	for point1_id in main_rooms_connections:
 		for point2_id in main_rooms_connections[point1_id]:
