@@ -16,6 +16,9 @@ var _rng := RandomNumberGenerator.new()
 var _previous_xform := Transform2D()
 var _consecutive_equalities := 0
 
+var _area: float = 0.0
+var _iter_index: int = 0
+
 onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 
@@ -32,11 +35,10 @@ func _ready() -> void:
 	
 	var w: int = _rng.randi_range(ROOM_SIZE.x, ROOM_SIZE.y)
 	var h: int = _rng.randi_range(ROOM_SIZE.x, ROOM_SIZE.y)
+	_area = 4 * w * h
 	
-	var shape := RectangleShape2D.new()
-	shape.extents = _level.map_to_world(Vector2(w, h))
-	collision_shape.shape = shape
-	size = 2 * shape.extents
+	collision_shape.shape.extents = _level.map_to_world(Vector2(w, h))
+	size = 2 * collision_shape.shape.extents
 
 
 func _integrate_forces(state: Physics2DDirectBodyState) -> void:
@@ -51,4 +53,21 @@ func _integrate_forces(state: Physics2DDirectBodyState) -> void:
 	_previous_xform = state.transform
 
 
+func _iter_init(_arg) -> bool:
+	_iter_index = 0
+	return _iter_is_running()
 
+
+func _iter_next(_arg) -> bool:
+	_iter_index += 1
+	return _iter_is_running()
+
+
+func _iter_get(_arg) -> Vector2:
+	var width := _level.world_to_map(size).x
+	var offset := MSTDungeonUtils.index_to_xy(width, _iter_index)
+	return _level.world_to_map(position - size / 2) + offset
+
+
+func _iter_is_running() -> bool:
+	return _iter_index < _area

@@ -102,3 +102,7 @@ static func cull_points_by(rng: RandomNumberGenerator, connections: Dictionary, 
 		connections.erase(point1)
 		for point2 in connections:
 			connections[point2].erase(point1)
+
+
+static func index_to_xy(width: int, index: int) -> Vector2:
+	return Vector2(index % width, index / width)

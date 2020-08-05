@@ -26,6 +26,13 @@ func _ready() -> void:
 	_generate()
 
 
+func _process(delta: float) -> void:
+	level.clear()
+	for room in rooms.get_children():
+		for offset in room:
+			level.set_cellv(offset, 0)
+
+
 func _on_rooms_placed() -> void:
 	var main_rooms := []
 	var main_rooms_positions := []
@@ -47,6 +54,7 @@ func _on_rooms_placed() -> void:
 	for room in main_rooms:
 		_add_room(room)
 	_add_corridors()
+	set_process(false)
 
 
 func _on_Room_mode_changed(room: MSTDungeonRoom) -> void:
@@ -68,17 +76,15 @@ func _generate() -> void:
 	yield(self, "finished")
 	
 	rooms.queue_free()
+	level.clear()
 	for point in _data:
 		level.set_cellv(point, 0)
 	return _data
 
 
 func _add_room(room: MSTDungeonRoom) -> void:
-	var room_extents := level.world_to_map(room.size / 2)
-	for x in range(-room_extents.x, room_extents.x):
-		for y in range(-room_extents.y, room_extents.y):
-			var offset := level.world_to_map(room.position) + Vector2(x, y)
-			_data[offset] = null
+	for offset in room:
+		_data[offset] = null
 
 
 func _add_corridors():
