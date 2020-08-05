@@ -4,4 +4,4 @@
 
 [resource]
 script = ExtResource( 1 )
-travel_speed = 900.0
+travel_speed = 650.0

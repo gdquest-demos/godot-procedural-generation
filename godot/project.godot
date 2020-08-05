@@ -70,9 +70,9 @@ _global_script_classes=[ {
 "path": "res://ModularWeapons/ModularWeapon/src/ProjectileMotion/ProjectileMotion.gd"
 }, {
 "base": "ProjectileMotion",
-"class": "SineSideMotion",
+"class": "SineMotion",
 "language": "GDScript",
-"path": "res://ModularWeapons/ModularWeapon/src/ProjectileMotion/Motions/SineSideMotion.gd"
+"path": "res://ModularWeapons/ModularWeapon/src/ProjectileMotion/Motions/SineMotion.gd"
 }, {
 "base": "ProjectileMotion",
 "class": "StraightMotion",
@@ -112,7 +112,7 @@ _global_script_class_icons={
 "Projectile": "",
 "ProjectileEmitter": "",
 "ProjectileMotion": "",
-"SineSideMotion": "",
+"SineMotion": "",
 "StraightMotion": "",
 "WorldGenerator": "",
 "WorldMapRiverGenerator": "",

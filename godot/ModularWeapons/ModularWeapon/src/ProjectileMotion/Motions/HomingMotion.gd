@@ -22,9 +22,17 @@ func _setup_shape() -> void:
 
 func _find_target() -> Node2D:
 	_query.transform = projectile.global_transform
-	var intersections := _space.intersect_shape(_query, 1)
+	var intersections := _space.intersect_shape(_query, 2)
 	if intersections.size() > 0:
-		return intersections[0].collider
+		var min_distance: float = INF
+		var min_target: PhysicsBody2D
+		for intersection in intersections:
+			var distance: float = intersection.collider.global_position.distance_to(projectile.global_position)
+			if distance < min_distance:
+				min_distance = distance
+				min_target = intersection.collider
+			
+		return min_target
 	
 	return null
 

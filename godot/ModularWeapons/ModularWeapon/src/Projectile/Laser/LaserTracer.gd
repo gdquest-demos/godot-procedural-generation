@@ -36,7 +36,7 @@ func trace_path(lifetime_actual: float) -> Array:
 		var collision := move_and_collide(planned_movement)
 		
 		if not collision:
-			current_transform.origin += planned_movement
+			current_transform.origin = get_global_transform().origin
 			positions.append(current_transform.origin)
 		else:
 			positions.append(collision.position)

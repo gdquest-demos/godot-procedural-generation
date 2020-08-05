@@ -38,7 +38,7 @@ position = Vector2( 158, 547 )
 collision_mask = 2
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2( 622.105, 264.211 )
+position = Vector2( 644.58, 283.689 )
 collision_layer = 2
 collision_mask = 5
 script = SubResource( 1 )
