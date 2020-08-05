@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://ModularWeapons/ModularWeapon/src/ObjectRegistry.gd" type="Script" id=1]
+
+[node name="ObjectRegistry" type="Node" groups=[
+"object_registry",
+]]
+script = ExtResource( 1 )
+
+[node name="Projectiles" type="Node2D" parent="."]

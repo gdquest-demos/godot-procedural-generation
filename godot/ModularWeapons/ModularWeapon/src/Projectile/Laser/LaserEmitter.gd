@@ -14,7 +14,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		for i in range(points.size(), -1, -6):
 			laser_line.points = points.slice(0, i)
 			current_lifetime = projectile_lifetime * i / points.size()
-			yield(get_tree(), "idle_frame")
+			yield(get_tree(), "physics_frame")
 		laser_line.points = []
 		tracer.hide()
 		tracer.position = Vector2.ZERO

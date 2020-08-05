@@ -1,3 +1,4 @@
+class_name ObjectRegistry
 extends Node
 
 onready var projectiles := $Projectiles

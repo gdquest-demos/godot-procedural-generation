@@ -37,6 +37,6 @@ func _physics_process(delta: float) -> void:
 
 func _calculate_move_factor() -> Vector2:
 	return Vector2(
-		Input.get_action_strength("right") - Input.get_action_strength("left"),
-		Input.get_action_strength("thrust_back") - Input.get_action_strength("thrust_forwards")
+		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
+		Input.get_action_strength("back") - Input.get_action_strength("forwards")
 	)

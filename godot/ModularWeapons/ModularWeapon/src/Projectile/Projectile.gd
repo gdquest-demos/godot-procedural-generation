@@ -12,9 +12,10 @@ var _last_offset := Vector2.ZERO
 func setup(_position: Vector2, _direction: Vector2, _motions: Array, _lifetime: float) -> void:
 	position = _position
 	direction = _direction
-	motions = _motions
-	for motion in motions:
-		motions.back().projectile = self
+	for motion in _motions:
+		var new_motion = motion.duplicate()
+		new_motion.projectile = self
+		motions.append(new_motion)
 
 	lifetime = _lifetime
 	_post_setup()
@@ -26,14 +27,13 @@ func _post_setup() -> void:
 
 # Calculates and returns the projectile's movement this frame.
 # Mutates the projectile's state, so be sure to only call it when the time changes.
-func _update_movement(current_time: float) -> Vector2:
+func _update_movement(delta: float) -> Vector2:
 	if motions.empty():
 		return Vector2.ZERO
 
 	var offset := Vector2.ZERO
 	for motion in motions:
-		offset += motion._update_movement(direction, current_time, lifetime)
+		offset += motion._update_movement(direction, delta)
 
-	var movement_vector := offset - _last_offset
-	_last_offset = offset
+	var movement_vector := offset
 	return movement_vector

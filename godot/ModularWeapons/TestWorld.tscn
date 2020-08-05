@@ -1,25 +1,40 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://ModularWeapons/PlayerShip/PlayerShip.tscn" type="PackedScene" id=1]
-
-
-
+[ext_resource path="res://ModularWeapons/ModularWeapon/ObjectRegistry.tscn" type="PackedScene" id=2]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends StaticBody2D
 
 
 func _draw() -> void:
-	draw_circle(Vector2.ZERO, 30, Color.aliceblue)
+	draw_circle(Vector2.ZERO, 30, Color.blueviolet)
 "
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 30.0
 
+[sub_resource type="Environment" id=3]
+background_mode = 4
+glow_enabled = true
+glow_levels/2 = true
+glow_levels/4 = true
+glow_blend_mode = 0
+glow_bicubic_upscale = true
+
 [node name="TestWorld" type="Node2D"]
 
+[node name="ColorRect" type="ColorRect" parent="."]
+rect_min_size = Vector2( 1920, 1080 )
+color = Color( 0.0470588, 0.121569, 0.290196, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ObjectRegistry" parent="." instance=ExtResource( 2 )]
+
 [node name="PlayerShip" parent="." instance=ExtResource( 1 )]
-position = Vector2( 178, 250 )
+position = Vector2( 158, 547 )
 collision_mask = 2
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
@@ -30,3 +45,6 @@ script = SubResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource( 2 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 3 )

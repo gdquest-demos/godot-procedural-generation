@@ -5,8 +5,6 @@
 [ext_resource path="res://ModularWeapons/ModularWeapon/ProjectileMotions/StraightMotion.tres" type="Resource" id=3]
 [ext_resource path="res://ModularWeapons/ModularWeapon/src/ModularWeapon.gd" type="Script" id=4]
 
-
-
 [node name="ModularWeaponsSystem" type="Node2D"]
 script = ExtResource( 4 )
 emitter_configuration = ExtResource( 1 )

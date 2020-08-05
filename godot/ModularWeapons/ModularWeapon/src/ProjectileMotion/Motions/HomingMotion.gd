@@ -5,39 +5,33 @@ export var homing_radius := 60.0
 export (float, 0.0, 0.5, 0.025) var homing_strength := 0.067
 export (int, LAYERS_2D_PHYSICS) var collision_mask: int
 
-var _area: Area2D = null
+var _circle: CircleShape2D
+var _space: Physics2DDirectSpaceState
+var _query: Physics2DShapeQueryParameters
 
 
-func _setup_area() -> void:
-	_area = Area2D.new()
-	_area.collision_mask = collision_mask
+func _setup_shape() -> void:
+	_circle = CircleShape2D.new()
+	_circle.radius = homing_radius
 
-	var homing_shape := CollisionShape2D.new()
-	var circle := CircleShape2D.new()
-	circle.radius = homing_radius
-	homing_shape.shape = circle
-
-	_area.add_child(homing_shape)
-	projectile.add_child(_area)
+	_space = projectile.get_world_2d().direct_space_state
+	_query = Physics2DShapeQueryParameters.new()
+	_query.set_shape(_circle)
+	_query.collision_layer = collision_mask
 
 
 func _find_target() -> Node2D:
-	var bodies := _area.get_overlapping_bodies()
-
-	var distance_min := INF
-	var closest_body: Node2D = null
-	for body in bodies:
-		var distance_to := (body as PhysicsBody2D).global_position.distance_squared_to(
-			projectile.global_position
-		)
-		distance_min = min(distance_min, distance_to)
-		closest_body = body
-	return closest_body
+	_query.transform = projectile.global_transform
+	var intersections := _space.intersect_shape(_query, 1)
+	if intersections.size() > 0:
+		return intersections[0].collider
+	
+	return null
 
 
-func _update_movement(_direction: Vector2, _current_time: float, _lifetime: float) -> Vector2:
-	if not _area:
-		_setup_area()
+func _update_movement(_direction: Vector2, _delta: float) -> Vector2:
+	if not _query:
+		_setup_shape()
 
 	var target := _find_target()
 	if target:

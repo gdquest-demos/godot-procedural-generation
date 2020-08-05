@@ -9,8 +9,8 @@ func _post_setup() -> void:
 	timer.start(lifetime)
 
 
-func _physics_process(_delta: float) -> void:
-	var movement := _update_movement(lifetime - timer.time_left)
+func _physics_process(delta: float) -> void:
+	var movement := _update_movement(delta)
 
 	var collision := move_and_collide(movement)
 
