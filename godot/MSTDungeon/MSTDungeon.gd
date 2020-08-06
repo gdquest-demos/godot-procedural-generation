@@ -15,6 +15,7 @@ var _data := {}
 var _path := AStar2D.new()
 var _sleeping_rooms := 0
 var _mean_room_size := Vector2.ZERO
+var _draw_extra := []
 
 onready var rooms: Node2D = $Rooms
 onready var level: TileMap = $Level
@@ -47,6 +48,9 @@ func _on_rooms_placed() -> void:
 				and _rng.randf() < connection_factor 
 			):
 				_path.connect_points(point1_id, point2_id)
+				_draw_extra.push_back(
+					[_path.get_point_position(point1_id), _path.get_point_position(point2_id)]
+				)
 	
 	update()
 	
@@ -76,6 +80,10 @@ func _draw() -> void:
 		for point2_id in _path.get_point_connections(point1_id):
 			var point2_position := _path.get_point_position(point2_id)
 			draw_line(point1_position, point2_position, Color.red, 20)
+	
+	if not _draw_extra.empty():
+		for pair in _draw_extra:
+			draw_line(pair[0], pair[1], Color.green, 20)
 
 
 func _generate() -> void:

@@ -8,7 +8,9 @@ static func get_rng_point_in_circle(rng: RandomNumberGenerator, radius: float) -
 	return get_rng_point_in_ellipse(rng, radius, radius)
 
 
-static func get_rng_point_in_ellipse(rng: RandomNumberGenerator, width: float, height: float) -> Vector2:
+static func get_rng_point_in_ellipse(
+	rng: RandomNumberGenerator, width: float, height: float
+) -> Vector2:
 	var t := 2 * PI * rng.randf()
 	var u := rng.randf() + rng.randf()
 	var r := 2 - u if u > 1 else u
