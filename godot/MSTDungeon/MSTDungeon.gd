@@ -1,3 +1,12 @@
+# Generates a dungeon using RigidBody2D physics and Minimum Spanning Trees (MST).
+#
+# The algorithm works like so:
+#
+# 1. Spawns and spreads collision shapes around the game world using the physics engine.
+# 2. Waits for the rooms to be in a more or less resting state.
+# 3. Selects some main rooms for the level based on the average room size.
+# 4. Creates a Minimum Spanning Tree graph that connects the rooms.
+# 5. Adds back some connections after calculating the MST so the player doesn't need to backtrack.
 extends Node2D
 
 
