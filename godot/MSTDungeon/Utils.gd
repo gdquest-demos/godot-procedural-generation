@@ -8,9 +8,7 @@ static func get_rng_point_in_circle(rng: RandomNumberGenerator, radius: float) -
 	return get_rng_point_in_ellipse(rng, radius, radius)
 
 
-static func get_rng_point_in_ellipse(
-	rng: RandomNumberGenerator, width: float, height: float
-) -> Vector2:
+static func get_rng_point_in_ellipse(rng: RandomNumberGenerator, width: float, height: float) -> Vector2:
 	var t := 2 * PI * rng.randf()
 	var u := rng.randf() + rng.randf()
 	var r := 2 - u if u > 1 else u
@@ -31,12 +29,12 @@ static func is_approx_equal(v1: Vector2, v2: Vector2, error: float = UNCERTAINTY
 static func mst(points: Array) -> AStar2D:
 	var out := AStar2D.new()
 	out.add_point(out.get_available_point_id(), points.pop_back())
-	
+
 	while not points.empty():
 		var current_position := Vector2.ZERO
 		var min_position := Vector2.ZERO
 		var min_distance := INF
-		
+
 		for point1_id in out.get_points():
 			var point1_position = out.get_point_position(point1_id)
 			for point2_position in points:
@@ -45,7 +43,7 @@ static func mst(points: Array) -> AStar2D:
 					current_position = point1_position
 					min_position = point2_position
 					min_distance = distance
-			
+
 		var point_id := out.get_available_point_id()
 		out.add_point(point_id, min_position)
 		out.connect_points(out.get_closest_point(current_position), point_id)

@@ -6,8 +6,8 @@ signal mode_changed
 
 const CONSECUTIVE_MAX_EQUALITIES := 10
 
-const RADIUS := 600
-const ROOM_SIZE := Vector2(2, 9)
+export var radius := 600
+export var room_size := Vector2(2, 9)
 
 var size := Vector2.ZERO
 
@@ -28,21 +28,22 @@ func setup(rng: RandomNumberGenerator, level: TileMap) -> void:
 
 
 func _ready() -> void:
-	position = MSTDungeonUtils.get_rng_point_in_circle(_rng, RADIUS)
+	position = MSTDungeonUtils.get_rng_point_in_circle(_rng, radius)
 	position.x = MSTDungeonUtils.roundm(position.x, _level.cell_size.x)
 	position.y = MSTDungeonUtils.roundm(position.y, _level.cell_size.y)
-	
-	var w: int = _rng.randi_range(ROOM_SIZE.x, ROOM_SIZE.y)
-	var h: int = _rng.randi_range(ROOM_SIZE.x, ROOM_SIZE.y)
+
+	var w: int = _rng.randi_range(room_size.x, room_size.y)
+	var h: int = _rng.randi_range(room_size.x, room_size.y)
 	_area = 4 * w * h
-	
+
 	collision_shape.shape.extents = _level.map_to_world(Vector2(w, h))
 	size = 2 * collision_shape.shape.extents
 
 
 func _integrate_forces(state: Physics2DDirectBodyState) -> void:
-	if mode == RigidBody2D.MODE_STATIC: return
-	
+	if mode == RigidBody2D.MODE_STATIC:
+		return
+
 	if MSTDungeonUtils.is_approx_equal(_previous_xform.origin, state.transform.origin):
 		_consecutive_equalities += 1
 
