@@ -15,4 +15,6 @@ texture = ExtResource( 3 )
 [node name="Timer" type="Timer" parent="." index="2"]
 process_mode = 0
 one_shot = true
+
+[node name="Tween" type="Tween" parent="." index="3"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

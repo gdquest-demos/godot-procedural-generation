@@ -34,6 +34,14 @@ func _post_setup() -> void:
 	pass
 
 
+func _impact() -> void:
+	pass
+
+
+func _miss() -> void:
+	pass
+
+
 # Calculates and returns the projectile's movement this frame.
 # Mutates the projectile's state, so be sure to only call it when the time changes.
 func _update_movement(delta: float) -> Vector2:

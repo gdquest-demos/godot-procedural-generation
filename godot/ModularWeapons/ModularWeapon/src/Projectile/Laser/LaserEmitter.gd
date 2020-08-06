@@ -9,6 +9,7 @@ var current_lifetime := 0.0
 onready var tracer := $LaserTracer
 onready var laser_line := $Line2D
 onready var timer := $Timer
+onready var casting_particles := $CastingParticles
 
 
 func _ready() -> void:
@@ -26,6 +27,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		laser_line.points = []
 		tracer.hide()
 		tracer.position = Vector2.ZERO
+		tracer._miss()
+		casting_particles.emitting = false
 
 
 func _physics_process(_delta: float) -> void:
@@ -48,6 +51,7 @@ func _do_fire(_direction: Vector2, _motions: Array, _lifetime: float) -> void:
 		firing = true
 		current_lifetime = 0.0
 		tracer.show()
+		casting_particles.emitting = true
 	tracer.setup(global_position, Vector2.UP.rotated(global_rotation), _motions, _lifetime)
 
 
