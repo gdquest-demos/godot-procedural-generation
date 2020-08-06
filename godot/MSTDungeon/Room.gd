@@ -12,7 +12,7 @@ const ROOM_SIZE := Vector2(2, 9)
 var size := Vector2.ZERO
 
 var _level: TileMap = null
-var _rng := RandomNumberGenerator.new()
+var _rng: RandomNumberGenerator = null
 var _previous_xform := Transform2D()
 var _consecutive_equalities := 0
 
@@ -22,13 +22,12 @@ var _iter_index: int = 0
 onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 
-func setup(level: TileMap) -> void:
+func setup(rng: RandomNumberGenerator, level: TileMap) -> void:
+	_rng = rng
 	_level = level
 
 
 func _ready() -> void:
-	_rng.randomize()
-	
 	position = MSTDungeonUtils.get_rng_point_in_circle(_rng, RADIUS)
 	position.x = MSTDungeonUtils.roundm(position.x, _level.cell_size.x)
 	position.y = MSTDungeonUtils.roundm(position.y, _level.cell_size.y)

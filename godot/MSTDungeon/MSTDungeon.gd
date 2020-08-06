@@ -6,9 +6,9 @@ signal finished
 
 const Room := preload("Room.tscn")
 
-const MEAN_ROOM_SIZE_WEIGHT := 1.1
-const PRUNE_FACTOR := 0.55
-const MAX_ROOMS := 60
+export var mean_room_size_weight := 1.1
+export var connection_factor := 0.025
+export var max_rooms := 60
 
 var _rng := RandomNumberGenerator.new()
 var _data := {}
@@ -26,13 +26,6 @@ func _ready() -> void:
 	_generate()
 
 
-func _process(delta: float) -> void:
-	level.clear()
-	for room in rooms.get_children():
-		for offset in room:
-			level.set_cellv(offset, 0)
-
-
 func _on_rooms_placed() -> void:
 	var main_rooms := []
 	var main_rooms_positions := []
@@ -40,16 +33,22 @@ func _on_rooms_placed() -> void:
 		if _is_main_room(room):
 			main_rooms.push_back(room)
 			main_rooms_positions.push_back(room.position)
+			room.modulate = Color.red
 	
-	var delaunay := Geometry.triangulate_delaunay_2d(main_rooms_positions)
-	var main_rooms_connections := MSTDungeonUtils.delaunay_to_connections(delaunay)
-	_path = MSTDungeonUtils.mst(main_rooms_positions, main_rooms_connections)
-	MSTDungeonUtils.cull_points_by(_rng, main_rooms_connections, PRUNE_FACTOR)
-
-	for point1_id in main_rooms_connections:
-		for point2_id in main_rooms_connections[point1_id]:
-			if not _path.are_points_connected(point1_id, point2_id):
+	_path = MSTDungeonUtils.mst(main_rooms_positions)
+	
+	update()
+	yield(get_tree().create_timer(1), "timeout")
+	
+	for point1_id in _path.get_points():
+		for point2_id in _path.get_points():
+			if (point1_id != point2_id 
+				and not _path.are_points_connected(point1_id, point2_id)
+				and _rng.randf() < connection_factor 
+			):
 				_path.connect_points(point1_id, point2_id)
+	
+	update()
 	
 	for room in main_rooms:
 		_add_room(room)
@@ -58,16 +57,32 @@ func _on_rooms_placed() -> void:
 
 
 func _on_Room_mode_changed(room: MSTDungeonRoom) -> void:
+	room.modulate = Color.yellow
 	_sleeping_rooms += 1
-	if _sleeping_rooms == MAX_ROOMS:
+	if _sleeping_rooms == max_rooms:
 		emit_signal("rooms_placed")
 
 
+func _process(delta: float) -> void:
+	level.clear()
+	for room in rooms.get_children():
+		for offset in room:
+			level.set_cellv(offset, 0)
+
+
+func _draw() -> void:
+	for point1_id in _path.get_points():
+		var point1_position := _path.get_point_position(point1_id)
+		for point2_id in _path.get_point_connections(point1_id):
+			var point2_position := _path.get_point_position(point2_id)
+			draw_line(point1_position, point2_position, Color.red, 20)
+
+
 func _generate() -> void:
-	for _i in MAX_ROOMS:
+	for _i in max_rooms:
 		var room := Room.instance()
 		room.connect("mode_changed", self, "_on_Room_mode_changed", [room])
-		room.setup(level)
+		room.setup(_rng, level)
 		rooms.add_child(room)
 		
 		_mean_room_size += room.size
@@ -132,6 +147,6 @@ func _add_corridor(start: int, end: int, constant: int, axis: int) -> void:
 
 func _is_main_room(room: MSTDungeonRoom) -> bool:
 	return (
-		room.size.x > MEAN_ROOM_SIZE_WEIGHT * _mean_room_size.x
-		and room.size.y > MEAN_ROOM_SIZE_WEIGHT * _mean_room_size.y
+		room.size.x > mean_room_size_weight * _mean_room_size.x
+		and room.size.y > mean_room_size_weight * _mean_room_size.y
 	)
