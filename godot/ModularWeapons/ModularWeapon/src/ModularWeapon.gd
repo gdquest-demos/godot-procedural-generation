@@ -1,6 +1,10 @@
 class_name ModularWeapon
 extends Node2D
 
+
+#warning-ignore: unused_signal
+signal damaged(target, amount)
+
 export var emitter_configuration: PackedScene setget set_emitter_configuration
 export var projectile_emitter: PackedScene
 export (Array, Resource) var projectile_motions := []

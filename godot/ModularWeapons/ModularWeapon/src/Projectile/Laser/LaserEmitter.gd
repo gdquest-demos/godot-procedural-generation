@@ -1,10 +1,18 @@
 extends ProjectileEmitter
 
+
+export var collisions_per_second := 4
+
 var firing := false
 var current_lifetime := 0.0
 
 onready var tracer := $LaserTracer
 onready var laser_line := $Line2D
+onready var timer := $Timer
+
+
+func _ready() -> void:
+	tracer.connect("collided", self, "_on_projectile_collided")
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -41,3 +49,9 @@ func _do_fire(_direction: Vector2, _motions: Array, _lifetime: float) -> void:
 		current_lifetime = 0.0
 		tracer.show()
 	tracer.setup(global_position, Vector2.UP.rotated(global_rotation), _motions, _lifetime)
+
+
+func _on_projectile_collided(target: Node) -> void:
+	if timer.is_stopped():
+		weapons_system.emit_signal("damaged", target, damage_per_collision)
+		timer.start(1.0 / float(collisions_per_second))

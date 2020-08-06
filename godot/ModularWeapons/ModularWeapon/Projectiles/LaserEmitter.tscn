@@ -24,3 +24,7 @@ script = SubResource( 1 )
 
 [node name="LaserTracer" parent="." instance=ExtResource( 1 )]
 visible = false
+
+[node name="Timer" type="Timer" parent="."]
+process_mode = 0
+one_shot = true

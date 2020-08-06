@@ -15,6 +15,7 @@ func _physics_process(delta: float) -> void:
 	var collision := move_and_collide(movement)
 
 	if collision:
+		emit_signal("collided", collision.collider)
 		queue_free()
 
 

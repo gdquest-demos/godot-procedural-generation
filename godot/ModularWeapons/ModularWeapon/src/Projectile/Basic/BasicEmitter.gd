@@ -1,9 +1,11 @@
 extends ProjectileEmitter
 
+
 var projectile := preload("BasicProjectile.tscn")
 
 var registry: ObjectRegistry
 onready var timer := $Timer
+
 
 func _ready() -> void:
 	var registry_array := get_tree().get_nodes_in_group("object_registry")
@@ -24,3 +26,5 @@ func _do_fire(_direction: Vector2, _motions: Array, _lifetime: float) -> void:
 	var new_projectile := projectile.instance()
 	new_projectile.setup(global_position, _direction, _motions, _lifetime)
 	registry.add_projectile(new_projectile)
+	
+	var _error := new_projectile.connect("collided", self, "_on_projectile_collided")

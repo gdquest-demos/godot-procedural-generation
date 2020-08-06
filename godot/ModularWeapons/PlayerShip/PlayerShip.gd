@@ -11,6 +11,12 @@ var angular_acceleration_max := 1800
 var linear_velocity := Vector2.ZERO
 var angular_velocity := 0.0
 
+onready var weapons := $ModularWeaponsSystem
+
+
+func _ready() -> void:
+	var _error := weapons.connect("damaged", self, "_on_Weapons_damaged")
+
 
 func _physics_process(delta: float) -> void:
 	var movement := _calculate_move_factor()
@@ -40,3 +46,7 @@ func _calculate_move_factor() -> Vector2:
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
 		Input.get_action_strength("back") - Input.get_action_strength("forwards")
 	)
+
+
+func _on_Weapons_damaged(target: Node, damage: int) -> void:
+	print("%s took %s damage" % [target, damage])
