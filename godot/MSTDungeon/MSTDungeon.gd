@@ -1,4 +1,4 @@
-# Generates a dungeon using RigidBody2D physics and Minimum Spanning Trees (MST).
+# Generates a dungeon using RigidBody2D physics and Minimum Spanning Tree (MST).
 #
 # The algorithm works like so:
 #
@@ -15,13 +15,12 @@ signal finished
 
 const Room := preload("Room.tscn")
 
-export var mean_room_size_weight := 1.1
-export var connection_factor := 0.025
 export var max_rooms := 60
+export var reconnection_factor := 0.025
 
 var _rng := RandomNumberGenerator.new()
 var _data := {}
-var _path := AStar2D.new()
+var _path: AStar2D = null
 var _sleeping_rooms := 0
 var _mean_room_size := Vector2.ZERO
 var _draw_extra := []
@@ -55,7 +54,7 @@ func _on_rooms_placed() -> void:
 			if (
 				point1_id != point2_id
 				and not _path.are_points_connected(point1_id, point2_id)
-				and _rng.randf() < connection_factor
+				and _rng.randf() < reconnection_factor
 			):
 				_path.connect_points(point1_id, point2_id)
 				_draw_extra.push_back(
@@ -67,7 +66,9 @@ func _on_rooms_placed() -> void:
 	for room in main_rooms:
 		_add_room(room)
 	_add_corridors()
+
 	set_process(false)
+	emit_signal("finished")
 
 
 func _on_Room_mode_changed(room: MSTDungeonRoom) -> void:
@@ -85,6 +86,9 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
+	if _path == null:
+		return
+
 	for point1_id in _path.get_points():
 		var point1_position := _path.get_point_position(point1_id)
 		for point2_id in _path.get_point_connections(point1_id):
@@ -112,7 +116,6 @@ func _generate() -> void:
 	level.clear()
 	for point in _data:
 		level.set_cellv(point, 0)
-	return _data
 
 
 func _add_room(room: MSTDungeonRoom) -> void:
@@ -136,7 +139,6 @@ func _add_corridors():
 
 			connected[Vector2(point1_id, point2_id)] = null
 			connected[Vector2(point2_id, point1_id)] = null
-	emit_signal("finished")
 
 
 func _add_corridor(start: int, end: int, constant: int, axis: int) -> void:
@@ -168,7 +170,4 @@ func _add_corridor(start: int, end: int, constant: int, axis: int) -> void:
 
 
 func _is_main_room(room: MSTDungeonRoom) -> bool:
-	return (
-		room.size.x > mean_room_size_weight * _mean_room_size.x
-		and room.size.y > mean_room_size_weight * _mean_room_size.y
-	)
+	return room.size.x > _mean_room_size.x and room.size.y > _mean_room_size.y

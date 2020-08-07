@@ -29,8 +29,6 @@ func setup(rng: RandomNumberGenerator, level: TileMap) -> void:
 
 func _ready() -> void:
 	position = MSTDungeonUtils.get_rng_point_in_circle(_rng, radius)
-	position.x = MSTDungeonUtils.roundm(position.x, _level.cell_size.x)
-	position.y = MSTDungeonUtils.roundm(position.y, _level.cell_size.y)
 
 	var w: int = _rng.randi_range(room_size.x, room_size.y)
 	var h: int = _rng.randi_range(room_size.x, room_size.y)

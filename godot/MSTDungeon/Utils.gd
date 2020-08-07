@@ -15,10 +15,6 @@ static func get_rng_point_in_ellipse(rng: RandomNumberGenerator, width: float, h
 	return r * Vector2(width * cos(t), height * sin(t))
 
 
-static func roundm(n: float, m: float) -> int:
-	return int(floor((n + m - 1) / m) * m)
-
-
 # Tests for approximate equality between two `Vector2`, allowing you to specify an absolute 
 # error margin.
 static func is_approx_equal(v1: Vector2, v2: Vector2, error: float = UNCERTAINTY) -> bool:
