@@ -1,7 +1,7 @@
 class_name MSTDungeonUtils
 
 
-const UNCERTAINTY := 1e-2
+const UNCERTAINTY := 0.01
 
 
 static func get_rng_point_in_circle(rng: RandomNumberGenerator, radius: float) -> Vector2:
