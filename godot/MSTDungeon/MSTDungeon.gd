@@ -71,7 +71,7 @@ func _on_rooms_placed() -> void:
 	emit_signal("finished")
 
 
-func _on_Room_mode_changed(room: MSTDungeonRoom) -> void:
+func _on_Room_sleeping_state_changed(room: MSTDungeonRoom) -> void:
 	room.modulate = Color.yellow
 	_sleeping_rooms += 1
 	if _sleeping_rooms == max_rooms:
@@ -103,7 +103,7 @@ func _draw() -> void:
 func _generate() -> void:
 	for _i in max_rooms:
 		var room := Room.instance()
-		room.connect("mode_changed", self, "_on_Room_mode_changed", [room])
+		room.connect("sleeping_state_changed", self, "_on_Room_sleeping_state_changed", [room])
 		room.setup(_rng, level)
 		rooms.add_child(room)
 

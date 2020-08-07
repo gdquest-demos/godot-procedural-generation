@@ -2,8 +2,6 @@ class_name MSTDungeonRoom
 extends RigidBody2D
 
 
-signal mode_changed
-
 const CONSECUTIVE_MAX_EQUALITIES := 10
 
 export var radius := 600
@@ -47,7 +45,7 @@ func _integrate_forces(state: Physics2DDirectBodyState) -> void:
 
 	if _consecutive_equalities > CONSECUTIVE_MAX_EQUALITIES:
 		set_deferred("mode", RigidBody2D.MODE_STATIC)
-		call_deferred("emit_signal", "mode_changed")
+		call_deferred("emit_signal", "sleeping_state_changed")
 	_previous_xform = state.transform
 
 
