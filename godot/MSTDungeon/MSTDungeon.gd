@@ -156,8 +156,8 @@ func _add_corridor(start: int, end: int, constant: int, axis: int) -> void:
 			if _is_main_room(room):
 				continue
 
-			var top_left: Vector2 = level.world_to_map(room.position - room.size / 2)
-			var bottom_right: Vector2 = level.world_to_map(room.position + room.size / 2)
+			var top_left: Vector2 = level.world_to_map(room.position) - room.size / 2
+			var bottom_right: Vector2 = level.world_to_map(room.position) + room.size / 2
 			if (
 				top_left.x <= point.x
 				and point.x < bottom_right.x

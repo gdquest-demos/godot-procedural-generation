@@ -32,8 +32,8 @@ func _ready() -> void:
 	var h: int = _rng.randi_range(room_size.x, room_size.y)
 	_area = w * h
 
-	size = _level.map_to_world(Vector2(w, h))
-	collision_shape.shape.extents = size / 2
+	size = Vector2(w, h)
+	collision_shape.shape.extents = _level.map_to_world(size) / 2
 
 
 func _integrate_forces(state: Physics2DDirectBodyState) -> void:
@@ -60,9 +60,9 @@ func _iter_next(_arg) -> bool:
 
 
 func _iter_get(_arg) -> Vector2:
-	var width := _level.world_to_map(size).x
+	var width := size.x
 	var offset := MSTDungeonUtils.index_to_xy(width, _iter_index)
-	return _level.world_to_map(position - size / 2) + offset
+	return _level.world_to_map(position) - size / 2 + offset
 
 
 func _iter_is_running() -> bool:
