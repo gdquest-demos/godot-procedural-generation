@@ -10,6 +10,9 @@ var _space: Physics2DDirectSpaceState
 var _query: Physics2DShapeQueryParameters
 
 
+# Sets up a circle with the specified radius, and gets the world 2D space state.
+# As we may be dealing with a projectile that checks for collisions multiple
+# times per frame, we can't rely on Area2D.
 func _setup_shape() -> void:
 	_circle = CircleShape2D.new()
 	_circle.radius = homing_radius
@@ -20,12 +23,15 @@ func _setup_shape() -> void:
 	_query.collision_layer = collision_mask
 
 
+# Locates the nearest target using an intersect shape call to the 2D space state.
 func _find_target() -> Node2D:
 	_query.transform = projectile.global_transform
 	var intersections := _space.intersect_shape(_query, 2)
+	
 	if intersections.size() > 0:
 		var min_distance: float = INF
 		var min_target: PhysicsBody2D
+		
 		for intersection in intersections:
 			var distance: float = intersection.collider.global_position.distance_to(projectile.global_position)
 			if distance < min_distance:
@@ -37,6 +43,9 @@ func _find_target() -> Node2D:
 	return null
 
 
+# Does not update the projectile, but updates its directions to face towards the
+# target.
+# @tags - virtual
 func _update_movement(_direction: Vector2, _delta: float) -> Vector2:
 	if not _query:
 		_setup_shape()

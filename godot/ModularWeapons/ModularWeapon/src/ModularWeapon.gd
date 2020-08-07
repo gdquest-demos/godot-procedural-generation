@@ -8,8 +8,11 @@ signal damaged(target, amount)
 export var emitter_configuration: PackedScene setget set_emitter_configuration
 export var projectile_emitter: PackedScene
 export (Array, Resource) var projectile_motions := []
+export (Array, Resource) var projectile_impact_events := []
 
 
+# Setter for emitter configuration. Whenever changed, will remove existing
+# emitters and replace them with the new configuration.
 func set_emitter_configuration(value: PackedScene) -> void:
 	emitter_configuration = value
 	if not is_inside_tree():
@@ -19,6 +22,7 @@ func set_emitter_configuration(value: PackedScene) -> void:
 	_add_new_emitters()
 
 
+# Removes existing projectile emitters.
 func _clear_emitters() -> void:
 	for child in get_children():
 		if child is ProjectileEmitter:
@@ -26,6 +30,8 @@ func _clear_emitters() -> void:
 			child.queue_free()
 
 
+# Adds new projectile emitters that are positioned and rotated according to the
+# provided configuration scene.
 func _add_new_emitters() -> void:
 	var configuration := emitter_configuration.instance()
 

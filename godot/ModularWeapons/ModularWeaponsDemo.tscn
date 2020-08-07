@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://ModularWeapons/PlayerShip/PlayerShip.tscn" type="PackedScene" id=1]
-[ext_resource path="res://ModularWeapons/ModularWeapon/ObjectRegistry.tscn" type="PackedScene" id=2]
+[ext_resource path="res://ModularWeapons/ModularWeapon/SpawnedObjects.tscn" type="PackedScene" id=2]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends StaticBody2D
@@ -22,19 +22,32 @@ glow_levels/4 = true
 glow_blend_mode = 0
 glow_bicubic_upscale = true
 
-[node name="TestWorld" type="Node2D"]
+[node name="ModularWeaponsDemo" type="Node2D"]
+__meta__ = {
+"_editor_description_": "A modular, object oriented based weapons system that can be extended with new properties.
 
-[node name="ColorRect" type="ColorRect" parent="."]
+All configurations are in the base folders of the ModularWeapon directory, while all source code is under its /src/ directory.
+
+Firing Configuration scenes go into the ModularWeapon's emitter configuration property, the events into the impact events array, emitters into the projectile emitter property, and the motions in the projectile motions array."
+}
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+margin_right = 1920.0
+margin_bottom = 1080.0
 rect_min_size = Vector2( 1920, 1080 )
 color = Color( 0.0470588, 0.121569, 0.290196, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ObjectRegistry" parent="." instance=ExtResource( 2 )]
+[node name="SpawnedObjects" parent="." instance=ExtResource( 2 )]
 
 [node name="PlayerShip" parent="." instance=ExtResource( 1 )]
 position = Vector2( 158, 547 )
+collision_layer = 9
 collision_mask = 2
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
@@ -48,3 +61,5 @@ shape = SubResource( 2 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 3 )
+
+[editable path="PlayerShip"]

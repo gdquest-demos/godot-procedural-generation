@@ -13,7 +13,7 @@ onready var casting_particles := $CastingParticles
 
 
 func _ready() -> void:
-	tracer.connect("collided", self, "_on_projectile_collided")
+	var _error := tracer.connect("collided", self, "_on_projectile_collided")
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -46,6 +46,9 @@ func _physics_process(_delta: float) -> void:
 		laser_line.points = points
 
 
+# Resets the persistent tracer's properties and position. Also keeps the direction
+# vector up to date with the emitter's rotation.
+# @tags - virtual
 func _do_fire(_direction: Vector2, _motions: Array, _lifetime: float) -> void:
 	if not firing:
 		firing = true
@@ -55,7 +58,13 @@ func _do_fire(_direction: Vector2, _motions: Array, _lifetime: float) -> void:
 	tracer.setup(global_position, Vector2.UP.rotated(global_rotation), _motions, _lifetime)
 
 
-func _on_projectile_collided(target: Node) -> void:
+# Triggers the damage signal only when the DPS timer is not running.
+# @tags - virtual
+func _on_projectile_collided(target: Node, _hit_location: Vector2) -> void:
 	if timer.is_stopped():
 		weapons_system.emit_signal("damaged", target, damage_per_collision)
+		
+		for event in weapons_system.projectile_impact_events:
+			event.trigger(_hit_location, spawned_objects, weapons_system, false)
+
 		timer.start(1.0 / float(collisions_per_second))

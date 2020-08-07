@@ -8,16 +8,30 @@ export var projectile_lifetime := 1.0
 
 var weapons_system: Node
 
+onready var spawned_objects: Node = get_tree().get_nodes_in_group("spawned_objects").front()
 
+
+# Base function to shoot a projectile. Calls the virtual `_do_fire` function.
 func fire() -> void:
 	_do_fire(
 		Vector2.UP.rotated(global_rotation), weapons_system.projectile_motions, projectile_lifetime
 	)
 
 
+# Virtual function that is called by `fire()`.
+# @tags - virtual
 func _do_fire(_direction: Vector2, _motions: Array, _lifetime: float) -> void:
 	pass
 
 
-func _on_projectile_collided(target: Node) -> void:
+# Emits the damaged signal and triggers any impact event in the system.
+func _on_projectile_collided(target: Node, hit_location: Vector2) -> void:
 	weapons_system.emit_signal("damaged", target, damage_per_collision)
+	for event in weapons_system.projectile_impact_events:
+		event.trigger(hit_location, spawned_objects, weapons_system, false)
+
+
+# Triggers any missed event in the system.
+func _on_projectile_missed(miss_location: Vector2) -> void:
+	for event in weapons_system.projectile_impact_events:
+		event.trigger(miss_location, spawned_objects, weapons_system, true)

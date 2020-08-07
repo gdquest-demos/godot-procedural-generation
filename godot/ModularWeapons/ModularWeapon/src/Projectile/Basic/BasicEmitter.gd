@@ -3,14 +3,7 @@ extends ProjectileEmitter
 
 var projectile := preload("BasicProjectile.tscn")
 
-var registry: ObjectRegistry
 onready var timer := $Timer
-
-
-func _ready() -> void:
-	var registry_array := get_tree().get_nodes_in_group("object_registry")
-	if registry_array.size() > 0:
-		registry = registry_array[0]
 
 
 func _physics_process(_delta: float) -> void:
@@ -19,12 +12,14 @@ func _physics_process(_delta: float) -> void:
 		timer.start(1.0 / projectiles_per_second)
 
 
+# Spawns and configures a basic projectile scene and connects to its signals.
 func _do_fire(_direction: Vector2, _motions: Array, _lifetime: float) -> void:
-	if not registry:
+	if not spawned_objects:
 		return
 	
 	var new_projectile := projectile.instance()
 	new_projectile.setup(global_position, _direction, _motions, _lifetime)
-	registry.add_projectile(new_projectile)
+	spawned_objects.add_child(new_projectile)
 	
 	var _error := new_projectile.connect("collided", self, "_on_projectile_collided")
+	_error = new_projectile.connect("missed", self, "_on_projectile_missed")

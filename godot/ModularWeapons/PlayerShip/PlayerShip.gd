@@ -48,5 +48,5 @@ func _calculate_move_factor() -> Vector2:
 	)
 
 
-func _on_Weapons_damaged(target: Node, damage: int) -> void:
-	pass
+func _on_Weapons_damaged(_target: Node, _damage: int) -> void:
+	print("%s took %s damage." % [_target, _damage])

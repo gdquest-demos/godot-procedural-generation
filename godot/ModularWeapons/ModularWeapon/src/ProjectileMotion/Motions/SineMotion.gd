@@ -9,6 +9,9 @@ export var frequency := 2
 var elapsed_time := 0.0
 
 
+# Moves the projectile perpendicular to its travel direction in a sine wave
+# pattern.
+# @tags - virtual
 func _update_movement(direction: Vector2, delta: float) -> Vector2:
 	elapsed_time += delta
 	

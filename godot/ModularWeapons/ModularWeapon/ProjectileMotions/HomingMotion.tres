@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource( 1 )
-homing_radius = 200.0
-homing_strength = 0.325
+homing_radius = 250.0
+homing_strength = 0.2
 collision_mask = 2
