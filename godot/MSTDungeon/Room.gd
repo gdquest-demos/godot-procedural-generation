@@ -30,10 +30,10 @@ func _ready() -> void:
 
 	var w: int = _rng.randi_range(room_size.x, room_size.y)
 	var h: int = _rng.randi_range(room_size.x, room_size.y)
-	_area = 4 * w * h
+	_area = w * h
 
-	collision_shape.shape.extents = _level.map_to_world(Vector2(w, h))
-	size = 2 * collision_shape.shape.extents
+	size = _level.map_to_world(Vector2(w, h))
+	collision_shape.shape.extents = size / 2
 
 
 func _integrate_forces(state: Physics2DDirectBodyState) -> void:
