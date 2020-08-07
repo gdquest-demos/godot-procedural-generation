@@ -101,7 +101,7 @@ func _draw() -> void:
 
 
 func _generate() -> void:
-	for _i in max_rooms:
+	for _i in range(max_rooms):
 		var room := Room.instance()
 		room.connect("sleeping_state_changed", self, "_on_Room_sleeping_state_changed", [room])
 		room.setup(_rng, level)
