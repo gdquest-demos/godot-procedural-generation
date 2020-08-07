@@ -1,3 +1,4 @@
+# Main class to manage, configure and control projectile emitters from.
 class_name ModularWeapon
 extends Node2D
 

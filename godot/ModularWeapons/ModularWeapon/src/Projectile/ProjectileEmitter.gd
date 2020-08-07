@@ -1,3 +1,7 @@
+# The base class for a projectile emitter. Its job is to spawn or control a
+# projectile in its `_do_fire()` function. To actually fire a projectile, the
+# base `fire()` function is provided and called, I.E. from `_unhandled_input()`.
+# @tags - abstract
 class_name ProjectileEmitter
 extends Node2D
 

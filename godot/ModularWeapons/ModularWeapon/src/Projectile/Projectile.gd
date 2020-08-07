@@ -1,3 +1,18 @@
+# Base class for a projectile. The life cycle of the projectile follows these steps:
+# 
+# 1. An emitter spawns a projectile
+# 2. `setup()` is called by the emitter
+# 3. `_post_setup()` is called
+# 4. `_update_movement()` moves the projectile according to its emitter's
+# projectile motions.
+# 5. The projectile eithers runs out of lifetime or hits an object.
+# 
+# When the projectile runs out of life, it should call `_miss()` and emit the
+# `missed` signal. When it hits an object, it should call `_impact()` and emit
+# the `collided` signal.
+# `_miss()` and `_impact()` are there for the projectile to clean up. The signals
+# are a way to communicate back to its emitter/the weapons system.
+# @tags - abstract
 class_name Projectile
 extends KinematicBody2D
 
