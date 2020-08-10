@@ -11,7 +11,6 @@ extends Node2D
 
 
 signal rooms_placed
-signal finished
 
 const Room := preload("Room.tscn")
 
@@ -30,12 +29,16 @@ onready var level: TileMap = $Level
 
 
 func _ready() -> void:
-	connect("rooms_placed", self, "_on_rooms_placed")
 	_rng.randomize()
 	_generate()
 
 
-func _on_rooms_placed() -> void:
+func _on_Room_sleeping_state_changed(room: MSTDungeonRoom) -> void:
+	room.modulate = Color.yellow
+	_sleeping_rooms += 1
+	if _sleeping_rooms < max_rooms:
+		return
+
 	var main_rooms := []
 	var main_rooms_positions := []
 	for room in rooms.get_children():
@@ -68,14 +71,7 @@ func _on_rooms_placed() -> void:
 	_add_corridors()
 
 	set_process(false)
-	emit_signal("finished")
-
-
-func _on_Room_sleeping_state_changed(room: MSTDungeonRoom) -> void:
-	room.modulate = Color.yellow
-	_sleeping_rooms += 1
-	if _sleeping_rooms == max_rooms:
-		emit_signal("rooms_placed")
+	emit_signal("rooms_placed")
 
 
 func _process(delta: float) -> void:
@@ -110,7 +106,7 @@ func _generate() -> void:
 		_mean_room_size += room.size
 	_mean_room_size /= rooms.get_child_count()
 
-	yield(self, "finished")
+	yield(self, "rooms_placed")
 
 	rooms.queue_free()
 	level.clear()
