@@ -4,5 +4,5 @@
 
 [resource]
 script = ExtResource( 1 )
-amplitude = 200.0
+amplitude = 100.0
 frequency = 2

@@ -22,12 +22,12 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_Timer_timeout() -> void:
-	emit_signal("missed", global_position)
 	_miss()
 
 
 # What the projectile does after it has hit a valid target.
 # Flares up in size and fades out.
+# @tags - virtual
 func _impact() -> void:
 	set_physics_process(false)
 	tween.interpolate_property(self, "modulate", modulate, modulate * 3, 0.1, Tween.TRANS_CUBIC)
@@ -39,7 +39,9 @@ func _impact() -> void:
 
 # What the projectile does after it has not hit any target.
 # Shrinks and fades out
+# @tags - virtual
 func _miss() -> void:
+	emit_signal("missed", global_position)
 	collision_layer = 0
 	collision_mask = 0
 	tween.interpolate_property(self, "scale", scale, Vector2.ZERO, 0.25)

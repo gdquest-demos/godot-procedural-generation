@@ -12,7 +12,7 @@ var explosion_effect := preload("Explosion.tscn")
 # Spawns a new explosion, positions it and triggers its animation.
 # Causes damage based on proximity to the explosion.
 # @tags - virtual
-func _do_trigger(_spawn_location: Vector2, _spawn_parent: Node, _weapons_system: ModularWeapon, _missed: bool) -> void:
+func _do_trigger(_spawn_location: Vector2, _spawn_parent: Node, _weapons_system, _missed: bool) -> void:
 	var explosion := explosion_effect.instance()
 	
 	explosion.position = _spawn_location

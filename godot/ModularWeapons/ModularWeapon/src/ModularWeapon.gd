@@ -7,9 +7,33 @@ extends Node2D
 signal damaged(target, amount)
 
 export var emitter_configuration: PackedScene setget set_emitter_configuration
-export var projectile_emitter: PackedScene
+export var projectile_emitter: PackedScene setget _set_emitter
 export (Array, Resource) var projectile_motions := []
 export (Array, Resource) var projectile_impact_events := []
+
+
+# Appends the specified motion to the projectile motions array. Checks for and prevents
+# duplicates by default, unless the second parameter is true.
+func add_motion(new_motion: ProjectileMotion, allows_duplicates := false) -> void:
+	if not allows_duplicates:
+		var has_motion := false
+		for motion in projectile_motions:
+			has_motion = new_motion.get_script() == motion.get_script()
+			if has_motion:
+				return
+	projectile_motions.append(new_motion)
+
+
+# Appends the specified event to the projectile events array. Checks for and prevents
+# duplicates by default, unless the second parameter is true.
+func add_impact_event(new_event: ProjectileEvent, allows_duplicates := false) -> void:
+	if not allows_duplicates:
+		var has_event := false
+		for event in projectile_impact_events:
+			has_event = new_event.get_script() == event.get_script()
+			if has_event:
+				return
+	projectile_impact_events.append(new_event)
 
 
 # Setter for emitter configuration. Whenever changed, will remove existing
@@ -21,6 +45,12 @@ func set_emitter_configuration(value: PackedScene) -> void:
 
 	_clear_emitters()
 	_add_new_emitters()
+
+
+# Setter for emitter scene. When changed, will replace existing emitters.
+func _set_emitter(value: PackedScene) -> void:
+	projectile_emitter = value
+	set_emitter_configuration(emitter_configuration)
 
 
 # Removes existing projectile emitters.
