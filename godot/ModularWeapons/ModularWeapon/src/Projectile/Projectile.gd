@@ -26,9 +26,7 @@ signal missed(miss_location)
 var lifetime := 1.0
 var motions := []
 var direction := Vector2.UP
-var multiple_projectiles_active := true
 
-var _last_offset := Vector2.ZERO
 var _is_setup := false
 
 
@@ -70,14 +68,14 @@ func _miss() -> void:
 
 
 # Calculates and returns the projectile's movement this frame.
-# Mutates the projectile's state so should only be called when the time changes.
+# Can mutate the projectile's state.
 func _update_movement(delta: float) -> Vector2:
+	var movement_vector := Vector2.ZERO
+	
 	if motions.empty():
-		return Vector2.ZERO
+		return movement_vector
 
-	var offset := Vector2.ZERO
 	for motion in motions:
-		offset += motion._update_movement(direction, delta)
+		movement_vector += motion._update_movement(direction, delta)
 
-	var movement_vector := offset
 	return movement_vector

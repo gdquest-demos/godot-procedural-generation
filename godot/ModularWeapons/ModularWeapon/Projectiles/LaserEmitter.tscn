@@ -39,3 +39,4 @@ visibility_rect = Rect2( -16.3859, -29.8711, 35.7076, 29.8554 )
 local_coords = false
 process_material = ExtResource( 3 )
 texture = ExtResource( 4 )
+[connection signal="collided" from="LaserTracer" to="." method="_on_projectile_collided"]

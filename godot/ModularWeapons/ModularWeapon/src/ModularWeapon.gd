@@ -6,7 +6,7 @@ extends Node2D
 #warning-ignore: unused_signal
 signal damaged(target, amount)
 
-export var emitter_configuration: PackedScene setget set_emitter_configuration
+export var emitter_configuration: PackedScene setget _set_emitter_configuration
 export var projectile_emitter: PackedScene setget _set_emitter
 export (Array, Resource) var projectile_motions := []
 export (Array, Resource) var projectile_impact_events := []
@@ -38,7 +38,7 @@ func add_impact_event(new_event: ProjectileEvent, allows_duplicates := false) ->
 
 # Setter for emitter configuration. Whenever changed, will remove existing
 # emitters and replace them with the new configuration.
-func set_emitter_configuration(value: PackedScene) -> void:
+func _set_emitter_configuration(value: PackedScene) -> void:
 	emitter_configuration = value
 	if not is_inside_tree():
 		yield(self, "ready")
@@ -50,7 +50,7 @@ func set_emitter_configuration(value: PackedScene) -> void:
 # Setter for emitter scene. When changed, will replace existing emitters.
 func _set_emitter(value: PackedScene) -> void:
 	projectile_emitter = value
-	set_emitter_configuration(emitter_configuration)
+	_set_emitter_configuration(emitter_configuration)
 
 
 # Removes existing projectile emitters.

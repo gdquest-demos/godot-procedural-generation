@@ -12,18 +12,16 @@ onready var timer := $Timer
 onready var casting_particles := $CastingParticles
 
 
-func _ready() -> void:
-	var _error := tracer.connect("collided", self, "_on_projectile_collided")
-
-
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_released("fire"):
 		firing = false
+		
 		var points: Array = laser_line.points
 		for i in range(points.size(), -1, -6):
-			laser_line.points = points.slice(0, i)
 			current_lifetime = projectile_lifetime * i / points.size()
+			
 			yield(get_tree(), "physics_frame")
+
 		laser_line.points = []
 		tracer.hide()
 		tracer.position = Vector2.ZERO
