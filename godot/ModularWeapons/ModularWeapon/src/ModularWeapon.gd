@@ -73,3 +73,5 @@ func _add_new_emitters() -> void:
 
 		new_emitter.weapons_system = self
 		add_child(new_emitter)
+
+	configuration.free()
