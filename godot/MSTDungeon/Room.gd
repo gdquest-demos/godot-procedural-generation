@@ -2,9 +2,12 @@ class_name MSTDungeonRoom
 extends RigidBody2D
 
 
+# Used to test that the body didn't move over consecutive frames.
 const CONSECUTIVE_MAX_EQUALITIES := 10
 
+# Radius of the circle in which we randomly place the room.
 export var radius := 600
+# Interval to generate a random width and height for the room, in tiles.
 export var room_size := Vector2(2, 9)
 
 var size := Vector2.ZERO
@@ -48,17 +51,20 @@ func _integrate_forces(state: Physics2DDirectBodyState) -> void:
 		call_deferred("emit_signal", "sleeping_state_changed")
 	_previous_xform = state.transform
 
-
+# Initializes the iterator's index.
 func _iter_init(_arg) -> bool:
 	_iter_index = 0
 	return _iter_is_running()
 
 
+# Increases the iterator's index by one.
 func _iter_next(_arg) -> bool:
 	_iter_index += 1
 	return _iter_is_running()
 
-
+# Returns the coordinates of a tile in the `_level` tilemap that our room overlaps.
+# Running over the entire loop yields all the tiles we should fill
+# to draw the complete room.
 func _iter_get(_arg) -> Vector2:
 	var width := size.x
 	var offset := MSTDungeonUtils.index_to_xy(width, _iter_index)
