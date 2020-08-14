@@ -13,8 +13,7 @@ onready var impact_particles := $ImpactParticles
 func trace_path(lifetime_actual: float) -> Array:
 	position = Vector2.ZERO
 
-	var current_transform := get_global_transform()
-	var positions := [current_transform.origin]
+	var positions := [global_position]
 
 	var current_time := 0.0
 
@@ -25,13 +24,11 @@ func trace_path(lifetime_actual: float) -> Array:
 
 		var planned_movement := _update_movement(TIME_STEP)
 		
-		if not collided:
+		if not collided and current_time < lifetime_actual:
 			var collision := move_and_collide(planned_movement)
 		
 			if not collision:
-				current_transform.origin = get_global_transform().origin
-				positions.append(current_transform.origin)
-				collided = false
+				positions.append(global_position)
 			else:
 				positions.append(collision.position)
 				emit_signal("collided", collision.collider, collision.position)
@@ -43,7 +40,7 @@ func trace_path(lifetime_actual: float) -> Array:
 	
 	if not collided:
 		_miss()
-		return positions.slice(0, int(lifetime_actual / current_time * positions.size()))
+		return positions.slice(0, int(lifetime_actual / lifetime * positions.size()))
 	else:
 		return positions
 

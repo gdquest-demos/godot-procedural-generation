@@ -3,7 +3,7 @@ extends ProjectileEmitter
 
 export var collisions_per_second := 4
 
-var firing := false
+var is_firing := false
 var current_lifetime := 0.0
 
 onready var tracer := $LaserTracer
@@ -14,11 +14,10 @@ onready var casting_particles := $CastingParticles
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_released("fire"):
-		firing = false
-		
+		is_firing = false
 		var points: Array = laser_line.points
-		for i in range(points.size(), -1, -6):
-			current_lifetime = projectile_lifetime * i / points.size()
+		for i in range(1, 10):
+			current_lifetime = float(projectile_lifetime / i)
 			
 			yield(get_tree(), "physics_frame")
 
@@ -39,7 +38,7 @@ func _physics_process(_delta: float) -> void:
 
 	laser_line.width = current_lifetime / projectile_lifetime * 10
 
-	if firing:
+	if is_firing:
 		var points: Array = tracer.trace_path(current_lifetime)
 		laser_line.points = points
 
@@ -48,8 +47,8 @@ func _physics_process(_delta: float) -> void:
 # vector up to date with the emitter's rotation.
 # @tags - virtual
 func _do_fire(_direction: Vector2, _motions: Array, _lifetime: float) -> void:
-	if not firing:
-		firing = true
+	if not is_firing:
+		is_firing = true
 		current_lifetime = 0.0
 		tracer.show()
 		casting_particles.emitting = true
@@ -60,9 +59,5 @@ func _do_fire(_direction: Vector2, _motions: Array, _lifetime: float) -> void:
 # @tags - virtual
 func _on_projectile_collided(target: Node, _hit_location: Vector2) -> void:
 	if timer.is_stopped():
-		weapons_system.emit_signal("damaged", target, damage_per_collision)
-		
-		for event in weapons_system.projectile_impact_events:
-			event.trigger(_hit_location, spawned_objects, weapons_system, false)
-
+		._on_projectile_collided(target, _hit_location)
 		timer.start(1.0 / float(collisions_per_second))
