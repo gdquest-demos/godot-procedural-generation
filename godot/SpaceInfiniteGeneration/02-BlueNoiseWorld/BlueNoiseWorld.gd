@@ -1,3 +1,6 @@
+# An extension of world generator that generates a world full of asteroids using
+# blue noise: noise that is padded out so that asteroids are not pushed up
+# against one another but are still in random positions inside their sectors.
 extends WorldGenerator
 
 export var Asteroid: PackedScene
@@ -21,7 +24,7 @@ func _ready() -> void:
 		sub_sector_margin * 2 + sub_sector_size, sub_sector_margin * 2 + sub_sector_size
 	)
 
-	_generate()
+	generate()
 	grid_drawer.setup(sector_size, sector_count)
 
 
@@ -35,10 +38,12 @@ func _physics_process(_delta: float) -> void:
 		sector_offset.x = int(sector_offset.x)
 		sector_offset.y = int(sector_offset.y)
 
-		_update_sector(sector_offset)
+		update_sector(sector_offset)
 		grid_drawer.move_grid_to(current_sector)
 
 
+# Generates a seed_x_y seed. Splits the sector into x sub-sectors with some
+# padding, and generates x asteroids, picking a new random sub-sector each time.
 func _generate_at(x_id: int, y_id: int) -> void:
 	if sectors.has(Vector2(x_id, y_id)):
 		return

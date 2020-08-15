@@ -36,6 +36,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _get_movement() -> Vector2:
 	return Vector2(
-		Input.get_action_strength("turn_right") - Input.get_action_strength("turn_left"),
-		Input.get_action_strength("thrust_forwards") - Input.get_action_strength("thrust_back")
+		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
+		Input.get_action_strength("forwards") - Input.get_action_strength("back")
 	)

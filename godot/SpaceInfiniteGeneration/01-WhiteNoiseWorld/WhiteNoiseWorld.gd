@@ -1,3 +1,5 @@
+# An extension of world generator that uses simple white noise with no padding
+# to generate a world full of asteroids.
 extends WorldGenerator
 
 export var Asteroid: PackedScene
@@ -8,7 +10,7 @@ onready var player := $Player
 
 
 func _ready() -> void:
-	_generate()
+	generate()
 	grid_drawer.setup(sector_size, sector_count)
 
 
@@ -22,10 +24,12 @@ func _physics_process(_delta: float) -> void:
 		sector_offset.x = int(sector_offset.x)
 		sector_offset.y = int(sector_offset.y)
 
-		_update_sector(sector_offset)
+		update_sector(sector_offset)
 		grid_drawer.move_grid_to(current_sector)
 
 
+# Generates a new seed in the form of seed_x_y and generates asteroids inside
+# of the sector's bounds with random position, rotation and scale.
 func _generate_at(x_id: int, y_id: int) -> void:
 	if sectors.has(Vector2(x_id, y_id)):
 		return
