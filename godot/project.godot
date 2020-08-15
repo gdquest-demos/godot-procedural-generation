@@ -29,6 +29,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://BasicDungeon/03.Bonus/Utils.gd"
 }, {
+"base": "WorldGenerator",
+"class": "BlueNoiseWorldGenerator",
+"language": "GDScript",
+"path": "res://SpaceInfiniteGeneration/02-BlueNoiseWorld/BlueNoiseWorld.gd"
+}, {
 "base": "ProjectileEvent",
 "class": "ExplosionEvent",
 "language": "GDScript",
@@ -109,6 +114,7 @@ _global_script_class_icons={
 "BasicDungeonRoom": "",
 "BasicDungeonRoomOrganic": "",
 "BasicDungeonUtils": "",
+"BlueNoiseWorldGenerator": "",
 "ExplosionEvent": "",
 "HomingMotion": "",
 "MSTDungeonRoom": "",

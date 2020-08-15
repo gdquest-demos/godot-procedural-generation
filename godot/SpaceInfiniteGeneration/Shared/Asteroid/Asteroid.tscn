@@ -2,13 +2,12 @@
 
 [ext_resource path="res://SpaceInfiniteGeneration/Shared/Asteroid/asteroid-round.svg" type="Texture" id=1]
 
-
-
-
 [sub_resource type="CircleShape2D" id=1]
 radius = 113.5
 
-[node name="Asteroid" type="StaticBody2D"]
+[node name="Asteroid" type="StaticBody2D" groups=[
+"asteroids",
+]]
 scale = Vector2( 0.5, 0.5 )
 
 [node name="Sprite" type="Sprite" parent="."]

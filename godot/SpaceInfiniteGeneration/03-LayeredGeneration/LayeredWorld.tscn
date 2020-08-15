@@ -1,16 +1,17 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://SpaceInfiniteGeneration/02-BlueNoiseWorld/BlueNoiseWorld.gd" type="Script" id=1]
+[ext_resource path="res://SpaceInfiniteGeneration/03-LayeredGeneration/LayeredWorld.gd" type="Script" id=1]
 [ext_resource path="res://SpaceInfiniteGeneration/Shared/player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://SpaceInfiniteGeneration/Shared/Asteroid/Asteroid.tscn" type="PackedScene" id=3]
 [ext_resource path="res://SpaceInfiniteGeneration/Shared/GridDrawer.gd" type="Script" id=4]
+[ext_resource path="res://SpaceInfiniteGeneration/Shared/Planet/Planet.tscn" type="PackedScene" id=5]
 
-[node name="BlueNoiseWorld" type="Node2D"]
+[node name="LayeredWorld" type="Node2D"]
 script = ExtResource( 1 )
-sector_count = 6
-start_seed = "blue_noise_generation"
+start_seed = "layered_generation"
 Asteroid = ExtResource( 3 )
 sub_sector_margin_proportion = 0.15
+Planet = ExtResource( 5 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = -1

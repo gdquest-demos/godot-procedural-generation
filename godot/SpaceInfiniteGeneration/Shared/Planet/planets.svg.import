@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/topdown-player.svg-0c5c44ce4a74751e54a17f51add1317c.stex"
+path="res://.import/planets.svg-c3f679ddd9771fee7d56d6e9da1fe7e2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://SpaceInfiniteGeneration/Shared/Player/topdown-player.svg"
-dest_files=[ "res://.import/topdown-player.svg-0c5c44ce4a74751e54a17f51add1317c.stex" ]
+source_file="res://SpaceInfiniteGeneration/Shared/Planet/planets.svg"
+dest_files=[ "res://.import/planets.svg-c3f679ddd9771fee7d56d6e9da1fe7e2.stex" ]
 
 [params]
 

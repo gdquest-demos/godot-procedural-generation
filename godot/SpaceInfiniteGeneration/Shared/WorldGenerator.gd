@@ -38,9 +38,16 @@ func generate() -> void:
 			_generate_at(x, y)
 
 
+func make_seed_for(_x_id: int, _y_id: int, custom_data := "") -> int:
+	var reset_seed := "%s_%s_%s" % [start_seed, _x_id, _y_id]
+	if not custom_data.empty():
+		reset_seed = "%s_%s" % [reset_seed, custom_data]
+	return reset_seed.hash()
+
+
 # Moves the `current_sector` variable by difference, generates sectors that
 # come into bounds and erases sectors that go out of bounds.
-func update_sector(difference: Vector2) -> void:
+func _update_sector(difference: Vector2) -> void:
 	_update_along_axis(AXIS_X, difference.x)
 	_update_along_axis(AXIS_Y, difference.y)
 

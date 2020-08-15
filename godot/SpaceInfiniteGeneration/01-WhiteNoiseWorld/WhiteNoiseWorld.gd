@@ -24,7 +24,7 @@ func _physics_process(_delta: float) -> void:
 		sector_offset.x = int(sector_offset.x)
 		sector_offset.y = int(sector_offset.y)
 
-		update_sector(sector_offset)
+		_update_sector(sector_offset)
 		grid_drawer.move_grid_to(current_sector)
 
 
@@ -34,8 +34,7 @@ func _generate_at(x_id: int, y_id: int) -> void:
 	if sectors.has(Vector2(x_id, y_id)):
 		return
 
-	var reset_seed := "%s_%s_%s" % [start_seed, x_id, y_id]
-	rng.seed = reset_seed.hash()
+	rng.seed = make_seed_for(x_id, y_id)
 
 	var bounds := [
 		Vector2(x_id * sector_size - half_sector_size, y_id * sector_size - half_sector_size),
