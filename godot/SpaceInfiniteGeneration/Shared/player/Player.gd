@@ -13,7 +13,6 @@ var angular_velocity := 0.0
 
 func _physics_process(delta: float) -> void:
 	velocity = velocity.clamped(speed_max)
-	velocity = (velocity.linear_interpolate(Vector2.ZERO, drag_factor))
 
 	angular_velocity = clamp(angular_velocity, -angular_speed_max, angular_speed_max)
 	angular_velocity = lerp(angular_velocity, 0, angular_drag_factor)
@@ -22,6 +21,9 @@ func _physics_process(delta: float) -> void:
 	rotation += angular_velocity * delta
 
 	var movement := _get_movement()
+	
+	if movement.length_squared() == 0:
+		velocity = (velocity.linear_interpolate(Vector2.ZERO, drag_factor))
 
 	var direction := Vector2.UP.rotated(rotation)
 
