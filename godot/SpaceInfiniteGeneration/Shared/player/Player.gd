@@ -22,18 +22,13 @@ func _physics_process(delta: float) -> void:
 
 	var movement := _get_movement()
 	
-	if movement.length_squared() == 0:
+	if is_equal_approx(movement.y, 0):
 		velocity = (velocity.linear_interpolate(Vector2.ZERO, drag_factor))
 
 	var direction := Vector2.UP.rotated(rotation)
 
 	velocity += movement.y * direction * acceleration * delta
 	angular_velocity += movement.x * angular_acceleration * delta
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and not event.pressed:
-		global_position = get_global_mouse_position()
 
 
 func _get_movement() -> Vector2:
