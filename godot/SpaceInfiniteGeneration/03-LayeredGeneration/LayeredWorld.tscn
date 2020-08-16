@@ -8,6 +8,7 @@
 script = ExtResource( 1 )
 sector_count = 16
 start_seed = "layered_generation"
+show_debug = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = -1

@@ -51,7 +51,7 @@ func _draw() -> void:
 	for key in sectors.keys():
 		if show_debug and sectors[key].size() > 0:
 			for point in sectors[key][0]:
-				draw_circle(point, 12, Color(0.5, 0.5, 0.5))
+				draw_circle(point, 12, Color(0.5, 0.5, 0.5, 0.5))
 		if sectors[key].size() > 1 and sectors[key][1].size() > 0:
 			draw_circle(sectors[key][1].position, 96 * (1.0 + sectors[key][1].size), Color.bisque)
 		if sectors[key].size() > 2:
@@ -287,5 +287,7 @@ func _update_along_axis(axis: int, difference: float) -> void:
 
 func _set_show_debug(value: bool) -> void:
 	show_debug = value
+	if not is_inside_tree():
+		yield(self, "ready")
 	grid_drawer.visible = show_debug
 	update()
