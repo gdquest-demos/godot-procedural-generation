@@ -26,6 +26,14 @@ This project demonstrates a technique for generating world map with biomes and r
 
 A basic generator to get started with procedural content generation. Creates rectangular rooms, rooms with organic shapes, and corridors connecting the rooms.
 
+### ModularWeapons
+
+Procedural or emergent gameplay system where you can stack movement modifiers and different emitters to generate weapons. A game that references techniques like this are Binding of Isaac or Enter the Gungeon.
+
+### SpaceInfiniteGeneration
+
+Three infinite world generations you can keep travelling through: one that generates a world of asteroids using pure, random white noise, one that uses blue noise (massaged white noise), and one more complete example that generates planets, moons, trade lanes and asteroid rings.
+
 ## How to use
 
 Clone the repository. Each demo is in a separate directory.
