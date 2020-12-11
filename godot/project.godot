@@ -44,6 +44,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ModularWeapons/ModularWeapon/src/ProjectileMotion/Motions/HomingMotion.gd"
 }, {
+"base": "WorldGenerator",
+"class": "LayeredWorld",
+"language": "GDScript",
+"path": "res://SpaceInfiniteGeneration/03-LayeredGeneration/LayeredWorld.gd"
+}, {
 "base": "RigidBody2D",
 "class": "MSTDungeonRoom",
 "language": "GDScript",
@@ -117,6 +122,7 @@ _global_script_class_icons={
 "BlueNoiseWorldGenerator": "",
 "ExplosionEvent": "",
 "HomingMotion": "",
+"LayeredWorld": "",
 "MSTDungeonRoom": "",
 "MSTDungeonUtils": "",
 "ModularWeapon": "",

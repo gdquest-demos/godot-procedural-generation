@@ -38,6 +38,8 @@ func generate() -> void:
 			_generate_at(x, y)
 
 
+# Creates an ascii seed with the format "seed_x_y" and returns it as an integer
+# hash suitable for `RandomNumberGenerator`'s `seed` property
 func make_seed_for(_x_id: int, _y_id: int, custom_data := "") -> int:
 	var reset_seed := "%s_%s_%s" % [start_seed, _x_id, _y_id]
 	if not custom_data.empty():
