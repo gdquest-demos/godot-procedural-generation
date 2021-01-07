@@ -1,6 +1,6 @@
 # An extension of world generator that generates a world full of asteroids using
 # blue noise: noise that is padded out so that asteroids are not pushed up
-# against one another but are still in random positions inside their sectors.
+# against one another but are still in random positions inside their _sectors.
 class_name BlueNoiseWorldGenerator
 extends WorldGenerator
 
@@ -34,21 +34,21 @@ func _ready() -> void:
 	)
 
 	generate()
-	grid_drawer.setup(sector_size, sector_count)
+	grid_drawer.setup(sector_size, sector_axis_count)
 
 
 func _physics_process(_delta: float) -> void:
 	var sector_offset := Vector2.ZERO
 
-	var sector_location := current_sector * sector_size
+	var sector_location := _current_sector * sector_size
 
-	if player.global_position.distance_squared_to(sector_location) > sector_size_square:
+	if player.global_position.distance_squared_to(sector_location) > _total_sector_count:
 		sector_offset = (player.global_position - sector_location) / sector_size
 		sector_offset.x = int(sector_offset.x)
 		sector_offset.y = int(sector_offset.y)
 
-		_update_sector(sector_offset)
-		grid_drawer.move_grid_to(current_sector)
+		_update_sectors(sector_offset)
+		grid_drawer.move_grid_to(_current_sector)
 
 
 ## Generates a seed_x_y seed. Splits the sector into x sub-sectors with some
@@ -56,17 +56,17 @@ func _physics_process(_delta: float) -> void:
 ## This results in a 'filtered' generation that prevents asteroids from spawning
 ## too close to the edges or each other.
 func _generate_at(x_id: int, y_id: int) -> void:
-	if sectors.has(Vector2(x_id, y_id)):
+	if _sectors.has(Vector2(x_id, y_id)):
 		return
 
 	# Generate a seed for the current sector and reset the number series
-	rng.seed = make_seed_for(x_id, y_id)
+	_rng.seed = make_seed_for(x_id, y_id)
 
 	# Find the top left of the entire sector in world coordinates, and move it
 	# right and down by the sector's padding.
 	var top_left := Vector2(
-		x_id * sector_size - half_sector_size + sector_margin,
-		y_id * sector_size - half_sector_size + sector_margin
+		x_id * sector_size - _half_sector_size + sector_margin,
+		y_id * sector_size - _half_sector_size + sector_margin
 	)
 
 	var sector_data := []
@@ -75,16 +75,16 @@ func _generate_at(x_id: int, y_id: int) -> void:
 	for _i in range(asteroid_density):
 		# Generate an index from [0..pow(asteroid_density^2)] to know which
 		# sub-sector in the x by x grid will hold the next asteroid.
-		var x := rng.randi_range(0, asteroid_density - 1)
-		var y := rng.randi_range(0, asteroid_density - 1)
+		var x := _rng.randi_range(0, asteroid_density - 1)
+		var y := _rng.randi_range(0, asteroid_density - 1)
 		var index := y * asteroid_density + x
 
 		# We keep track of each rolled indices to make sure that no asteroid
 		# has already been generated inside of any given sub-sector, re-rolling
 		# until we find an empty one.
 		while index in rolled_indices:
-			x = rng.randi_range(0, asteroid_density - 1)
-			y = rng.randi_range(0, asteroid_density - 1)
+			x = _rng.randi_range(0, asteroid_density - 1)
+			y = _rng.randi_range(0, asteroid_density - 1)
 			index = y * asteroid_density + x
 
 		rolled_indices.append(index)
@@ -101,14 +101,14 @@ func _generate_at(x_id: int, y_id: int) -> void:
 
 		# Generate a new asteroid inside of that sub-sector boundary
 		var new_position := Vector2(
-			rng.randf_range(minimum.x, maximum.x), rng.randf_range(minimum.y, maximum.y)
+			_rng.randf_range(minimum.x, maximum.x), _rng.randf_range(minimum.y, maximum.y)
 		)
 
 		var asteroid := Asteroid.instance()
 		add_child(asteroid)
 		asteroid.position = new_position
-		asteroid.rotation = rng.randf_range(-PI, PI)
-		asteroid.scale *= rng.randf_range(0.2, 1.0)
+		asteroid.rotation = _rng.randf_range(-PI, PI)
+		asteroid.scale *= _rng.randf_range(0.2, 1.0)
 		sector_data.append(asteroid)
 
-	sectors[Vector2(x_id, y_id)] = sector_data
+	_sectors[Vector2(x_id, y_id)] = sector_data

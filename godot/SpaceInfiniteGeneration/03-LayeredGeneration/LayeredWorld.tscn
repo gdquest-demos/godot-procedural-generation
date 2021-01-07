@@ -7,7 +7,7 @@
 
 [node name="LayeredWorld" type="Node2D"]
 script = ExtResource( 1 )
-sector_count = 16
+sector_axis_count = 16
 start_seed = "layered_generation"
 show_debug = true
 

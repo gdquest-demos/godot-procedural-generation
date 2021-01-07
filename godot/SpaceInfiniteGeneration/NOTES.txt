@@ -8,13 +8,13 @@ Just stuff to keep in mind when it comes time to writing tutorials, as I encount
 
 ```glsl
 var base_seed := "hjkl123456"
-var rng := RandomNumberGenerator.new()
+var _rng := RandomNumberGenerator.new()
 
 func _generate_at(grid_x: int, grid_y: int) -> void:
-	rng.seed = ("%s_%s_%s" % [base_seed, grid_x, grid_y]).hash()
-	rng.randf()
-	rng.randf()
-	rng.randf()
+	_rng.seed = ("%s_%s_%s" % [base_seed, grid_x, grid_y]).hash()
+	_rng.randf()
+	_rng.randf()
+	_rng.randf()
 ```
 
 This way, whenever I.E. `_generate_at(5, 8)` is called, the result will always be the same.

@@ -5,11 +5,8 @@
 [ext_resource path="res://SpaceInfiniteGeneration/Shared/Asteroid.tscn" type="PackedScene" id=3]
 [ext_resource path="res://SpaceInfiniteGeneration/Shared/GridDrawer.gd" type="Script" id=4]
 
-
-
 [node name="BlueNoiseWorld" type="Node2D"]
 script = ExtResource( 1 )
-sector_count = 6
 start_seed = "blue_noise_generation"
 Asteroid = ExtResource( 3 )
 sub_sector_margin_proportion = 0.15

@@ -7,7 +7,6 @@
 
 [node name="WhiteNoiseWorld" type="Node2D"]
 script = ExtResource( 4 )
-sector_count = 6
 start_seed = "white_noise_generation"
 Asteroid = ExtResource( 1 )
 

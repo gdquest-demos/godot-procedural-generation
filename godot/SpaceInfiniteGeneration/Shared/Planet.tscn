@@ -12,8 +12,8 @@ const REGION_RECTS := [
 ]
 
 
-func setup(rng: RandomNumberGenerator) -> void:
-	$Sprite.region_rect = REGION_RECTS[rng.randi_range(0, 2)]
+func setup(_rng: RandomNumberGenerator) -> void:
+	$Sprite.region_rect = REGION_RECTS[_rng.randi_range(0, 2)]
 "
 
 [node name="Planet" type="Node2D" groups=[

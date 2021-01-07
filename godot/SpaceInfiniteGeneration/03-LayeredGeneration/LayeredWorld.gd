@@ -40,7 +40,7 @@ onready var sector_margin := sector_size * sector_margin_proportion
 
 func _ready() -> void:
 	generate()
-	grid_drawer.setup(sector_size, sector_count)
+	grid_drawer.setup(sector_size, sector_axis_count)
 	grid_drawer.visible = show_debug
 
 
@@ -52,8 +52,8 @@ func _ready() -> void:
 ## all contained within the player's view (normally.)
 func generate() -> void:
 	for layer in range(0, 5):
-		for x in range(current_sector.x - half_sector_count + layer, current_sector.x + half_sector_count - layer):
-			for y in range(current_sector.y - half_sector_count + layer, current_sector.y + half_sector_count - layer):
+		for x in range(_current_sector.x - _half_sector_count + layer, _current_sector.x + _half_sector_count - layer):
+			for y in range(_current_sector.y - _half_sector_count + layer, _current_sector.y + _half_sector_count - layer):
 				match layer:
 					0:
 						_generate_seeds_at(x, y)
@@ -70,26 +70,26 @@ func generate() -> void:
 
 # Draws the generated data
 func _draw() -> void:
-	for key in sectors.keys():
-		if show_debug and sectors[key].size() > 0:
-			for point in sectors[key][0]:
+	for key in _sectors.keys():
+		if show_debug and _sectors[key].size() > 0:
+			for point in _sectors[key][0]:
 				draw_circle(point, 12, Color(0.5, 0.5, 0.5, 0.5))
 
-		if sectors[key].size() > 1 and sectors[key][1].size() > 0:
-			draw_circle(sectors[key][1].position, 96 * (1.0 + sectors[key][1].size), Color.bisque)
+		if _sectors[key].size() > 1 and _sectors[key][1].size() > 0:
+			draw_circle(_sectors[key][1].position, 96 * (1.0 + _sectors[key][1].size), Color.bisque)
 
-		if sectors[key].size() > 2:
-			for moon in sectors[key][2]:
+		if _sectors[key].size() > 2:
+			for moon in _sectors[key][2]:
 				draw_circle(moon.position, 32 * (1.0 + moon.size), Color.aquamarine)
 
-		if sectors[key].size() > 3:
-			for path in sectors[key][3]:
+		if _sectors[key].size() > 3:
+			for path in _sectors[key][3]:
 				var start: Vector2 = path.source
 				var end: Vector2 = path.destination
 				draw_line(start, end, Color.cornflower, 6.0)
 
-		if sectors[key].size() > 4:
-			for asteroid in sectors[key][4]:
+		if _sectors[key].size() > 4:
+			for asteroid in _sectors[key][4]:
 				draw_circle(asteroid.position, 16 * (1.0 + asteroid.size), Color.orangered)
 
 
@@ -97,21 +97,21 @@ func _draw() -> void:
 func _physics_process(_delta: float) -> void:
 	var sector_offset := Vector2.ZERO
 
-	var sector_location := current_sector * sector_size
+	var sector_location := _current_sector * sector_size
 
-	if player.global_position.distance_squared_to(sector_location) > sector_size_square:
+	if player.global_position.distance_squared_to(sector_location) > _total_sector_count:
 		sector_offset = (player.global_position - sector_location) / sector_size
 		sector_offset.x = int(sector_offset.x)
 		sector_offset.y = int(sector_offset.y)
 
-		_update_sector(sector_offset)
-		grid_drawer.move_grid_to(current_sector)
+		_update_sectors(sector_offset)
+		grid_drawer.move_grid_to(_current_sector)
 
 
-# Erases old sectors by difference, and generates new ones. Since our generation
+# Erases old _sectors by difference, and generates new ones. Since our generation
 # algorithm is more complex than the default generation, we override _update_along_axis
 # to only delete and then call generate again to fill in any created gaps in the layers.
-func _update_sector(difference: Vector2) -> void:
+func _update_sectors(difference: Vector2) -> void:
 	_update_along_axis(AXIS_X, difference.x)
 	_update_along_axis(AXIS_Y, difference.y)
 	generate()
@@ -122,21 +122,21 @@ func _update_sector(difference: Vector2) -> void:
 func _generate_seeds_at(x: int, y: int) -> void:
 	var key := Vector2(x,y)
 	
-	if sectors.has(key) and sectors[key].size() >= 1:
+	if _sectors.has(key) and _sectors[key].size() >= 1:
 		return
 	
 	# Create a seed for the current sector's triangular seeds
-	rng.seed = make_seed_for(x, y, "seeds")
+	_rng.seed = make_seed_for(x, y, "seeds")
 	
 	# Find the boundaries of the sector +/- some padding
 	var top_left := Vector2(
-		x * sector_size - half_sector_size + sector_margin,
-		y * sector_size - half_sector_size + sector_margin
+		x * sector_size - _half_sector_size + sector_margin,
+		y * sector_size - _half_sector_size + sector_margin
 	)
 	
 	var bottom_right := Vector2(
-		x * sector_size + half_sector_size - sector_margin,
-		y * sector_size + half_sector_size - sector_margin
+		x * sector_size + _half_sector_size - sector_margin,
+		y * sector_size + _half_sector_size - sector_margin
 	)
 	
 	# Generates 3 points to create a triangle using white noise.
@@ -145,16 +145,16 @@ func _generate_seeds_at(x: int, y: int) -> void:
 	var seeds := []
 	for _i in range(3):
 		var seed_position := Vector2(
-			rng.randf_range(top_left.x, bottom_right.x),
-			rng.randf_range(top_left.y, bottom_right.y)
+			_rng.randf_range(top_left.x, bottom_right.x),
+			_rng.randf_range(top_left.y, bottom_right.y)
 		)
 		
 		seeds.append(seed_position)
 	
-	if sectors.has(key):
-		sectors[0] = seeds
+	if _sectors.has(key):
+		_sectors[0] = seeds
 	else:
-		sectors[key] = [seeds]
+		_sectors[key] = [seeds]
 
 
 # Checks the sector's seeds. If they are close enough to each other (their area
@@ -163,11 +163,11 @@ func _generate_seeds_at(x: int, y: int) -> void:
 func _generate_planets_at(x: int, y: int) -> void:
 	var key := Vector2(x,y)
 	
-	if sectors.has(key) and sectors[key].size() >= 2:
+	if _sectors.has(key) and _sectors[key].size() >= 2:
 		return
 	
 	# Calculate the area created by the 3 seeded points.
-	var sector_data: Array = sectors[key][0]
+	var sector_data: Array = _sectors[key][0]
 	var area: float = abs(
 		sector_data[0].x * (sector_data[1].y - sector_data[2].y) +
 		sector_data[1].x * (sector_data[2].y - sector_data[0].y) +
@@ -177,7 +177,7 @@ func _generate_planets_at(x: int, y: int) -> void:
 	# If the area is less than the generation threshold, create a planet appropriate
 	# to the seeds' area.
 	if area < planet_generation_threshold:
-		sectors[key].append(
+		_sectors[key].append(
 			{
 				"position":(sector_data[0] + sector_data[1] + sector_data[2]) / 3.0,
 				"size": 1.0 - area/(planet_generation_threshold/5.0)
@@ -185,7 +185,7 @@ func _generate_planets_at(x: int, y: int) -> void:
 		)
 	else:
 	# If not, place an empty dictionary. There can be nothing in this sector.
-		sectors[key].append({})
+		_sectors[key].append({})
 
 
 # If there is a planet inside of a given sector, a loop begins and there is a
@@ -193,18 +193,18 @@ func _generate_planets_at(x: int, y: int) -> void:
 func _generate_moons_at(x: int, y: int) -> void:
 	var key := Vector2(x,y)
 	
-	if sectors.has(key) and sectors[key].size() >= 3:
+	if _sectors.has(key) and _sectors[key].size() >= 3:
 		return
 	
 	# Get the sector's planet layer and check if there is a planet. If there is not,
 	# cancel and move on.
-	sectors[key].append([])
-	var sector_data: Dictionary = sectors[key][1]
+	_sectors[key].append([])
+	var sector_data: Dictionary = _sectors[key][1]
 	if sector_data.size() == 0:
 		return
 	
 	# Generate a seed for moons in the sector
-	rng.seed = make_seed_for(x, y, "moons")
+	_rng.seed = make_seed_for(x, y, "moons")
 	
 	# Get the planet's position and size to determine moon orbit and location
 	var planet_position: Vector2 = sector_data.position
@@ -213,26 +213,26 @@ func _generate_moons_at(x: int, y: int) -> void:
 	var overflow_index := 0
 	
 	# If we roll below the moon chance, generate a moon in an orbit's distance of the planet
-	while rng.randf() < moon_generation_chance or overflow_index == max_moon_count:
+	while _rng.randf() < moon_generation_chance or overflow_index == max_moon_count:
 		overflow_index += 1
-		sectors[key][2].append({
-			"position": planet_position + Vector2.UP.rotated(rng.randf_range(-PI, PI)) * planet_size * 96 * 3.0,
+		_sectors[key][2].append({
+			"position": planet_position + Vector2.UP.rotated(_rng.randf_range(-PI, PI)) * planet_size * 96 * 3.0,
 			"size": planet_size / 10.0 
 		})
 
 
-# If this sector has a planet, checks the 8 sectors around it for neighbors.
-# If there are planets in those sectors, creates a lane between the two of them.
+# If this sector has a planet, checks the 8 _sectors around it for neighbors.
+# If there are planets in those _sectors, creates a lane between the two of them.
 func _generate_travel_lanes_at(x: int, y: int) -> void:
 	var key := Vector2(x,y)
 	
-	if sectors.has(key) and sectors[key].size() >= 4:
+	if _sectors.has(key) and _sectors[key].size() >= 4:
 		return
 	
-	sectors[key].append([])
+	_sectors[key].append([])
 	
 	# If there is no planet, don't generate anything.
-	var sector_data: Dictionary = sectors[key][1]
+	var sector_data: Dictionary = _sectors[key][1]
 	if sector_data.size() == 0:
 		return
 	
@@ -243,9 +243,9 @@ func _generate_travel_lanes_at(x: int, y: int) -> void:
 	for neighbor in NEIGHBORS:
 		var neighbor_key: Vector2 = key + neighbor
 		
-		if sectors[neighbor_key][1].size() > 0:
-			var neighbor_position: Vector2 = sectors[neighbor_key][1].position
-			sectors[key][3].append({
+		if _sectors[neighbor_key][1].size() > 0:
+			var neighbor_position: Vector2 = _sectors[neighbor_key][1].position
+			_sectors[key][3].append({
 				"source": planet_position,
 				"destination": neighbor_position
 			})
@@ -257,60 +257,60 @@ func _generate_travel_lanes_at(x: int, y: int) -> void:
 func _generate_asteroids_at(x: int, y: int) -> void:
 	var key := Vector2(x,y)
 	
-	if sectors.has(key) and sectors[key].size() >= 5:
+	if _sectors.has(key) and _sectors[key].size() >= 5:
 		return
 	
-	sectors[key].append([])
+	_sectors[key].append([])
 	
 	# Check for planet, moons and travel lanes. If there is a planet and neither
 	# moon or travel lane, begin generating an asteroid belt in an orbit.
-	var planet_data: Dictionary = sectors[key][1]
+	var planet_data: Dictionary = _sectors[key][1]
 	if planet_data.size() == 0:
 		return
 	
-	var moon_data: Array = sectors[key][2]
+	var moon_data: Array = _sectors[key][2]
 	if moon_data.size() > 0:
 		return
 	
-	var travel_data: Array = sectors[key][3]
+	var travel_data: Array = _sectors[key][3]
 	if travel_data.size() > 0:
 		return
 	
-	rng.seed = make_seed_for(x, y, "asteroids")
+	_rng.seed = make_seed_for(x, y, "asteroids")
 	
 	var planet_position: Vector2 = planet_data.position
 	var planet_size: float = (1.0 + planet_data.size)
 	
 	# Keep rolling the die until it comes up greater than 75%, creating a new
 	# asteroid within an orbit's range of the planet
-	while rng.randf() < 0.75:
-		sectors[key][4].append(
-			{"position": planet_position + Vector2.UP.rotated(rng.randf_range(-PI, PI)) * planet_size * 96 * rng.randf_range(3.0, 4.0),
+	while _rng.randf() < 0.75:
+		_sectors[key][4].append(
+			{"position": planet_position + Vector2.UP.rotated(_rng.randf_range(-PI, PI)) * planet_size * 96 * _rng.randf_range(3.0, 4.0),
 			"size": planet_size / 10.0 
 		})
 
 
-# Erases old sectors. New ones are generated by the subsequent call to generate()
+# Erases old _sectors. New ones are generated by the subsequent call to generate()
 func _update_along_axis(axis: int, difference: float) -> void:
 	if difference == 0 or (axis != AXIS_X and axis != AXIS_Y):
 		return
 
 	# Find the current sector's row/column
-	var axis_current := current_sector.x if axis == AXIS_X else current_sector.y
+	var axis_current := _current_sector.x if axis == AXIS_X else _current_sector.y
 	
 	# Find the edges of the row/column, perpendicular to the axis we're updating
 	var other_axis_min := (
-		(current_sector.y if axis == AXIS_X else current_sector.x)
-		- half_sector_count
+		(_current_sector.y if axis == AXIS_X else _current_sector.x)
+		- _half_sector_count
 	)
 	var other_axis_max := (
-		(current_sector.y if axis == AXIS_X else current_sector.x)
-		+ half_sector_count
+		(_current_sector.y if axis == AXIS_X else _current_sector.x)
+		+ _half_sector_count
 	)
 	
 	# Because 0 is technically negative when comparing signs, we end up with
 	# 1 more sector when moving in the negative direction than the positive one.
-	# So when difference is positive, we end up in situations where sectors
+	# So when difference is positive, we end up in situations where _sectors
 	# aren't erased or added on time. This modifier is there to catch those
 	# cases. It's 1 when positive, 0 otherwise, so we have an even count
 	# on both positive and negative.
@@ -319,7 +319,7 @@ func _update_along_axis(axis: int, difference: float) -> void:
 	# For each row/column between where we were and where we are now
 	for sector_index in range(1, abs(difference) + 1):
 		var axis_key := int(
-			axis_current + (half_sector_count - axis_modifier) * -sign(difference)
+			axis_current + (_half_sector_count - axis_modifier) * -sign(difference)
 		)
 		
 		# Erase the entire row/column.
@@ -328,19 +328,19 @@ func _update_along_axis(axis: int, difference: float) -> void:
 				axis_key if axis == AXIS_X else other, other if axis == AXIS_X else axis_key
 			)
 
-			if sectors.has(key):
-				var sector_data: Array = sectors[key]
+			if _sectors.has(key):
+				var sector_data: Array = _sectors[key]
 				for array in sector_data:
 					for data in array:
 						if data is Object and data.has_method("queue_free"):
 							data.queue_free()
-				var _found := sectors.erase(key)
+				var _found := _sectors.erase(key)
 
 	# Update the current sector for later reference
 	if axis == AXIS_X:
-		current_sector.x += difference
+		_current_sector.x += difference
 	else:
-		current_sector.y += difference
+		_current_sector.y += difference
 
 
 func _set_show_debug(value: bool) -> void:

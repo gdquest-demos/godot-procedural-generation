@@ -15,20 +15,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		var click_position: Vector2 = get_global_mouse_position()
 		
 		var sector_key := Vector2(
-			int((click_position.x - half_sector_size) / sector_size),
-			int((click_position.y - half_sector_size) / sector_size)
+			int((click_position.x - _half_sector_size) / sector_size),
+			int((click_position.y - _half_sector_size) / sector_size)
 		)
 
 		# If there is not already a planet in the sector, left mouse button adds it
 		# to the mouse click position
 		if event.button_index == BUTTON_LEFT:
-			if not sectors.has(sector_key):
+			if not _sectors.has(sector_key):
 				return
 			
-			if not sectors[sector_key].size() > 2:
+			if not _sectors[sector_key].size() > 2:
 				return
 			
-			if not sectors[sector_key][1].size() == 0:
+			if not _sectors[sector_key][1].size() == 0:
 				return
 			
 			if not modifications.has(sector_key):
@@ -38,23 +38,23 @@ func _unhandled_input(event: InputEvent) -> void:
 			modifications[sector_key].position = click_position
 			modifications[sector_key].remove_generated_planet = false
 			
-			sectors = {}
+			_sectors = {}
 			generate()
 
 		# If there is a planet in the sector and it corresponds to the location
 		# clicked by the mouse, erase it from the world.
 		elif event.button_index == BUTTON_RIGHT:
-			if not sectors.has(sector_key):
+			if not _sectors.has(sector_key):
 				return
 			
-			if not sectors[sector_key].size() > 2:
+			if not _sectors[sector_key].size() > 2:
 				return
 			
-			if not sectors[sector_key][1].size() > 0:
+			if not _sectors[sector_key][1].size() > 0:
 				return
 			
-			var planet_position: Vector2 = sectors[sector_key][1].position
-			var planet_size: float = abs(sectors[sector_key][1].size)
+			var planet_position: Vector2 = _sectors[sector_key][1].position
+			var planet_size: float = abs(_sectors[sector_key][1].size)
 			
 			if click_position.distance_to(planet_position) < (96 * (1.0 + planet_size)):
 				if not modifications.has(sector_key):
@@ -64,7 +64,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				modifications[sector_key].force_planet = false
 				
 			
-			sectors = {}
+			_sectors = {}
 			generate()
 
 
@@ -75,10 +75,10 @@ func _unhandled_input(event: InputEvent) -> void:
 func _generate_planets_at(x: int, y: int) -> void:
 	var key := Vector2(x,y)
 
-	if sectors.has(key) and sectors[key].size() >= 2:
+	if _sectors.has(key) and _sectors[key].size() >= 2:
 		return
 
-	var sector_data: Array = sectors[key][0]
+	var sector_data: Array = _sectors[key][0]
 	var area: float = abs(
 		sector_data[0].x * (sector_data[1].y - sector_data[2].y) +
 		sector_data[1].x * (sector_data[2].y - sector_data[0].y) +
@@ -98,18 +98,18 @@ func _generate_planets_at(x: int, y: int) -> void:
 	)
 
 	if not should_remove_planet and should_force_planet:
-		sectors[key].append(
+		_sectors[key].append(
 			{
 				"position":modifications[key].position,
 				"size": 1.0
 			}
 		)
 	elif not should_remove_planet and area < planet_generation_threshold:
-		sectors[key].append(
+		_sectors[key].append(
 			{
 				"position":(sector_data[0] + sector_data[1] + sector_data[2]) / 3.0,
 				"size": 1.0 - area/(planet_generation_threshold/5.0)
 			}
 		)
 	else:
-		sectors[key].append({})
+		_sectors[key].append({})
