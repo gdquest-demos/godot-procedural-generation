@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://SpaceInfiniteGeneration/Shared/player/Player.gd" type="Script" id=1]
-[ext_resource path="res://SpaceInfiniteGeneration/Shared/player/topdown-player.svg" type="Texture" id=2]
+[ext_resource path="res://SpaceInfiniteGeneration/Shared/Player/Player.gd" type="Script" id=1]
+[ext_resource path="res://SpaceInfiniteGeneration/Shared/Player/topdown-player.svg" type="Texture" id=2]
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 1 )

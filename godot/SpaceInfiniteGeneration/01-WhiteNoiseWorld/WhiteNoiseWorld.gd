@@ -23,8 +23,7 @@ func _physics_process(_delta: float) -> void:
 	# the previous column/row and add a new column/row
 	if player.global_position.distance_squared_to(sector_location) > sector_size_square:
 		sector_offset = (player.global_position - sector_location) / sector_size
-		sector_offset.x = int(sector_offset.x)
-		sector_offset.y = int(sector_offset.y)
+		sector_offset = sector_offset.floor()
 
 		_update_sector(sector_offset)
 		grid_drawer.move_grid_to(current_sector)

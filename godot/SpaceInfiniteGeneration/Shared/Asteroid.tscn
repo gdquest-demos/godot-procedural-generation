@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://SpaceInfiniteGeneration/Shared/Asteroid/asteroid-round.svg" type="Texture" id=1]
+[ext_resource path="res://SpaceInfiniteGeneration/Shared/asteroid-round.svg" type="Texture" id=1]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 113.5

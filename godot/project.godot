@@ -108,11 +108,6 @@ _global_script_classes=[ {
 "class": "WorldMapUtils",
 "language": "GDScript",
 "path": "res://WorldMap/Utils.gd"
-}, {
-"base": "Reference",
-"class": "XXHash",
-"language": "GDScript",
-"path": "res://SpaceInfiniteGeneration/Shared/XXHash.gd"
 } ]
 _global_script_class_icons={
 "BasicDungeonGenerator": "",
@@ -134,8 +129,7 @@ _global_script_class_icons={
 "StraightMotion": "",
 "WorldGenerator": "",
 "WorldMapRiverGenerator": "",
-"WorldMapUtils": "",
-"XXHash": ""
+"WorldMapUtils": ""
 }
 
 [application]

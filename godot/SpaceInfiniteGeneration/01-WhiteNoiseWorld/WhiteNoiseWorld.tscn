@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://SpaceInfiniteGeneration/Shared/Asteroid/Asteroid.tscn" type="PackedScene" id=1]
-[ext_resource path="res://SpaceInfiniteGeneration/Shared/player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://SpaceInfiniteGeneration/Shared/Asteroid.tscn" type="PackedScene" id=1]
+[ext_resource path="res://SpaceInfiniteGeneration/Shared/Player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://SpaceInfiniteGeneration/Shared/GridDrawer.gd" type="Script" id=3]
 [ext_resource path="res://SpaceInfiniteGeneration/01-WhiteNoiseWorld/WhiteNoiseWorld.gd" type="Script" id=4]
 

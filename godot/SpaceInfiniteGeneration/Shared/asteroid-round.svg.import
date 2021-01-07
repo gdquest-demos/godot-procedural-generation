@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/asteroid-round.svg-73f0f90a60242f9ea1f18c32bd63b2ad.stex"
+path="res://.import/asteroid-round.svg-fe5c09dd3939d3fe8a61ba2d8f136fa6.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://SpaceInfiniteGeneration/Shared/Asteroid/asteroid-round.svg"
-dest_files=[ "res://.import/asteroid-round.svg-73f0f90a60242f9ea1f18c32bd63b2ad.stex" ]
+source_file="res://SpaceInfiniteGeneration/Shared/asteroid-round.svg"
+dest_files=[ "res://.import/asteroid-round.svg-fe5c09dd3939d3fe8a61ba2d8f136fa6.stex" ]
 
 [params]
 
