@@ -3,7 +3,7 @@
 ## Splits the world into `_sectors` of a fixed size in pixels. You can think of
 ## the world as a grid of square _sectors.
 ## Exposes functions for extended classes to use, though the central part is the
-## `_generate_at()` virtual method. This is where you should generate the
+## `_generate_sector()` virtual method. This is where you should generate the
 ## content of individual _sectors.
 ##
 ## @tags - abstract
@@ -33,11 +33,11 @@ onready var _total_sector_count := sector_size * sector_size
 onready var _half_sector_count := int(sector_axis_count / 2.0)
 
 
-## Calls _generate_at for each currently exposed _sectors around the player.
+## Calls _generate_sector for each currently exposed _sectors around the player.
 func generate() -> void:
 	for x in range(-_half_sector_count, _half_sector_count):
 		for y in range(-_half_sector_count, _half_sector_count):
-			_generate_at(x, y)
+			_generate_sector(x, y)
 
 
 ## Creates an ascii seed with the format "seed_x_y" and returns it as an integer
@@ -59,7 +59,7 @@ func _update_sectors(difference: Vector2) -> void:
 ## Virtual function that governs how any given sector should be generated based
 ## on its position in the world array.
 ## @tags - virtual
-func _generate_at(_x_id: int, _y_id: int) -> void:
+func _generate_sector(_x_id: int, _y_id: int) -> void:
 	pass
 
 
@@ -99,7 +99,7 @@ func _update_along_axis(axis: int, difference: float) -> void:
 		for other_axis_coordinate in range(other_axis_min, other_axis_max):
 			var x_key := axis_key if axis == AXIS_X else other_axis_coordinate
 			var y_key := other_axis_coordinate if axis == AXIS_X else axis_key
-			_generate_at(x_key, y_key)
+			_generate_sector(x_key, y_key)
 
 		# Reduce the key by the sector count so we are referencing the 
 		# opposite end of the grid.

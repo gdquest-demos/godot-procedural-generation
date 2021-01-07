@@ -31,7 +31,7 @@ func _physics_process(_delta: float) -> void:
 
 # Generates a new seed in the form of seed_x_y and generates asteroids inside
 # of the sector's bounds with random position, rotation and scale.
-func _generate_at(x_id: int, y_id: int) -> void:
+func _generate_sector(x_id: int, y_id: int) -> void:
 	# If the sector has been generated already, don't generate it again
 	if _sectors.has(Vector2(x_id, y_id)):
 		return

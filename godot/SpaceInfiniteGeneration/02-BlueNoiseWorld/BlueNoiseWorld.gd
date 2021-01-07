@@ -55,7 +55,7 @@ func _physics_process(_delta: float) -> void:
 ## padding, and generates x asteroids, picking a new random sub-sector each time.
 ## This results in a 'filtered' generation that prevents asteroids from spawning
 ## too close to the edges or each other.
-func _generate_at(x_id: int, y_id: int) -> void:
+func _generate_sector(x_id: int, y_id: int) -> void:
 	if _sectors.has(Vector2(x_id, y_id)):
 		return
 
