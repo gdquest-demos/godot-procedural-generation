@@ -92,7 +92,7 @@ func _generate_sector(x_id: int, y_id: int) -> void:
 
 func _generate_random_position(sub_sector_coordinates: Vector2, sector_top_left: Vector2) -> Vector2:
 	# Find the top left and bottom right of the sub-sector +/- its padding
-	var minimum := sector_top_left + Vector2(_sub_sector_size, _sub_sector_size) * sub_sector_coordinates
+	var minimum := sector_top_left + Vector2(_sub_sector_base_size, _sub_sector_base_size) * sub_sector_coordinates + Vector2(_sub_sector_margin, _sub_sector_margin)
 	var maximum := minimum + Vector2(_sub_sector_size, _sub_sector_size)
 	return Vector2(
 			_rng.randf_range(minimum.x, maximum.x), _rng.randf_range(minimum.y, maximum.y)
