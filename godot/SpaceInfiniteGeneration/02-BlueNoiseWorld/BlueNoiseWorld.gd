@@ -17,22 +17,16 @@ export var sector_margin_proportion := 0.1
 ## The percentage of any given subsector to pad their margins by.
 export var sub_sector_margin_proportion := 0.1
 
-var margined_sub_sector_size: Vector2
-
 onready var _sector_margin := sector_size * sector_margin_proportion
-onready var _sub_sector_size := (sector_size - _sector_margin * 2) / asteroid_density
-onready var _sub_sector_margin := _sub_sector_size * sub_sector_margin_proportion
+onready var _sub_sector_base_size := (sector_size - _sector_margin * 2) / asteroid_density
+onready var _sub_sector_margin := _sub_sector_base_size * sub_sector_margin_proportion
+onready var _sub_sector_size := _sub_sector_base_size - _sub_sector_margin * 2
 
 onready var _grid_drawer := $GridDrawer
 onready var _player := $Player
 
 
 func _ready() -> void:
-	_sub_sector_size -= _sub_sector_margin * 2
-	margined_sub_sector_size = Vector2(
-		_sub_sector_margin * 2 + _sub_sector_size, _sub_sector_margin * 2 + _sub_sector_size
-	)
-
 	generate()
 	_grid_drawer.setup(sector_size, sector_axis_count)
 
@@ -68,7 +62,7 @@ func _generate_sector(x_id: int, y_id: int) -> void:
 
 	# Find the top left of the entire sector in world coordinates, and move it
 	# right and down by the sector's padding.
-	var top_left := Vector2(
+	var sector_top_left := Vector2(
 		x_id * sector_size - _half_sector_size + _sector_margin,
 		y_id * sector_size - _half_sector_size + _sector_margin
 	)
@@ -81,28 +75,25 @@ func _generate_sector(x_id: int, y_id: int) -> void:
 	sector_indices.shuffle()
 
 	for i in range(asteroid_density):
-		# Calculate the sub-sector coordinates for this asteroid
+		# Calculate the sub-sector coordinates for this asteroid.
 		var x: int = sector_indices[i] / asteroid_density
 		var y: int = sector_indices[i] - x * asteroid_density
-
-		# Find the top left and bottom right of the sub-sector +/- its padding
-		var minimum := Vector2(
-			top_left.x + margined_sub_sector_size.x * x + _sub_sector_margin,
-			top_left.y + margined_sub_sector_size.y * y + _sub_sector_margin
-		)
-		var maximum := (
-			minimum
-			+ Vector2(_sub_sector_size - _sub_sector_margin, _sub_sector_size - _sub_sector_margin)
-		)
 
 		# Generates a new asteroid inside of that sub-sector boundary.
 		var asteroid := Asteroid.instance()
 		add_child(asteroid)
-		asteroid.position = Vector2(
-			_rng.randf_range(minimum.x, maximum.x), _rng.randf_range(minimum.y, maximum.y)
-		)
+		asteroid.position = _generate_random_position(Vector2(x, y), sector_top_left)
 		asteroid.rotation = _rng.randf_range(-PI, PI)
 		asteroid.scale *= _rng.randf_range(0.2, 1.0)
 		sector_data.append(asteroid)
 
 	_sectors[Vector2(x_id, y_id)] = sector_data
+
+
+func _generate_random_position(sub_sector_coordinates: Vector2, sector_top_left: Vector2) -> Vector2:
+	# Find the top left and bottom right of the sub-sector +/- its padding
+	var minimum := sector_top_left + Vector2(_sub_sector_size, _sub_sector_size) * sub_sector_coordinates
+	var maximum := minimum + Vector2(_sub_sector_size, _sub_sector_size)
+	return Vector2(
+			_rng.randf_range(minimum.x, maximum.x), _rng.randf_range(minimum.y, maximum.y)
+		)
