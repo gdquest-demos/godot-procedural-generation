@@ -17,8 +17,12 @@ export var sector_margin_proportion := 0.1
 ## The percentage of any given subsector to pad their margins by.
 export var sub_sector_margin_proportion := 0.1
 
+# We generate a sub-grid based on the closest square number that is greater than `asteroid_density`.
+onready var _sub_sector_grid_width: int = ceil(sqrt(asteroid_density))
+onready var _sub_sector_count := _sub_sector_grid_width * _sub_sector_grid_width
+
 onready var _sector_margin := sector_size * sector_margin_proportion
-onready var _sub_sector_base_size := (sector_size - _sector_margin * 2) / asteroid_density
+onready var _sub_sector_base_size := (sector_size - _sector_margin * 2) / _sub_sector_grid_width
 onready var _sub_sector_margin := _sub_sector_base_size * sub_sector_margin_proportion
 onready var _sub_sector_size := _sub_sector_base_size - _sub_sector_margin * 2
 
@@ -65,16 +69,15 @@ func _generate_sector(x_id: int, y_id: int) -> void:
 	)
 
 	var sector_data := []
-	var sub_sector_count := asteroid_density * asteroid_density
 	# We generate as many indices as there are sub-sectors and shuffle the
 	# numbers.
-	var sector_indices = range(sub_sector_count)
+	var sector_indices = range(_sub_sector_count)
 	sector_indices.shuffle()
 
 	for i in range(asteroid_density):
 		# Calculate the sub-sector coordinates for this asteroid.
-		var x: int = sector_indices[i] / asteroid_density
-		var y: int = sector_indices[i] - x * asteroid_density
+		var x := int(sector_indices[i] / _sub_sector_grid_width)
+		var y: int = sector_indices[i] - x * _sub_sector_grid_width
 
 		# Generates a new asteroid inside of that sub-sector boundary.
 		var asteroid := Asteroid.instance()
