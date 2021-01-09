@@ -86,37 +86,32 @@ func _update_along_axis(axis: int, difference: float) -> void:
 	# on both positive and negative.
 	var axis_modifier := int(difference > 0)
 
-	# For each row or column between where we were and where we are now
-	for sector_index in range(1, abs(difference) + 1):
-		var axis_key := int(
-			(
-				axis_current
-				+ (_half_sector_count - axis_modifier) * sign(difference)
-				+ (sector_index * sign(difference))
-			)
+	var new_sector_line_index := int(
+		axis_current + (_half_sector_count - axis_modifier) * difference + difference
+	)
+
+	# Generate a new entire row or column perpendicular to the axis along which we're moving.
+	for other_axis_coordinate in range(other_axis_min, other_axis_max):
+		var x := new_sector_line_index if axis == AXIS_X else other_axis_coordinate
+		var y := other_axis_coordinate if axis == AXIS_X else new_sector_line_index
+		_generate_sector(x, y)
+
+	# Reduce the key by the sector count so we are referencing the
+	# opposite end of the grid.
+	new_sector_line_index = int(new_sector_line_index + sector_axis_count * -difference)
+
+	# Erase the entire row or column that's farthest from the player.
+	for other_axis_coordinate in range(other_axis_min, other_axis_max):
+		var key := Vector2(
+			new_sector_line_index if axis == AXIS_X else other_axis_coordinate,
+			other_axis_coordinate if axis == AXIS_X else new_sector_line_index
 		)
 
-		# Generate a new entire row or column depending on how we're moving.
-		for other_axis_coordinate in range(other_axis_min, other_axis_max):
-			var x_key := axis_key if axis == AXIS_X else other_axis_coordinate
-			var y_key := other_axis_coordinate if axis == AXIS_X else axis_key
-			_generate_sector(x_key, y_key)
-
-		# Reduce the key by the sector count so we are referencing the 
-		# opposite end of the grid.
-		axis_key = int(axis_key + sector_axis_count * -sign(difference))
-
-		# Erase the entire row or column.
-		for other_axis_coordinate in range(other_axis_min, other_axis_max):
-			var key := Vector2(
-				axis_key if axis == AXIS_X else other_axis_coordinate, other_axis_coordinate if axis == AXIS_X else axis_key
-			)
-
-			if _sectors.has(key):
-				var sector_data: Array = _sectors[key]
-				for d in sector_data:
-					d.queue_free()
-				var _found := _sectors.erase(key)
+		if _sectors.has(key):
+			var sector_data: Array = _sectors[key]
+			for d in sector_data:
+				d.queue_free()
+			var _found := _sectors.erase(key)
 
 	# Update the current sector for later reference
 	if axis == AXIS_X:
