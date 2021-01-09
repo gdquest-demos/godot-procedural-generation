@@ -32,7 +32,7 @@ _global_script_classes=[ {
 "base": "WorldGenerator",
 "class": "BlueNoiseWorldGenerator",
 "language": "GDScript",
-"path": "res://SpaceInfiniteGeneration/02-BlueNoiseWorld/BlueNoiseWorld.gd"
+"path": "res://SpaceInfiniteGeneration/BlueNoiseWorldGenerator.gd"
 }, {
 "base": "ProjectileEvent",
 "class": "ExplosionEvent",
@@ -45,9 +45,9 @@ _global_script_classes=[ {
 "path": "res://ModularWeapons/ModularWeapon/src/ProjectileMotion/Motions/HomingMotion.gd"
 }, {
 "base": "WorldGenerator",
-"class": "LayeredWorld",
+"class": "LayeredWorldGenerator",
 "language": "GDScript",
-"path": "res://SpaceInfiniteGeneration/03-LayeredGeneration/LayeredWorld.gd"
+"path": "res://SpaceInfiniteGeneration/LayeredWorldGenerator.gd"
 }, {
 "base": "RigidBody2D",
 "class": "MSTDungeonRoom",
@@ -63,6 +63,11 @@ _global_script_classes=[ {
 "class": "ModularWeapon",
 "language": "GDScript",
 "path": "res://ModularWeapons/ModularWeapon/src/ModularWeapon.gd"
+}, {
+"base": "LayeredWorldGenerator",
+"class": "PersistentWorldGenerator",
+"language": "GDScript",
+"path": "res://SpaceInfiniteGeneration/PersistentWorldGenerator.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "Projectile",
@@ -97,7 +102,7 @@ _global_script_classes=[ {
 "base": "WorldGenerator",
 "class": "WhiteNoiseWorldGenerator",
 "language": "GDScript",
-"path": "res://SpaceInfiniteGeneration/01-WhiteNoiseWorld/WhiteNoiseWorld.gd"
+"path": "res://SpaceInfiniteGeneration/WhiteNoiseWorldGenerator.gd"
 }, {
 "base": "Node2D",
 "class": "WorldGenerator",
@@ -122,10 +127,11 @@ _global_script_class_icons={
 "BlueNoiseWorldGenerator": "",
 "ExplosionEvent": "",
 "HomingMotion": "",
-"LayeredWorld": "",
+"LayeredWorldGenerator": "",
 "MSTDungeonRoom": "",
 "MSTDungeonUtils": "",
 "ModularWeapon": "",
+"PersistentWorldGenerator": "",
 "Projectile": "",
 "ProjectileEmitter": "",
 "ProjectileEvent": "",

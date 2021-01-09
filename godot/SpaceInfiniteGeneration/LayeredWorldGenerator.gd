@@ -1,11 +1,11 @@
 # Generates an infinite world using a layered approach, allowing each layer to
 # access the previous layers' data. Each layer is smaller than the next, so they
 # can also access their neighbors' data.
-class_name LayeredWorld
+class_name LayeredWorldGenerator
 extends WorldGenerator
 
 
-# Used to calculate the 8 neighbors around any one sector
+# Used to calculate the 8 neighbors around any one sector.
 const NEIGHBORS := [
 	Vector2(1, 0),
 	Vector2(1,1),
@@ -25,29 +25,29 @@ export var sector_margin_proportion := 0.1
 
 # The maximum area made by the 3 seeding points for a planet to form.
 # Higher == more planets
-export var planet_generation_threshold := 5000.0
+export var planet_generation_area_threshold := 5000.0
 
 # The percentage chance of a moon being generated next to a planet.
-export var moon_generation_chance := 0.334
+export var moon_generation_chance := 1 / 3
 export var max_moon_count := 5
 
-onready var player := $Player
-onready var grid_drawer := $GridDrawer
-
 # The pixel value of the margin calculated from the margin percentage
-onready var sector_margin := sector_size * sector_margin_proportion
+onready var _sector_margin := sector_size * sector_margin_proportion
+
+onready var _player := $Player
+onready var _grid_drawer := $GridDrawer
 
 
 func _ready() -> void:
 	generate()
-	grid_drawer.setup(sector_size, sector_axis_count)
-	grid_drawer.visible = show_debug
+	_grid_drawer.setup(sector_size, sector_axis_count)
+	_grid_drawer.visible = show_debug
 
 
-## Generates the world with a layered approach. Each layer requires another layer
-## before it to already be generated. Seeds are generated first and furthest from
-## the center, then planets one row/column less, then moons one row/column less,
-## then travel lanes, then asteroids nearest to the player.
+## Generates the world with a layered approach. Each layer requires another
+## layer before it to already be generated. Seeds are generated first and
+## furthest from the center, then planets one row/column less, then moons one
+## row/column less, then travel lanes, then asteroids nearest to the player.
 ## This creates our world's layers, each one smaller than the one before it, but
 ## all contained within the player's view (normally.)
 func generate() -> void:
@@ -68,26 +68,31 @@ func generate() -> void:
 	update()
 
 
-# Draws the generated data
+# Draws the generated data.
 func _draw() -> void:
 	for key in _sectors.keys():
+		# Draw seeding points.
 		if show_debug and _sectors[key].size() > 0:
 			for point in _sectors[key][0]:
 				draw_circle(point, 12, Color(0.5, 0.5, 0.5, 0.5))
 
+		# Planets.
 		if _sectors[key].size() > 1 and _sectors[key][1].size() > 0:
 			draw_circle(_sectors[key][1].position, 96 * (1.0 + _sectors[key][1].size), Color.bisque)
 
+		# Moons.
 		if _sectors[key].size() > 2:
 			for moon in _sectors[key][2]:
 				draw_circle(moon.position, 32 * (1.0 + moon.size), Color.aquamarine)
 
+		# Travel lanes.
 		if _sectors[key].size() > 3:
 			for path in _sectors[key][3]:
 				var start: Vector2 = path.source
 				var end: Vector2 = path.destination
 				draw_line(start, end, Color.cornflower, 6.0)
 
+		# Asteroids.
 		if _sectors[key].size() > 4:
 			for asteroid in _sectors[key][4]:
 				draw_circle(asteroid.position, 16 * (1.0 + asteroid.size), Color.orangered)
@@ -99,13 +104,13 @@ func _physics_process(_delta: float) -> void:
 
 	var sector_location := _current_sector * sector_size
 
-	if player.global_position.distance_squared_to(sector_location) > _total_sector_count:
-		sector_offset = (player.global_position - sector_location) / sector_size
+	if _player.global_position.distance_squared_to(sector_location) > _total_sector_count:
+		sector_offset = (_player.global_position - sector_location) / sector_size
 		sector_offset.x = int(sector_offset.x)
 		sector_offset.y = int(sector_offset.y)
 
 		_update_sectors(sector_offset)
-		grid_drawer.move_grid_to(_current_sector)
+		_grid_drawer.move_grid_to(_current_sector)
 
 
 # Erases old _sectors by difference, and generates new ones. Since our generation
@@ -130,13 +135,13 @@ func _generate_seeds_at(x: int, y: int) -> void:
 	
 	# Find the boundaries of the sector +/- some padding
 	var top_left := Vector2(
-		x * sector_size - _half_sector_size + sector_margin,
-		y * sector_size - _half_sector_size + sector_margin
+		x * sector_size - _half_sector_size + _sector_margin,
+		y * sector_size - _half_sector_size + _sector_margin
 	)
 	
 	var bottom_right := Vector2(
-		x * sector_size + _half_sector_size - sector_margin,
-		y * sector_size + _half_sector_size - sector_margin
+		x * sector_size + _half_sector_size - _sector_margin,
+		y * sector_size + _half_sector_size - _sector_margin
 	)
 	
 	# Generates 3 points to create a triangle using white noise.
@@ -176,11 +181,11 @@ func _generate_planets_at(x: int, y: int) -> void:
 	
 	# If the area is less than the generation threshold, create a planet appropriate
 	# to the seeds' area.
-	if area < planet_generation_threshold:
+	if area < planet_generation_area_threshold:
 		_sectors[key].append(
 			{
 				"position":(sector_data[0] + sector_data[1] + sector_data[2]) / 3.0,
-				"size": 1.0 - area/(planet_generation_threshold/5.0)
+				"size": 1.0 - area/(planet_generation_area_threshold/5.0)
 			}
 		)
 	else:
@@ -347,5 +352,5 @@ func _set_show_debug(value: bool) -> void:
 	show_debug = value
 	if not is_inside_tree():
 		yield(self, "ready")
-	grid_drawer.visible = show_debug
+	_grid_drawer.visible = show_debug
 	update()

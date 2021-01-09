@@ -2,7 +2,8 @@
 # remove and add planets, which changes subsequent layers accordingly.
 # This is accomplished with a new modifications dictionary that holds special
 # objects, in this case a planet removing/adding dictionary.
-extends LayeredWorld
+class_name PersistentWorldGenerator
+extends LayeredWorldGenerator
 
 
 ## A dictionary of forced planet or erased planets
