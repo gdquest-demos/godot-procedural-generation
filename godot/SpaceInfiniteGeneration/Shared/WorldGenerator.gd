@@ -63,57 +63,55 @@ func _generate_sector(_x_id: int, _y_id: int) -> void:
 	pass
 
 
-## Travels along an axis and a direction, erasing sectors that are too far away from the player
-## and generating new sectors that come into this range.
+## Travels along an axis and a direction, erasing sectors in the perpendicular axis that are too far
+## away from the player and generating new sectors that come into this range.
 func _update_along_axis(axis: int, difference: float) -> void:
-	# If the arguments are incorrect, we return early.
+
 	if difference == 0 or (axis != AXIS_X and axis != AXIS_Y):
 		return
 
-	# We extract the _current_sector's row or column
-	var axis_current := _current_sector.x if axis == AXIS_X else _current_sector.y
+	# We're going to use the `difference` argument in calculations below to determine the sectors to
+	# generate and to delete.
+	# Depending on the direction the player is moving, we need to correct for the calculations
+	# below.
+	# When `difference` is positive, we end up in situations where sectors aren't erased or added on
+	# time. This value is there to catch those cases.
+	var axis_modifier := int(difference > 0)
+	# We extract the `_current_sector`'s row or column depending on the axis we want to walk.
+	var sector_axis_coordinate := _current_sector.x if axis == AXIS_X else _current_sector.y
+	# We calculate the coordinate of the row or column of the new line of sectors to create.
+	var new_sector_line_index := int(
+		sector_axis_coordinate + (_half_sector_count - axis_modifier) * difference + difference
+	)
 
-	# We find the range of coordinates of the row or column perpendicular to the axis we're updating.
+	# We find the range of coordinates of the row or column *perpendicular* to the
+	# axis we're updating.
 	var other_axis_position := _current_sector.y if axis == AXIS_X else _current_sector.x
 	var other_axis_min := other_axis_position - _half_sector_count
 	var other_axis_max := other_axis_position + _half_sector_count
 
-	# Because 0 is technically negative when comparing signs, we end up with
-	# 1 more sector when moving in the negative direction than the positive one.
-	# So when difference is positive, we end up in situations where _sectors
-	# aren't erased or added on time. This modifier is there to catch those
-	# cases. It's 1 when positive, 0 otherwise, so we have an even count
-	# on both positive and negative.
-	var axis_modifier := int(difference > 0)
-
-	var new_sector_line_index := int(
-		axis_current + (_half_sector_count - axis_modifier) * difference + difference
-	)
-
-	# Generate a new entire row or column perpendicular to the axis along which we're moving.
+	# We generate a new entire row or column perpendicular to the axis along which we're moving.
 	for other_axis_coordinate in range(other_axis_min, other_axis_max):
 		var x := new_sector_line_index if axis == AXIS_X else other_axis_coordinate
 		var y := other_axis_coordinate if axis == AXIS_X else new_sector_line_index
 		_generate_sector(x, y)
 
-	# Reduce the key by the sector count so we are referencing the
-	# opposite end of the grid.
-	new_sector_line_index = int(new_sector_line_index + sector_axis_count * -difference)
-
-	# Erase the entire row or column that's farthest from the player.
+	# We then want to delete the row or column on the opposite end of the grid.
+	var obsolete_sector_line_index := int(new_sector_line_index + sector_axis_count * -difference)
 	for other_axis_coordinate in range(other_axis_min, other_axis_max):
 		var key := Vector2(
-			new_sector_line_index if axis == AXIS_X else other_axis_coordinate,
-			other_axis_coordinate if axis == AXIS_X else new_sector_line_index
+			obsolete_sector_line_index if axis == AXIS_X else other_axis_coordinate,
+			other_axis_coordinate if axis == AXIS_X else obsolete_sector_line_index
 		)
 
+		# We free all asteroids in this sector and remove the corresponding key.
 		if _sectors.has(key):
 			var sector_data: Array = _sectors[key]
 			for d in sector_data:
 				d.queue_free()
 			var _found := _sectors.erase(key)
 
-	# Update the current sector for later reference
+	# And now we're done updating the world, we update the `_current_sector`.
 	if axis == AXIS_X:
 		_current_sector.x += difference
 	else:
