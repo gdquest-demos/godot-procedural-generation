@@ -76,33 +76,33 @@ func generate() -> void:
 
 # Draws the generated data.
 func _draw() -> void:
-	for sector in _sectors:
+	for data in _sectors.values():
 		# Draw seeding points.
-		if show_debug and _sectors[sector].size() > 0:
-			for point in _sectors[sector][0]:
+		if show_debug and data.size() > 0:
+			for point in data[0]:
 				draw_circle(point, 12, Color(0.5, 0.5, 0.5, 0.5))
 
 		# Planets.
-		if _sectors[sector].size() > 1 and _sectors[sector][1].size() > 0:
+		if data.size() > 1 and data[1].size() > 0:
 			draw_circle(
-				_sectors[sector][1].position, 96 * (1.0 + _sectors[sector][1].size), Color.bisque
+				data[1].position, 96 * (1.0 + data[1].size), Color.bisque
 			)
 
 		# Moons.
-		if _sectors[sector].size() > 2:
-			for moon in _sectors[sector][2]:
+		if data.size() > 2:
+			for moon in data[2]:
 				draw_circle(moon.position, 32 * (1.0 + moon.size), Color.aquamarine)
 
 		# Travel lanes.
-		if _sectors[sector].size() > 3:
-			for path in _sectors[sector][3]:
+		if data.size() > 3:
+			for path in data[3]:
 				var start: Vector2 = path.source
 				var end: Vector2 = path.destination
 				draw_line(start, end, Color.cornflower, 6.0)
 
 		# Asteroids.
-		if _sectors[sector].size() > 4:
-			for asteroid in _sectors[sector][4]:
+		if data.size() > 4:
+			for asteroid in data[4]:
 				draw_circle(asteroid.position, 16 * (1.0 + asteroid.size), Color.orangered)
 
 
@@ -130,7 +130,7 @@ func _update_sectors(difference: Vector2) -> void:
 	generate()
 
 
-## Seeds a triangle inside of the sector. The next layer can use these to make
+## Seeds a triangle inside of the `sector`. The next layer can use these to make
 ## planets. Their overrall density and proximity to one another may or may not
 ## birth a planet.
 func _generate_seeds_at(sector: Vector2) -> void:
@@ -139,6 +139,7 @@ func _generate_seeds_at(sector: Vector2) -> void:
 
 	# Create a seed for the current sector's triangular seeds
 	_rng.seed = make_seed_for(sector.x, sector.y, "seeds")
+
 	# Find the boundaries of the sector +/- some padding
 	var half_size := Vector2(_half_sector_size, _half_sector_size)
 	var margin := Vector2(_sector_margin, _sector_margin)
@@ -155,11 +156,7 @@ func _generate_seeds_at(sector: Vector2) -> void:
 			_rng.randf_range(top_left.y, bottom_right.y)
 		)
 		seeds.append(seed_position)
-
-	if _sectors.has(sector):
-		_sectors[0] = seeds
-	else:
-		_sectors[sector] = [seeds]
+	_sectors[sector] = [seeds]
 
 
 # Checks the sector's seeds. If they are close enough to each other (their area
@@ -173,7 +170,8 @@ func _generate_planets_at(sector: Vector2) -> void:
 	var vertices: Array = _sectors[sector][0]
 	var area := _calculate_triangle_area(vertices[0], vertices[1], vertices[2])
 
-	# By default, if we don't generate a planet, we append an empty dictionary to the sector's data.
+	# By default, if we don't generate a planet, we append an empty dictionary
+	# to the sector's data.
 	var planet_data := {}
 	# If the area is less than the generation threshold, create a planet appropriate
 	# to the seeds' area.
