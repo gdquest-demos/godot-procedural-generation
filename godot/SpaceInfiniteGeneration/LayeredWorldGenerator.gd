@@ -15,7 +15,13 @@ const NEIGHBORS := [
 	Vector2(0, -1),
 	Vector2(1, -1)
 ]
-const LAYERS = ["seeds", "planet", "moons", "travel_lanes", "asteroids"]
+const LAYERS = {
+	seeds = [],
+	planet = {},
+	moons = [],
+	travel_lanes = [],
+	asteroids = [],
+}
 
 # Hides or shows the grid and the planetary seeding points
 export var show_debug := false setget _set_show_debug
@@ -65,15 +71,9 @@ func generate() -> void:
 				var sector = Vector2(x, y)
 				match layer:
 					"seeds":
-						# Initialize the sector's data if we process this sector for the first time.
+						# Initialize the sector's data at the start.
 						if not _sectors.has(sector):
-							_sectors[sector] = {
-								seeds = [],
-								planet = {},
-								moons = [],
-								travel_lanes = [],
-								asteroids = [],
-							}
+							_sectors[sector] = LAYERS.duplicate(true)
 						_generate_seeds_at(sector)
 					"planet":
 						_generate_planets_at(sector)
