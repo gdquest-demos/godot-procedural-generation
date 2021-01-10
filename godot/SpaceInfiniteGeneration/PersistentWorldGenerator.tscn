@@ -4,8 +4,6 @@
 [ext_resource path="res://SpaceInfiniteGeneration/PersistentWorldGenerator.gd" type="Script" id=2]
 [ext_resource path="res://SpaceInfiniteGeneration/Shared/GridDrawer.gd" type="Script" id=3]
 
-
-
 [node name="PersistentWorldGenerator" type="Node2D"]
 script = ExtResource( 2 )
 sector_axis_count = 16

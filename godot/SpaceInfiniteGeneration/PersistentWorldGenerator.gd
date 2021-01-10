@@ -5,112 +5,75 @@
 class_name PersistentWorldGenerator
 extends LayeredWorldGenerator
 
+enum Actions { ADD_PLANET, REMOVE_PLANET }
 
 ## A dictionary of forced planet or erased planets
 var modifications := {}
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		# Calculate the sector based on the mouse position in the world
-		var click_position: Vector2 = get_global_mouse_position()
-		
-		var sector_key := Vector2(
-			int((click_position.x - _half_sector_size) / sector_size),
-			int((click_position.y - _half_sector_size) / sector_size)
-		)
+	if not event is InputEventMouseButton or not event.pressed:
+		return
 
-		# If there is not already a planet in the sector, left mouse button adds it
-		# to the mouse click position
-		if event.button_index == BUTTON_LEFT:
-			if not _sectors.has(sector_key):
-				return
-			
-			if not _sectors[sector_key].size() > 2:
-				return
-			
-			if not _sectors[sector_key][1].size() == 0:
-				return
-			
-			if not modifications.has(sector_key):
-				modifications[sector_key] = {}
-				
-			modifications[sector_key].force_planet = true
-			modifications[sector_key].position = click_position
-			modifications[sector_key].remove_generated_planet = false
-			
-			_sectors = {}
-			generate()
+	# Calculate the sector based on the mouse position in the world
+	var click_position: Vector2 = get_global_mouse_position()
+	var sector := _find_sector(click_position)
+	if not _sectors.has(sector):
+		return
 
-		# If there is a planet in the sector and it corresponds to the location
-		# clicked by the mouse, erase it from the world.
-		elif event.button_index == BUTTON_RIGHT:
-			if not _sectors.has(sector_key):
-				return
-			
-			if not _sectors[sector_key].size() > 2:
-				return
-			
-			if not _sectors[sector_key][1].size() > 0:
-				return
-			
-			var planet_position: Vector2 = _sectors[sector_key][1].position
-			var planet_size: float = abs(_sectors[sector_key][1].size)
-			
-			if click_position.distance_to(planet_position) < (96 * (1.0 + planet_size)):
-				if not modifications.has(sector_key):
-					modifications[sector_key] = {}
-				
-				modifications[sector_key].remove_generated_planet = true
-				modifications[sector_key].force_planet = false
-				
-			
-			_sectors = {}
-			generate()
+	# If there is not already a planet in the sector, left mouse button adds it
+	# to the mouse click position
+	if event.button_index == BUTTON_LEFT and not _sectors[sector].planet:
+		if not modifications.has(sector):
+			modifications[sector] = {}
+
+		modifications[sector].action = Actions.ADD_PLANET
+		modifications[sector].position = click_position
+		_reset_world()
+
+	# If there is a planet in the sector and it corresponds to the location
+	# clicked by the mouse, erase it from the world.
+	elif event.button_index == BUTTON_RIGHT and _sectors[sector].planet:
+		if not modifications.has(sector):
+			modifications[sector] = {}
+
+		modifications[sector].action = Actions.REMOVE_PLANET
+		_reset_world()
+
+
+func _reset_world() -> void:
+	_sectors = {}
+	generate()
 
 
 # Checks the sector's points. If they are close enough together, a random planet
 # is generated. In addition, forces planets or removes generated planets based
 # on player click. This is persistent so even after leaving and coming back,
 # the new planet or removed planet should still be there/gone.
-func _generate_planets_at(x: int, y: int) -> void:
-	var key := Vector2(x,y)
-
-	if _sectors.has(key) and _sectors[key].size() >= 2:
+func _generate_planets_at(sector: Vector2) -> void:
+	if not _sectors[sector].seeds:
 		return
 
-	var sector_data: Array = _sectors[key][0]
-	var area: float = abs(
-		sector_data[0].x * (sector_data[1].y - sector_data[2].y) +
-		sector_data[1].x * (sector_data[2].y - sector_data[0].y) +
-		sector_data[2].x * (sector_data[0].y - sector_data[1].y)
-	) / 2.0
+	var seeds: Array = _sectors[sector].seeds
+	var area: float = _calculate_triangle_area(seeds[0], seeds[1], seeds[2])
 
-	var should_remove_planet: bool = (
-		modifications.has(key)
-		and modifications[key].has("remove_generated_planet")
-		and modifications[key].remove_generated_planet
+	var action: int = modifications[sector].action if modifications.has(sector) else -1
+
+	if action == Actions.ADD_PLANET:
+		_sectors[sector].planet = {"position": modifications[sector].position, "size": 1.0}
+	elif action == Actions.REMOVE_PLANET:
+		_sectors[sector].planet = {}
+	elif area < planet_generation_area_threshold:
+		_sectors[sector].planet = {
+			"position": _calculate_triangle_epicenter(seeds[0], seeds[1], seeds[2]),
+			"size": 1.0 - area / (planet_generation_area_threshold / 5.0)
+		}
+
+
+## Returns the grid coordinates of the sector given a global position inside
+## that sector.
+func _find_sector(world_position: Vector2) -> Vector2:
+	return Vector2(
+		int((world_position.x - _half_sector_size) / sector_size),
+		int((world_position.y - _half_sector_size) / sector_size)
 	)
-
-	var should_force_planet: bool = (
-		modifications.has(key)
-		and modifications[key].has("force_planet")
-		and modifications[key].force_planet
-	)
-
-	if not should_remove_planet and should_force_planet:
-		_sectors[key].append(
-			{
-				"position":modifications[key].position,
-				"size": 1.0
-			}
-		)
-	elif not should_remove_planet and area < planet_generation_threshold:
-		_sectors[key].append(
-			{
-				"position":(sector_data[0] + sector_data[1] + sector_data[2]) / 3.0,
-				"size": 1.0 - area/(planet_generation_threshold/5.0)
-			}
-		)
-	else:
-		_sectors[key].append({})
