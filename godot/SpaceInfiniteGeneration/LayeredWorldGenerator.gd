@@ -179,7 +179,7 @@ func _generate_planets_at(sector: Vector2) -> void:
 	# to the seeds' area.
 	if area < planet_generation_area_threshold:
 		planet_data = {
-			"position": (vertices[0] + vertices[1] + vertices[2]) / 3.0,
+			"position": _calculate_triangle_epicenter(vertices[0], vertices[1], vertices[2]),
 			"size": 1.0 - area / (planet_generation_area_threshold / 5.0)
 		}
 	_sectors[sector].planet = planet_data
@@ -320,3 +320,7 @@ func _set_show_debug(value: bool) -> void:
 ## Returns the area of a triangle.
 func _calculate_triangle_area(a: Vector2, b: Vector2, c: Vector2) -> float:
 	return abs(a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y)) / 2.0
+
+
+func _calculate_triangle_epicenter(a: Vector2, b: Vector2, c: Vector2) -> Vector2:
+	return (a + b + c) / 3.0
