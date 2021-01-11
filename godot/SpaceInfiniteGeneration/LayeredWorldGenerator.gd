@@ -40,6 +40,11 @@ export var planet_generation_area_threshold := 5000.0
 export var moon_generation_chance := 1.1 / 3.0
 export var max_moon_count := 5
 
+## The probability of asteroids being generated next to a planet.
+export var asteroid_generation_chance := 3.0 / 4.0
+## The maximum number of asteroids we can generate in one sector.
+export var max_asteroid_count := 10
+
 ## The pixel value of the margin calculated from the margin percentage
 onready var _sector_margin := sector_size * sector_margin_proportion
 
@@ -228,11 +233,13 @@ func _generate_travel_lanes_at(sector: Vector2) -> void:
 	# links the two worlds together with a line to indicate a trading partner.
 	for neighbor in NEIGHBORS:
 		var neighbor_sector: Vector2 = sector + neighbor
-		if _sectors[neighbor_sector].planet.size() > 0:
-			var neighbor_position: Vector2 = _sectors[neighbor_sector].planet.position
-			_sectors[sector].travel_lanes.append(
-				{source = planet.position, destination = neighbor_position}
-			)
+		if not _sectors[neighbor_sector].planet:
+			continue
+
+		var neighbor_position: Vector2 = _sectors[neighbor_sector].planet.position
+		_sectors[sector].travel_lanes.append(
+			{source = planet.position, destination = neighbor_position}
+		)
 
 
 # If this sector has a planet, does not have a moon and does not have any trade 
@@ -252,7 +259,10 @@ func _generate_asteroids_at(sector: Vector2) -> void:
 
 	# Keep rolling the dice until it comes up greater than 75%, creating a new
 	# asteroid within an orbit's range of the planet
-	while _rng.randf() < 0.75:
+	var count := 0
+	while _rng.randf() < asteroid_generation_chance and count < max_asteroid_count:
+		count += 1
+
 		var random_offset: Vector2 = (
 			Vector2.UP.rotated(_rng.randf_range(-PI, PI))
 			* planet.scale
