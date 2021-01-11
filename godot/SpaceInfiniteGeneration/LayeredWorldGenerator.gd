@@ -166,23 +166,17 @@ func _generate_planets_at(sector: Vector2) -> void:
 	if _sectors[sector].planet:
 		return
 
-	if not _sectors[sector].seeds:
-		return
 	# Calculate the area created by the 3 seeded points.
 	var vertices: Array = _sectors[sector].seeds
 	var area := _calculate_triangle_area(vertices[0], vertices[1], vertices[2])
 
-	# By default, if we don't generate a planet, we append an empty dictionary
-	# to the sector's data.
-	var planet_data := {}
 	# If the area is less than the generation threshold, create a planet appropriate
 	# to the seeds' area.
 	if area < planet_generation_area_threshold:
-		planet_data = {
+		_sectors[sector].planet = {
 			"position": _calculate_triangle_epicenter(vertices[0], vertices[1], vertices[2]),
 			"size": 1.0 - area / (planet_generation_area_threshold / 5.0)
 		}
-	_sectors[sector].planet = planet_data
 
 
 # If there is a planet inside of a given sector, a loop begins and there is a
