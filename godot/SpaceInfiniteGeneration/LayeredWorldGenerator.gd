@@ -4,6 +4,10 @@
 class_name LayeredWorldGenerator
 extends WorldGenerator
 
+const PLANET_BASE_SIZE := 96
+const MOON_BASE_SIZE := 32
+const ASTEROID_BASE_SIZE := 16
+
 # Used to calculate the 8 neighbors around any one sector.
 const NEIGHBORS := [
 	Vector2(1, 0),
@@ -95,15 +99,15 @@ func _draw() -> void:
 				draw_circle(point, 12, Color(0.5, 0.5, 0.5, 0.5))
 
 		if data.planet:
-			draw_circle(data.planet.position, 96 * (1.0 + data.planet.size), Color.bisque)
+			draw_circle(data.planet.position, PLANET_BASE_SIZE * data.planet.scale, Color.bisque)
 		for moon in data.moons:
-			draw_circle(moon.position, 32 * (1.0 + moon.size), Color.aquamarine)
+			draw_circle(moon.position, MOON_BASE_SIZE * moon.scale, Color.aquamarine)
 		for path in data.travel_lanes:
 			var start: Vector2 = path.source
 			var end: Vector2 = path.destination
 			draw_line(start, end, Color.cornflower, 6.0)
 		for asteroid in data.asteroids:
-			draw_circle(asteroid.position, 16 * (1.0 + asteroid.size), Color.orangered)
+			draw_circle(asteroid.position, ASTEROID_BASE_SIZE * asteroid.scale, Color.orangered)
 
 
 # Whenever the player changes sector, erase those that fall out of scope and generate new ones
@@ -174,8 +178,8 @@ func _generate_planets_at(sector: Vector2) -> void:
 	# to the seeds' area.
 	if area < planet_generation_area_threshold:
 		_sectors[sector].planet = {
-			"position": _calculate_triangle_epicenter(vertices[0], vertices[1], vertices[2]),
-			"size": 1.0 - area / (planet_generation_area_threshold / 5.0)
+			position = _calculate_triangle_epicenter(vertices[0], vertices[1], vertices[2]),
+			scale = 0.5 + area / (planet_generation_area_threshold / 2.0)
 		}
 
 
@@ -196,8 +200,12 @@ func _generate_moons_at(sector: Vector2) -> void:
 
 	# Get the planet's position and size to determine moon orbit and location
 	var planet_position: Vector2 = planet_data.position
-	var planet_size: float = 1.0 + planet_data.size
-	var random_offset := Vector2.UP.rotated(_rng.randf_range(-PI, PI)) * planet_size * 96 * 3.0
+	var random_offset: Vector2 = (
+		Vector2.UP.rotated(_rng.randf_range(-PI, PI))
+		* planet_data.scale
+		* PLANET_BASE_SIZE
+		* 3.0
+	)
 
 	# Keeps track of the number of generated moons.
 	var moon_count := 0
@@ -205,7 +213,7 @@ func _generate_moons_at(sector: Vector2) -> void:
 	while _rng.randf() < moon_generation_chance or moon_count == max_moon_count:
 		moon_count += 1
 		_sectors[sector].moons.append(
-			{"position": planet_position + random_offset, "size": planet_size / 10.0}
+			{position = planet_position + random_offset, scale = planet_data.scale / 3.0}
 		)
 
 
@@ -230,7 +238,7 @@ func _generate_travel_lanes_at(sector: Vector2) -> void:
 		if _sectors[neighbor_key].planet.size() > 0:
 			var neighbor_position: Vector2 = _sectors[neighbor_key].planet.position
 			_sectors[sector].travel_lanes.append(
-				{"source": planet_position, "destination": neighbor_position}
+				{source = planet_position, destination = neighbor_position}
 			)
 
 
@@ -250,11 +258,11 @@ func _generate_asteroids_at(sector: Vector2) -> void:
 	_rng.seed = make_seed_for(sector.x, sector.y, "asteroids")
 
 	var planet_position: Vector2 = planet_data.position
-	var planet_size: float = 1.0 + planet_data.size
+	var planet_size: float = 1.0 + planet_data.scale
 	var random_offset := (
 		Vector2.UP.rotated(_rng.randf_range(-PI, PI))
 		* planet_size
-		* 96
+		* PLANET_BASE_SIZE
 		* _rng.randf_range(3.0, 4.0)
 	)
 
@@ -262,7 +270,7 @@ func _generate_asteroids_at(sector: Vector2) -> void:
 	# asteroid within an orbit's range of the planet
 	while _rng.randf() < 0.75:
 		_sectors[sector].asteroids.append(
-			{"position": planet_position + random_offset, "size": planet_size / 10.0}
+			{position = planet_position + random_offset, scale = planet_size / 5.0}
 		)
 
 
