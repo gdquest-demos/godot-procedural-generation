@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://ModularWeapons/PlayerShip/topdown-player.svg" type="Texture" id=1]
+[ext_resource path="res://ModularWeapons/PlayerShip/PlayerShip.gd" type="Script" id=4]
+
+[node name="PlayerShip" type="KinematicBody2D"]
+script = ExtResource( 4 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( 0, -40, -15, -30, -40, 30, -20, 40, 0, 30, 20, 40, 40, 25, 15, -30 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, -0.142395 )
+texture = ExtResource( 1 )
