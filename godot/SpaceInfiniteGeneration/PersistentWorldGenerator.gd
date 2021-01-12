@@ -60,13 +60,13 @@ func _generate_planets_at(sector: Vector2) -> void:
 	var action: int = modifications[sector].action if modifications.has(sector) else -1
 
 	if action == Actions.ADD_PLANET:
-		_sectors[sector].planet = {"position": modifications[sector].position, "size": 1.0}
+		_sectors[sector].planet = {position = modifications[sector].position, scale = 1.0}
 	elif action == Actions.REMOVE_PLANET:
 		_sectors[sector].planet = {}
 	elif area < planet_generation_area_threshold:
 		_sectors[sector].planet = {
-			"position": _calculate_triangle_epicenter(seeds[0], seeds[1], seeds[2]),
-			"size": 1.0 - area / (planet_generation_area_threshold / 5.0)
+			position = _calculate_triangle_epicenter(seeds[0], seeds[1], seeds[2]),
+			scale = 1.0 - area / (planet_generation_area_threshold / 5.0)
 		}
 
 
