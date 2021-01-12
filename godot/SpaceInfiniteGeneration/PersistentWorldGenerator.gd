@@ -8,7 +8,7 @@ extends LayeredWorldGenerator
 enum Actions { ADD_PLANET, REMOVE_PLANET }
 
 ## A dictionary of forced planet or erased planets
-var modifications := {}
+var _modifications := {}
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -24,20 +24,20 @@ func _unhandled_input(event: InputEvent) -> void:
 	# If there is not already a planet in the sector, left mouse button adds it
 	# to the mouse click position
 	if event.button_index == BUTTON_LEFT and not _sectors[sector].planet:
-		if not modifications.has(sector):
-			modifications[sector] = {}
+		if not _modifications.has(sector):
+			_modifications[sector] = {}
 
-		modifications[sector].action = Actions.ADD_PLANET
-		modifications[sector].position = click_position
+		_modifications[sector].action = Actions.ADD_PLANET
+		_modifications[sector].position = click_position
 		_reset_world()
 
 	# If there is a planet in the sector and it corresponds to the location
 	# clicked by the mouse, erase it from the world.
 	elif event.button_index == BUTTON_RIGHT and _sectors[sector].planet:
-		if not modifications.has(sector):
-			modifications[sector] = {}
+		if not _modifications.has(sector):
+			_modifications[sector] = {}
 
-		modifications[sector].action = Actions.REMOVE_PLANET
+		_modifications[sector].action = Actions.REMOVE_PLANET
 		_reset_world()
 
 
@@ -54,10 +54,10 @@ func _generate_planets_at(sector: Vector2) -> void:
 	var seeds: Array = _sectors[sector].seeds
 	var area: float = _calculate_triangle_area(seeds[0], seeds[1], seeds[2])
 
-	var action: int = modifications[sector].action if modifications.has(sector) else -1
+	var action: int = _modifications[sector].action if _modifications.has(sector) else -1
 
 	if action == Actions.ADD_PLANET:
-		_sectors[sector].planet = {position = modifications[sector].position, scale = 1.0}
+		_sectors[sector].planet = {position = _modifications[sector].position, scale = 1.0}
 	elif action == Actions.REMOVE_PLANET:
 		_sectors[sector].planet = {}
 	elif area < planet_generation_area_threshold:
