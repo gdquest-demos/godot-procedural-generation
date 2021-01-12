@@ -51,9 +51,6 @@ func _reset_world() -> void:
 # on player click. This is persistent so even after leaving and coming back,
 # the new planet or removed planet should still be there/gone.
 func _generate_planets_at(sector: Vector2) -> void:
-	if not _sectors[sector].seeds:
-		return
-
 	var seeds: Array = _sectors[sector].seeds
 	var area: float = _calculate_triangle_area(seeds[0], seeds[1], seeds[2])
 
