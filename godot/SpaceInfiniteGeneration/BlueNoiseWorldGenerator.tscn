@@ -3,7 +3,7 @@
 [ext_resource path="res://SpaceInfiniteGeneration/BlueNoiseWorldGenerator.gd" type="Script" id=1]
 [ext_resource path="res://SpaceInfiniteGeneration/Shared/Player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://SpaceInfiniteGeneration/Shared/Asteroid.tscn" type="PackedScene" id=3]
-[ext_resource path="res://SpaceInfiniteGeneration/Shared/GridDrawer.gd" type="Script" id=4]
+[ext_resource path="res://SpaceInfiniteGeneration/Shared/GridDrawer.tscn" type="PackedScene" id=4]
 
 [node name="BlueNoiseWorldGenerator" type="Node2D"]
 script = ExtResource( 1 )
@@ -24,5 +24,4 @@ __meta__ = {
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 
-[node name="GridDrawer" type="Node2D" parent="."]
-script = ExtResource( 4 )
+[node name="GridDrawer" parent="." instance=ExtResource( 4 )]
