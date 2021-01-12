@@ -2,7 +2,7 @@
 
 ![project banner](./images/pcg-secrets.png)
 
-Godot PCG (Procedural Content Generation) is a project to build a series of algorithms and demos to learn about procedural generation. The algorithms are from our course [Godot PCG Secrets](https://gdquest.mavenseed.com/courses/pcg-secrets-the-art-of-procedural-generation-in-godot).
+Godot PCG (Procedural Content Generation) is a project to build a series of algorithms and demos to learn about procedural generation. The algorithms are from our course [Godot PCG Secrets](https://gdquest.mavenseed.com/courses/godot-pcg-secrets).
 
 ➡ Follow us on [Twitter](https://twitter.com/NathanGDQuest) and [YouTube](https://www.youtube.com/c/gdquest/) for free game creation tutorials, tips, and news! Get one of our [Godot game creation courses](https://gdquest.mavenseed.com/) to support our work on Free Software.
 
