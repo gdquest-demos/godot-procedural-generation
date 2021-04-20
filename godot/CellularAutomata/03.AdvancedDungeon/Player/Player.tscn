@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://CellularAutomata/03.AdvancedDungeon/Player/Player.gd" type="Script" id=1]
+[ext_resource path="res://CellularAutomata/03.AdvancedDungeon/Player/pickaxe.svg" type="Texture" id=2]
+[ext_resource path="res://CellularAutomata/03.AdvancedDungeon/Player/player.svg" type="Texture" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 24.0
+
+[node name="Player" type="KinematicBody2D"]
+collision_mask = 0
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 20 )
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+
+[node name="Pivot" type="Position2D" parent="."]
+
+[node name="Pickaxe" type="Sprite" parent="Pivot"]
+position = Vector2( 64, 0 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 2 )
