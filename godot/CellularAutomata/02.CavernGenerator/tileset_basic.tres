@@ -1,6 +1,7 @@
 [gd_resource type="TileSet" load_steps=2 format=2]
 
-[ext_resource path="res://CellularAutomata/02.BasicDungeon/tiles_basic.png" type="Texture" id=1]
+[ext_resource path="res://CellularAutomata/02.CavernGenerator/tiles_basic.png" type="Texture" id=1]
+
 
 [resource]
 0/name = "tiles_basic.png 0"

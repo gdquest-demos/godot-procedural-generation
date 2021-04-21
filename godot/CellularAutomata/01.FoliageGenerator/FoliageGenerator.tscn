@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://CellularAutomata/01.GameOfLife/foliage.svg" type="Texture" id=1]
-[ext_resource path="res://CellularAutomata/01.GameOfLife/FoliageGenerator.gd" type="Script" id=2]
+[ext_resource path="res://CellularAutomata/01.FoliageGenerator/foliage.svg" type="Texture" id=1]
+[ext_resource path="res://CellularAutomata/01.FoliageGenerator/FoliageGenerator.gd" type="Script" id=2]
 
 [sub_resource type="TileSet" id=1]
 0/name = "foliage"

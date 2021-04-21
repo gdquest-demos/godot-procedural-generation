@@ -1,14 +1,13 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://CellularAutomata/03.AdvancedDungeon/Doodads/treasure.svg" type="Texture" id=1]
-[ext_resource path="res://CellularAutomata/03.AdvancedDungeon/Doodads/Treasure.gd" type="Script" id=2]
+[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Doodads/exit.svg" type="Texture" id=1]
+[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Doodads/Exit.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 32 )
 
-[node name="Treasure" type="Area2D" groups=[
-"treasure",
-]]
+[node name="Exit" type="Area2D"]
+monitoring = false
 monitorable = false
 collision_layer = 0
 script = ExtResource( 2 )

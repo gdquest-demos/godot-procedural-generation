@@ -1,6 +1,5 @@
 extends Button
 
-
 export (NodePath) var camera_one_path
 export (NodePath) var camera_two_path
 

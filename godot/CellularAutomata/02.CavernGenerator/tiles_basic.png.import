@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/player.svg-45acab669291f082fee84806f6ca059f.stex"
+path="res://.import/tiles_basic.png-c37d53ddad9ea99b63fdb526d9c92d4f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CellularAutomata/03.AdvancedDungeon/Player/player.svg"
-dest_files=[ "res://.import/player.svg-45acab669291f082fee84806f6ca059f.stex" ]
+source_file="res://CellularAutomata/02.CavernGenerator/tiles_basic.png"
+dest_files=[ "res://.import/tiles_basic.png-c37d53ddad9ea99b63fdb526d9c92d4f.stex" ]
 
 [params]
 

@@ -1,13 +1,10 @@
+## Generates a cavern using an algorithm based on celular automata.
 extends Node2D
 
 signal dungeon_generation_started
 signal dungeon_generation_completed
 
-export var _map_size := Vector2(80, 45)
-export (PackedScene) var treasure_scene
-
-
-enum CellType {  WALL, FLOOR }
+enum CellType { WALL, FLOOR }
 
 const CELL_NEIGHBORS := [
 	Vector2.LEFT,
@@ -19,6 +16,9 @@ const CELL_NEIGHBORS := [
 	Vector2(1, -1),
 	Vector2(1, 1)
 ]
+
+export var _map_size := Vector2(80, 45)
+export (PackedScene) var treasure_scene
 
 var _wall_conversion := 4 setget set_wall_conversion
 var _floor_conversion := 4 setget set_floor_conversion
@@ -36,77 +36,73 @@ onready var _tilemap := $TileMapDungeon
 
 
 func _ready() -> void:
-	#randomize()
 	generate_new_dungeon()
 
 
 func generate_new_dungeon() -> void:
-	
 	emit_signal("dungeon_generation_started")
-	
+
 	for treasure in get_tree().get_nodes_in_group("treasure"):
 		treasure.queue_free()
-	
-	_initialize_map()
-	
+
+	_map = _generate_random_map()
+
+	# We slow down the generation and draw it for visualization purposes.
 	for step in _step_count:
-		
 		if _step_time > 0:
 			_paint_map()
 			yield(get_tree().create_timer(_step_time), "timeout")
-		
-		_map = _step()
-	
+		_map = _advance_simulation(_map)
+
 	_paint_map()
-	
 	emit_signal("dungeon_generation_completed")
 
 
-func _initialize_map() -> void:
-	
+## Generates a dictionary representing a map with random walls and floors.
+func _generate_random_map() -> Dictionary:
+	var map := {}
 	for x in range(_map_size.x):
 		for y in range(_map_size.y):
-			_map[Vector2(x, y)] = CellType.WALL if randf() < _wall_chance else CellType.FLOOR
+			map[Vector2(x, y)] = CellType.WALL if randf() < _wall_chance else CellType.FLOOR
+	return map
 
 
-func _step() -> Dictionary:
-	var _new_map := {}
-	
-	for cell in _map:
+## Advances the cellular automata simulation by one step
+func _advance_simulation(input_map: Dictionary) -> Dictionary:
+	var map := {}
+	for cell in input_map:
 		var floor_neighbor_count = _count_floor_neighbors(cell)
-		if _map[cell] == CellType.FLOOR:
-			
+		if input_map[cell] == CellType.FLOOR:
 			if floor_neighbor_count < _wall_conversion:
-				_new_map[cell] = CellType.WALL
+				map[cell] = CellType.WALL
 			else:
-				_new_map[cell] = _map[cell]
+				map[cell] = input_map[cell]
 		else:
-			_new_map[cell] = CellType.FLOOR if floor_neighbor_count > _floor_conversion else CellType.WALL
-	
-	return _new_map
+			map[cell] = (
+				CellType.FLOOR
+				if floor_neighbor_count > _floor_conversion
+				else CellType.WALL
+			)
+	return map
 
 
+## Draws tiles on the tilemap.
 func _paint_map() -> void:
 	for cell in _map:
 		var cell_type = CellType.WALL if _map[cell] == CellType.WALL else CellType.FLOOR
-	
 		_tilemap.set_cellv(cell, cell_type)
-	
 	_tilemap.update_bitmask_region()
 
 
+## Returns the number of neighboring cells that are of type FLOOR.
 func _count_floor_neighbors(location: Vector2) -> int:
 	var count = 0
-	
 	for neighbor in CELL_NEIGHBORS:
 		var check_location = location + neighbor
-		
 		if not _map.has(check_location):
 			continue
-		
 		if _map[check_location] == CellType.FLOOR:
 			count += 1
-	
 	return count
 
 

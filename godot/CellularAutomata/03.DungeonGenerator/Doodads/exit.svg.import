@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/pickaxe.svg-461905a49043a6a00e873f6a1abf64c2.stex"
+path="res://.import/exit.svg-512b6fded43c5050168733d470a06eab.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CellularAutomata/03.AdvancedDungeon/Player/pickaxe.svg"
-dest_files=[ "res://.import/pickaxe.svg-461905a49043a6a00e873f6a1abf64c2.stex" ]
+source_file="res://CellularAutomata/03.DungeonGenerator/Doodads/exit.svg"
+dest_files=[ "res://.import/exit.svg-512b6fded43c5050168733d470a06eab.stex" ]
 
 [params]
 

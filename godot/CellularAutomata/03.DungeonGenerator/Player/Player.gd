@@ -17,9 +17,9 @@ func _physics_process(_delta: float) -> void:
 	)
 	if direction.length() > 1.0:
 		direction = direction.normalized()
-	
+
 	_update_look_direction(direction)
-	
+
 	_velocity = direction * speed
 	_velocity = move_and_slide(_velocity)
 

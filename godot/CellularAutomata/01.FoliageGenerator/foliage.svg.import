@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tiles_basic.png-3aeac3f9eee5eedc7804a55a9fc0182b.stex"
+path="res://.import/foliage.svg-a0743f5343dacd2ce3da608aa49d3424.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CellularAutomata/02.BasicDungeon/tiles_basic.png"
-dest_files=[ "res://.import/tiles_basic.png-3aeac3f9eee5eedc7804a55a9fc0182b.stex" ]
+source_file="res://CellularAutomata/01.FoliageGenerator/foliage.svg"
+dest_files=[ "res://.import/foliage.svg-a0743f5343dacd2ce3da608aa49d3424.stex" ]
 
 [params]
 
