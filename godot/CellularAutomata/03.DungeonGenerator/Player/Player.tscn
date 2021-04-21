@@ -4,7 +4,6 @@
 [ext_resource path="res://CellularAutomata/03.DungeonGenerator/Player/pickaxe.svg" type="Texture" id=2]
 [ext_resource path="res://CellularAutomata/03.DungeonGenerator/Player/player.svg" type="Texture" id=3]
 
-
 [sub_resource type="CircleShape2D" id=1]
 radius = 24.0
 

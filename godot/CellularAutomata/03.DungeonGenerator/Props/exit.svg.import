@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/exit.svg-512b6fded43c5050168733d470a06eab.stex"
+path="res://.import/exit.svg-44c6206b1780756a1ab6581218507ac5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CellularAutomata/03.DungeonGenerator/Doodads/exit.svg"
-dest_files=[ "res://.import/exit.svg-512b6fded43c5050168733d470a06eab.stex" ]
+source_file="res://CellularAutomata/03.DungeonGenerator/Props/exit.svg"
+dest_files=[ "res://.import/exit.svg-44c6206b1780756a1ab6581218507ac5.stex" ]
 
 [params]
 

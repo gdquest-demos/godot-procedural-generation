@@ -2,7 +2,7 @@
 
 [ext_resource path="res://CellularAutomata/02.CavernGenerator/tileset_basic.tres" type="TileSet" id=1]
 [ext_resource path="res://CellularAutomata/02.CavernGenerator/UISettings.gd" type="Script" id=2]
-[ext_resource path="res://CellularAutomata/02.CavernGenerator/CavernGenerator.gd" type="Script" id=3]
+[ext_resource path="res://CellularAutomata/02.CavernGenerator/CellularCavernGenerator.gd" type="Script" id=3]
 
 [node name="CavernGenerator" type="Node2D"]
 script = ExtResource( 3 )
@@ -70,7 +70,7 @@ hint_tooltip = "The chance a cell initially spawns as a wall tile."
 mouse_filter = 1
 text = "Wall Chance"
 
-[node name="SliderWallChance" type="HSlider" parent="CanvasLayer/UISettings/WallChance" groups=[
+[node name="Slider" type="HSlider" parent="CanvasLayer/UISettings/WallChance" groups=[
 "slider",
 ]]
 margin_left = 136.0
@@ -113,7 +113,7 @@ hint_tooltip = "Each step, a floor cell turns into a wall if it has less than th
 mouse_filter = 1
 text = "Wall Conversion"
 
-[node name="SliderWallConversion" type="HSlider" parent="CanvasLayer/UISettings/WallConversion" groups=[
+[node name="Slider" type="HSlider" parent="CanvasLayer/UISettings/WallConversion" groups=[
 "slider",
 ]]
 margin_left = 136.0
@@ -155,7 +155,7 @@ hint_tooltip = "Each step, a wall cell turns into a floor if it has greater than
 mouse_filter = 1
 text = "Floor Conversion"
 
-[node name="SliderFloorConversion" type="HSlider" parent="CanvasLayer/UISettings/FloorConversion" groups=[
+[node name="Slider" type="HSlider" parent="CanvasLayer/UISettings/FloorConversion" groups=[
 "slider",
 ]]
 margin_left = 136.0
@@ -195,7 +195,7 @@ margin_bottom = 17.0
 rect_min_size = Vector2( 132, 0 )
 text = "Step Count"
 
-[node name="SliderStepCount" type="HSlider" parent="CanvasLayer/UISettings/StepCount" groups=[
+[node name="Slider" type="HSlider" parent="CanvasLayer/UISettings/StepCount" groups=[
 "slider",
 ]]
 margin_left = 136.0
@@ -235,7 +235,7 @@ margin_bottom = 17.0
 rect_min_size = Vector2( 132, 0 )
 text = "Step Time"
 
-[node name="SliderStepSpeed" type="HSlider" parent="CanvasLayer/UISettings/StepSpeed" groups=[
+[node name="Slider" type="HSlider" parent="CanvasLayer/UISettings/StepSpeed" groups=[
 "slider",
 ]]
 margin_left = 136.0
@@ -266,8 +266,8 @@ __meta__ = {
 [connection signal="wall_chance_changed" from="CanvasLayer/UISettings" to="." method="set_wall_chance"]
 [connection signal="wall_conversion_changed" from="CanvasLayer/UISettings" to="." method="set_wall_conversion"]
 [connection signal="pressed" from="CanvasLayer/UISettings/ButtonGenerate" to="." method="generate_new_dungeon"]
-[connection signal="value_changed" from="CanvasLayer/UISettings/WallChance/SliderWallChance" to="CanvasLayer/UISettings" method="_on_SliderWallChance_value_changed"]
-[connection signal="value_changed" from="CanvasLayer/UISettings/WallConversion/SliderWallConversion" to="CanvasLayer/UISettings" method="_on_SliderWallConversion_value_changed"]
-[connection signal="value_changed" from="CanvasLayer/UISettings/FloorConversion/SliderFloorConversion" to="CanvasLayer/UISettings" method="_on_SliderFloorConversion_value_changed"]
-[connection signal="value_changed" from="CanvasLayer/UISettings/StepCount/SliderStepCount" to="CanvasLayer/UISettings" method="_on_SliderStepCount_value_changed"]
-[connection signal="value_changed" from="CanvasLayer/UISettings/StepSpeed/SliderStepSpeed" to="CanvasLayer/UISettings" method="_on_SliderStepSpeed_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/WallChance/Slider" to="CanvasLayer/UISettings" method="_on_SliderWallChance_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/WallConversion/Slider" to="CanvasLayer/UISettings" method="_on_SliderWallConversion_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/FloorConversion/Slider" to="CanvasLayer/UISettings" method="_on_SliderFloorConversion_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/StepCount/Slider" to="CanvasLayer/UISettings" method="_on_SliderStepCount_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/StepSpeed/Slider" to="CanvasLayer/UISettings" method="_on_SliderStepSpeed_value_changed"]

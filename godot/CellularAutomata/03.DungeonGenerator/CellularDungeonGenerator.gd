@@ -38,7 +38,6 @@ onready var _exit := $Exit
 
 
 func _ready() -> void:
-	#randomize()
 	generate_new_dungeon()
 
 
@@ -58,13 +57,9 @@ func generate_new_dungeon() -> void:
 		_map = _step()
 
 	_remove_small_caverns()
-
 	_paint_map()
-
 	_add_start_and_exit()
-
 	_add_treasure()
-
 	emit_signal("dungeon_generation_completed")
 
 
@@ -114,9 +109,7 @@ func _find_caverns() -> Dictionary:
 	for cell in _map:
 		if not map_copy[cell] == CellType.FLOOR:
 			continue
-
 		caverns[cavern_index] = _assign_cavern(cell, cavern_index, map_copy)
-
 		cavern_index += 1
 
 	return caverns
@@ -149,29 +142,22 @@ func _assign_cavern(cell: Vector2, index: int, map: Dictionary) -> Array:
 func _paint_map() -> void:
 	for cell in _map:
 		var cell_type = CellType.WALL if _map[cell] == CellType.WALL else CellType.FLOOR
-
 		_tilemap.set_cellv(cell, cell_type)
-
 	_tilemap.update_bitmask_region()
 
 
 func _add_start_and_exit() -> void:
 	var floor_cells = _tilemap.get_used_cells_by_id(CellType.FLOOR)
-
 	if not floor_cells:
 		return
 
 	floor_cells.shuffle()
-
 	var player_cell = floor_cells.pop_back()
-
 	_player.position = player_cell * CELL_SIZE
 
 	var exit_cell := Vector2.ZERO
-
 	while floor_cells:
 		var check_cell = floor_cells.pop_back()
-
 		if check_cell.distance_to(player_cell) >= _minimum_distance_to_exit:
 			exit_cell = check_cell
 			break
@@ -190,20 +176,15 @@ func _add_treasure() -> void:
 
 		if _count_floor_neighbors(cell) < 5:
 			treasures_placed += 1
-
 			var treasure = treasure_scene.instance()
-
 			treasure.position = cell * CELL_SIZE
-
 			add_child(treasure)
 
 
 func _count_floor_neighbors(location: Vector2) -> int:
 	var count = 0
-
 	for neighbor in CELL_NEIGHBORS:
 		var check_location = location + neighbor
-
 		if not _map.has(check_location):
 			continue
 
@@ -231,6 +212,7 @@ func remove_wall(position_global: Vector2) -> void:
 			)
 
 
+## We use the setters below to update values when changing the sliders.
 func set_wall_chance(value: float) -> void:
 	_wall_chance = value
 

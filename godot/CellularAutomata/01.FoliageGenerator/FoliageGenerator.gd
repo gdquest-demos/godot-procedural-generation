@@ -1,10 +1,8 @@
 extends Node2D
 
-export var chance_to_start_alive := 0.52
-
 enum PlantState { GROWN, DIED = -1 }
 
-const _neighbors_moore := [
+const NEIGHBORS := [
 	Vector2.LEFT,
 	Vector2.RIGHT,
 	Vector2.UP,
@@ -15,10 +13,12 @@ const _neighbors_moore := [
 	Vector2(1, 1)
 ]
 
+export var chance_to_start_alive := 0.52
+
 var _map := {}
 var _grid_size := Vector2(20, 11)
 
-onready var _tilemap := $FoliageTileMap
+onready var _tilemap: TileMap = $FoliageTileMap
 
 
 func _ready() -> void:
@@ -30,8 +30,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton or not event.pressed:
 		return
 
-	var click_position: Vector2 = get_global_mouse_position()
-	var grid_position: Vector2 = _tilemap.world_to_map(click_position)
+	var click_position := get_global_mouse_position()
+	var grid_position := _tilemap.world_to_map(click_position)
 
 	if not _map.has(grid_position):
 		return
@@ -58,44 +58,46 @@ func _initialize_map() -> void:
 func _count_alive_neighbors(map: Dictionary, location: Vector2) -> int:
 	var count = 0
 
-	for neighbor in _neighbors_moore:
-		var check_location = location + neighbor
+	for neighbor in NEIGHBORS:
+		var neighbor_cell = location + neighbor
+		var is_neighbor_outside_grid: bool = (
+			neighbor_cell.x < 0
+			or neighbor_cell.y < 0
+			or neighbor_cell.x >= _grid_size.x
+			or neighbor_cell.y >= _grid_size.y
+		)
 
-		if (
-			check_location.x < 0
-			or check_location.x >= _grid_size.x
-			or check_location.y < 0
-			or check_location.y >= _grid_size.y
-		):
+		if is_neighbor_outside_grid:
 			continue
 
-		if _map[check_location] == PlantState.GROWN:
+		if _map[neighbor_cell] == PlantState.GROWN:
 			count += 1
 
 	return count
 
 
 func update_grid() -> void:
-	_map = _step()
+	_map = _advance_simulation(_map)
 	_paint_map()
 
 
-func _step() -> Dictionary:
-	var _new_map := {}
+func _advance_simulation(input_map: Dictionary) -> Dictionary:
+	var new_map := {}
 
-	for cell in _map:
-		var alive_count = _count_alive_neighbors(_map, cell)
-		if _map[cell] == PlantState.GROWN:
+	for cell in input_map:
+		var alive_count = _count_alive_neighbors(input_map, cell)
+
+		if input_map[cell] == PlantState.GROWN:
 			if alive_count < 2 or alive_count > 3:
-				_new_map[cell] = PlantState.DIED
+				new_map[cell] = PlantState.DIED
 			elif alive_count == 2 or alive_count == 3:
-				_new_map[cell] = _map[cell]
+				new_map[cell] = input_map[cell]
 		elif alive_count == 3:
-			_new_map[cell] = PlantState.GROWN
+			new_map[cell] = PlantState.GROWN
 		else:
-			_new_map[cell] = _map[cell]
+			new_map[cell] = input_map[cell]
 
-	return _new_map
+	return new_map
 
 
 func _paint_map() -> void:
