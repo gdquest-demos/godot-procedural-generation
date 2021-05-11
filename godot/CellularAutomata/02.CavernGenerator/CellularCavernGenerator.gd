@@ -42,9 +42,6 @@ func _ready() -> void:
 func generate_new_dungeon() -> void:
 	emit_signal("dungeon_generation_started")
 
-	for treasure in get_tree().get_nodes_in_group("treasure"):
-		treasure.queue_free()
-
 	_map = _generate_random_map()
 
 	# We slow down the generation and draw it for visualization purposes.
