@@ -208,7 +208,7 @@ func remove_wall(position_global: Vector2) -> void:
 	for n in CELL_NEIGHBORS:
 		if _tilemap.get_cell_autotile_coord(cell.x + n.x, cell.y + n.y) == Vector2(7, 5):
 			_tilemap.set_cell(
-				cell.x + n.x, cell.y + n.y, CellType.FLOOR, false, false, false, Vector2(6, 2)
+				cell.x + n.x, cell.y + n.y, CellType.FLOOR, false, false, false, Vector2(7, 4)
 			)
 
 
