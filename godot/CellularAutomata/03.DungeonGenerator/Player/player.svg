@@ -7,9 +7,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="64"
-   height="64"
-   viewBox="0 0 16.933333 16.933334"
+   width="80"
+   height="80"
+   viewBox="0 0 21.166666 21.166667"
    version="1.1"
    id="svg8"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
@@ -23,9 +23,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="-22.807437"
-     inkscape:cy="69.358063"
+     inkscape:zoom="7.919596"
+     inkscape:cx="47.27953"
+     inkscape:cy="46.813179"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -54,27 +54,48 @@
      inkscape:groupmode="layer"
      id="layer1">
     <g
-       id="g899"
-       transform="matrix(0.5867459,0,0,0.5867459,1.0177498,2.4291236)">
+       id="g849"
+       transform="matrix(0.88951457,0,0,0.88951457,3.0521094,1.1693043)">
       <circle
-         style="fill:#272736;fill-opacity:1;stroke:#000000;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         style="fill:#272736;fill-opacity:1;stroke:#000000;stroke-width:0.310487;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
          id="path869"
-         cx="12.695303"
-         cy="10.289877"
-         r="14.165286" />
-      <circle
-         style="fill:#ffffeb;fill-opacity:1;stroke:none;stroke-width:0.742254;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
-         id="path871"
-         cx="7.2827568"
-         cy="8.0767002"
-         r="3.5787241" />
-      <circle
-         style="fill:#ffffeb;fill-opacity:1;stroke:none;stroke-width:1.09503;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
-         id="circle873"
-         cx="17.488113"
-         cy="5.2418785"
-         r="5.2796173" />
+         cx="8.4666672"
+         cy="10.583333"
+         r="8.3114233" />
+      <g
+         id="g843"
+         transform="translate(0,0.58028626)">
+        <circle
+           style="fill:#ffffeb;fill-opacity:1;stroke:none;stroke-width:0.435515;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+           id="path871"
+           cx="12.072842"
+           cy="7.480691"
+           r="2.0998018" />
+        <circle
+           style="fill:#ffffeb;fill-opacity:1;stroke:none;stroke-width:0.435515;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+           id="circle839"
+           cx="12.072842"
+           cy="12.525403"
+           r="2.0998018" />
+      </g>
     </g>
+    <path
+       sodipodi:type="star"
+       style="fill:#8fde5d;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round"
+       id="path834"
+       sodipodi:sides="3"
+       sodipodi:cx="17.443283"
+       sodipodi:cy="10.583333"
+       sodipodi:r1="3.7233829"
+       sodipodi:r2="1.8616915"
+       sodipodi:arg1="0"
+       sodipodi:arg2="1.0471976"
+       inkscape:flatsided="false"
+       inkscape:rounded="0.01"
+       inkscape:randomized="0"
+       d="m 21.166666,10.583333 c 0,0.03224 -2.764612,1.596149 -2.792537,1.612272 -0.02793,0.01612 -2.764612,1.628395 -2.792537,1.612272 -0.02793,-0.01612 0,-3.192299 0,-3.224544 0,-0.03225 -0.02793,-3.2084215 0,-3.2245442 0.02792,-0.016123 2.764612,1.5961494 2.792537,1.6122721 0.02792,0.016123 2.792537,1.5800271 2.792537,1.6122721 z"
+       inkscape:transform-center-x="-0.62662863"
+       transform="matrix(0.67770006,0,0,1,6.8220151,0)" />
   </g>
   <inkscape:templateinfo>
     <inkscape:name>pear</inkscape:name>

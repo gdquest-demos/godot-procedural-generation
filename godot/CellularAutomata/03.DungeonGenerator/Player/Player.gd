@@ -4,13 +4,14 @@ signal pickaxe_used(dig_position)
 
 export var speed := 500
 
+const DRILL_RANGE := 64
+
 onready var _pivot := $Pivot
-onready var _pickaxe := $Pivot/Pickaxe
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
-		emit_signal("pickaxe_used", _pickaxe.global_position)
+		emit_signal("pickaxe_used", global_position + Vector2.RIGHT.rotated(_pivot.rotation) * DRILL_RANGE)
 
 
 func _physics_process(_delta: float) -> void:
