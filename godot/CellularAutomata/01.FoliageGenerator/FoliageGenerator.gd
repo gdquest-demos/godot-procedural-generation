@@ -55,7 +55,7 @@ func _initialize_map() -> void:
 			)
 
 
-func _count_alive_neighbors(map: Dictionary, location: Vector2) -> int:
+func _count_alive_neighbors(location: Vector2) -> int:
 	var count = 0
 
 	for neighbor in NEIGHBORS:
@@ -85,7 +85,7 @@ func _advance_simulation(input_map: Dictionary) -> Dictionary:
 	var new_map := {}
 
 	for cell in input_map:
-		var alive_count = _count_alive_neighbors(input_map, cell)
+		var alive_count = _count_alive_neighbors(cell)
 
 		if input_map[cell] == PlantState.GROWN:
 			if alive_count < 2 or alive_count > 3:
