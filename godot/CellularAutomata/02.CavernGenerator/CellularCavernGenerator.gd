@@ -26,9 +26,6 @@ var _floor_conversion := 4 setget set_floor_conversion
 var _step_count := 10 setget set_step_count
 var _step_time := 0.1 setget set_step_time
 var _wall_chance := 0.5 setget set_wall_chance
-var _minimum_cavern_area := 50
-var _minimum_distance_to_exit := 10
-var _maximum_treasure := 10
 
 var _map := {}
 
