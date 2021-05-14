@@ -1,6 +1,6 @@
 extends Node2D
 
-enum PlantState { GROWN, DIED = -1 }
+enum PlantState { ALIVE, DEAD = -1 }
 
 const NEIGHBORS := [
 	Vector2.LEFT,
@@ -22,6 +22,7 @@ onready var _tilemap: TileMap = $FoliageTileMap
 
 
 func _ready() -> void:
+	randomize()
 	_initialize_map()
 	_paint_map()
 
@@ -38,9 +39,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event.button_index == BUTTON_LEFT:
 		_map[grid_position] = (
-			PlantState.DIED
-			if not _map[grid_position] == PlantState.DIED
-			else PlantState.GROWN
+			PlantState.DEAD
+			if not _map[grid_position] == PlantState.DEAD
+			else PlantState.ALIVE
 		)
 		_paint_map()
 
@@ -49,9 +50,9 @@ func _initialize_map() -> void:
 	for x in range(_grid_size.x):
 		for y in range(_grid_size.y):
 			_map[Vector2(x, y)] = (
-				PlantState.GROWN
+				PlantState.ALIVE
 				if randf() < chance_to_start_alive
-				else PlantState.DIED
+				else PlantState.DEAD
 			)
 
 
@@ -70,7 +71,7 @@ func _count_alive_neighbors(location: Vector2) -> int:
 		if is_neighbor_outside_grid:
 			continue
 
-		if _map[neighbor_cell] == PlantState.GROWN:
+		if _map[neighbor_cell] == PlantState.ALIVE:
 			count += 1
 
 	return count
@@ -87,13 +88,10 @@ func _advance_simulation(input_map: Dictionary) -> Dictionary:
 	for cell in input_map:
 		var alive_count = _count_alive_neighbors(cell)
 
-		if input_map[cell] == PlantState.GROWN:
-			if alive_count < 2 or alive_count > 3:
-				new_map[cell] = PlantState.DIED
-			elif alive_count == 2 or alive_count == 3:
-				new_map[cell] = input_map[cell]
-		elif alive_count == 3:
-			new_map[cell] = PlantState.GROWN
+		if input_map[cell] == PlantState.ALIVE and alive_count > 2:
+			new_map[cell] = PlantState.DEAD
+		elif input_map[cell] == PlantState.DEAD and alive_count == 2:
+			new_map[cell] = PlantState.ALIVE
 		else:
 			new_map[cell] = input_map[cell]
 
@@ -101,7 +99,5 @@ func _advance_simulation(input_map: Dictionary) -> Dictionary:
 
 
 func _paint_map() -> void:
-	_tilemap.clear()
-
 	for cell in _map:
 		_tilemap.set_cellv(cell, _map[cell])
