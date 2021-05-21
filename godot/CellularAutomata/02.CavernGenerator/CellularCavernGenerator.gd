@@ -17,8 +17,7 @@ const CELL_NEIGHBORS := [
 	Vector2(1, 1)
 ]
 
-export var _map_size := Vector2(80, 45)
-export (PackedScene) var treasure_scene
+const MAP_SIZE := Vector2(80, 45)
 
 var _wall_conversion := 4 setget set_wall_conversion
 var _floor_conversion := 4 setget set_floor_conversion
@@ -55,8 +54,8 @@ func generate_new_dungeon() -> void:
 ## Generates a dictionary representing a map with random walls and floors.
 func _generate_random_map() -> Dictionary:
 	var map := {}
-	for x in range(_map_size.x):
-		for y in range(_map_size.y):
+	for x in range(MAP_SIZE.x):
+		for y in range(MAP_SIZE.y):
 			map[Vector2(x, y)] = CellType.WALL if randf() < _wall_chance else CellType.FLOOR
 	return map
 
@@ -83,9 +82,7 @@ func _advance_simulation(input_map: Dictionary) -> Dictionary:
 ## Draws tiles on the tilemap.
 func _paint_map() -> void:
 	for cell in _map:
-		var cell_type = CellType.WALL if _map[cell] == CellType.WALL else CellType.FLOOR
-		_tilemap.set_cellv(cell, cell_type)
-	_tilemap.update_bitmask_region()
+		_tilemap.set_cellv(cell, _map[cell])
 
 
 ## Returns the number of neighboring cells that are of type FLOOR.
