@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/player.svg-ee971c984e269d8600e37ca86a4ee405.stex"
+path="res://.import/tileset_mining.png-da97036bb2cde0cfbe008239cc0336dd.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CellularAutomata/03.DungeonGenerator/Player/player.svg"
-dest_files=[ "res://.import/player.svg-ee971c984e269d8600e37ca86a4ee405.stex" ]
+source_file="res://CellularAutomata/03.DungeonGenerator/tileset_mining.png"
+dest_files=[ "res://.import/tileset_mining.png-da97036bb2cde0cfbe008239cc0336dd.stex" ]
 
 [params]
 

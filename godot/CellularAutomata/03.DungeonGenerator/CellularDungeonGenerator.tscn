@@ -29,7 +29,7 @@ smoothing_enabled = true
 smoothing_speed = 10.0
 
 [node name="Exit" parent="." instance=ExtResource( 1 )]
-position = Vector2( 144, 0 )
+position = Vector2( 115.221, -2.63617 )
 z_index = 1
 monitoring = true
 
@@ -425,7 +425,7 @@ __meta__ = {
 
 [connection signal="dungeon_generation_completed" from="." to="CanvasLayer/Settings" method="enable"]
 [connection signal="dungeon_generation_started" from="." to="CanvasLayer/Settings" method="disable"]
-[connection signal="pickaxe_used" from="Player" to="." method="remove_wall"]
+[connection signal="pickaxe_used" from="Player" to="." method="remove_walls"]
 [connection signal="player_entered" from="Exit" to="." method="generate_new_dungeon"]
 [connection signal="floor_conversion_changed" from="CanvasLayer/Settings" to="." method="set_floor_conversion"]
 [connection signal="maximum_treasure_changed" from="CanvasLayer/Settings" to="." method="set_maximum_treasure"]

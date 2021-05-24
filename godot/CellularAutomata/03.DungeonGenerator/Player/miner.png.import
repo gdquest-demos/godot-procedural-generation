@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/exit.svg-44c6206b1780756a1ab6581218507ac5.stex"
+path="res://.import/miner.png-7aedf707ce38ff9d2406e476e753d784.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CellularAutomata/03.DungeonGenerator/Props/exit.svg"
-dest_files=[ "res://.import/exit.svg-44c6206b1780756a1ab6581218507ac5.stex" ]
+source_file="res://CellularAutomata/03.DungeonGenerator/Player/miner.png"
+dest_files=[ "res://.import/miner.png-7aedf707ce38ff9d2406e476e753d784.stex" ]
 
 [params]
 

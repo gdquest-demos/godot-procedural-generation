@@ -152,15 +152,21 @@ func _add_start_and_exit() -> void:
 		return
 
 	floor_cells.shuffle()
-	var player_cell = floor_cells.pop_back()
+	var player_cell := Vector2.ZERO
+	
+	for floor_cell in floor_cells:
+		if _count_floor_neighbors(floor_cell) > 7:
+			player_cell = floor_cell
+			break
+	
 	_player.position = player_cell * CELL_SIZE
 
 	var exit_cell := Vector2.ZERO
-	while floor_cells:
-		var check_cell = floor_cells.pop_back()
-		if check_cell.distance_to(player_cell) >= _minimum_distance_to_exit:
-			exit_cell = check_cell
-			break
+	for floor_cell in floor_cells:
+		if floor_cell.distance_to(player_cell) >= _minimum_distance_to_exit:
+			if _count_floor_neighbors(floor_cell) > 7:
+				exit_cell = floor_cell
+				break
 
 	_exit.position = exit_cell * CELL_SIZE
 
@@ -168,17 +174,27 @@ func _add_start_and_exit() -> void:
 func _add_treasure() -> void:
 	var floor_cells = _tilemap.get_used_cells_by_id(CellType.FLOOR)
 	var treasures_placed := 0
-
+	
+	var corner_subtiles := [
+		Vector2(0, 0), 
+		Vector2(0, 2), 
+		Vector2(2, 0), 
+		Vector2(2, 2)
+		]
+	
 	floor_cells.shuffle()
 
 	while treasures_placed < _maximum_treasure and floor_cells:
 		var cell = floor_cells.pop_back()
-
-		if _count_floor_neighbors(cell) < 5:
-			treasures_placed += 1
+		
+		var subtile = _tilemap.get_cell_autotile_coord(cell.x, cell.y)
+		
+		if corner_subtiles.has(subtile):
 			var treasure = treasure_scene.instance()
-			treasure.position = cell * CELL_SIZE
+			# Offset the treasure based on which corner subtile the treasure appears in. This is based on the subtiles' position in relation to each other in the tileset.
+			treasure.position = cell * CELL_SIZE + (subtile - Vector2(1, 1)) * -CELL_SIZE/2
 			add_child(treasure)
+			treasures_placed += 1
 
 
 func _count_floor_neighbors(location: Vector2) -> int:
@@ -194,22 +210,26 @@ func _count_floor_neighbors(location: Vector2) -> int:
 	return count
 
 
-func remove_wall(position_global: Vector2) -> void:
-	var cell = _tilemap.world_to_map(position_global)
+func remove_walls(global_positions: Array) -> void:
+	for pos in global_positions:
+	
+		var cell = _tilemap.world_to_map(pos)
 
-	if _tilemap.get_cellv(cell) == CellType.FLOOR:
-		return
-
-	_tilemap.set_cellv(cell, CellType.FLOOR)
-	_tilemap.update_bitmask_area(cell)
-
-	# Subtile (7, 5) corresponds to the different version of the floor tile.
-	# We have this line to prevent it from appearing when digging.
-	for n in CELL_NEIGHBORS:
-		if _tilemap.get_cell_autotile_coord(cell.x + n.x, cell.y + n.y) == Vector2(7, 5):
-			_tilemap.set_cell(
-				cell.x + n.x, cell.y + n.y, CellType.FLOOR, false, false, false, Vector2(7, 4)
-			)
+		if _tilemap.get_cellv(cell) == CellType.FLOOR:
+			continue
+		
+		_tilemap.set_cellv(cell, CellType.FLOOR)
+		_tilemap.update_bitmask_area(cell)
+		# Subtiles (0, 3) and (1, 3) correspond to different versions of the floor tile.
+		# We have this line to prevent them from appearing while digging.
+		for n in CELL_NEIGHBORS:
+			var variants := [Vector2(0, 3), Vector2(1, 3)]
+			var subtile = _tilemap.get_cell_autotile_coord(cell.x + n.x, cell.y + n.y)
+			
+			if variants.has(subtile):
+				_tilemap.set_cell(
+					cell.x + n.x, cell.y + n.y, CellType.FLOOR, false, false, false, Vector2(1, 1)
+				)
 
 
 ## We use the setters below to update values when changing the sliders.
