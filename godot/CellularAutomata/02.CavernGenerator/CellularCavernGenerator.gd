@@ -45,7 +45,7 @@ func generate_new_dungeon() -> void:
 		if _step_time > 0:
 			_paint_map()
 			yield(get_tree().create_timer(_step_time), "timeout")
-		_map = _advance_simulation(_map)
+		_map = _advance_simulation()
 
 	_paint_map()
 	emit_signal("dungeon_generation_completed")
@@ -61,22 +61,23 @@ func _generate_random_map() -> Dictionary:
 
 
 ## Advances the cellular automata simulation by one step
-func _advance_simulation(input_map: Dictionary) -> Dictionary:
-	var map := {}
-	for cell in input_map:
+func _advance_simulation() -> Dictionary:
+	var new_map := {}
+	for cell in _map:
 		var floor_neighbor_count = _count_floor_neighbors(cell)
-		if input_map[cell] == CellType.FLOOR:
-			if floor_neighbor_count < _wall_conversion:
-				map[cell] = CellType.WALL
-			else:
-				map[cell] = input_map[cell]
+		if _map[cell] == CellType.FLOOR:
+			new_map[cell] = (
+				CellType.WALL
+				if floor_neighbor_count < _wall_conversion
+				else CellType.FLOOR
+			)
 		else:
-			map[cell] = (
+			new_map[cell] = (
 				CellType.FLOOR
 				if floor_neighbor_count > _floor_conversion
 				else CellType.WALL
 			)
-	return map
+	return new_map
 
 
 ## Draws tiles on the tilemap.
