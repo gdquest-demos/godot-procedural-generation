@@ -1,9 +1,6 @@
 ## Generates a cavern using an algorithm based on celular automata.
 extends Node2D
 
-signal dungeon_generation_started
-signal dungeon_generation_completed
-
 enum CellType { WALL, FLOOR }
 
 const CELL_NEIGHBORS := [
@@ -36,8 +33,6 @@ func _ready() -> void:
 
 
 func generate_new_dungeon() -> void:
-	emit_signal("dungeon_generation_started")
-
 	_map = _generate_random_map()
 
 	# We slow down the generation and draw it for visualization purposes.
@@ -48,7 +43,6 @@ func generate_new_dungeon() -> void:
 		_map = _advance_simulation()
 
 	_paint_map()
-	emit_signal("dungeon_generation_completed")
 
 
 ## Generates a dictionary representing a map with random walls and floors.
@@ -65,17 +59,17 @@ func _advance_simulation() -> Dictionary:
 	var new_map := {}
 	for cell in _map:
 		var floor_neighbor_count = _count_floor_neighbors(cell)
-		if _map[cell] == CellType.FLOOR:
-			new_map[cell] = (
-				CellType.WALL
-				if floor_neighbor_count < _wall_conversion
-				else CellType.FLOOR
-			)
-		else:
+		if _map[cell] == CellType.WALL:
 			new_map[cell] = (
 				CellType.FLOOR
 				if floor_neighbor_count > _floor_conversion
 				else CellType.WALL
+			)
+		else:
+			new_map[cell] = (
+				CellType.WALL
+				if 8 - floor_neighbor_count > _wall_conversion
+				else CellType.FLOOR
 			)
 	return new_map
 

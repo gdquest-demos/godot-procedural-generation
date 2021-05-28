@@ -17,14 +17,6 @@ onready var floor_conversion_value := $FloorConversion/Value
 onready var step_count_value := $StepCount/Value
 
 
-func enable() -> void:
-	button_generate.disabled = false
-
-
-func disable() -> void:
-	button_generate.disabled = true
-
-
 func _on_SliderStepSpeed_value_changed(value: float) -> void:
 	step_time_value.text = "%s" % [value]
 	emit_signal("step_time_changed", value)

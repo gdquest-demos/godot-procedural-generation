@@ -423,8 +423,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="dungeon_generation_completed" from="." to="CanvasLayer/Settings" method="enable"]
-[connection signal="dungeon_generation_started" from="." to="CanvasLayer/Settings" method="disable"]
 [connection signal="pickaxe_used" from="Player" to="." method="remove_walls"]
 [connection signal="player_entered" from="Exit" to="." method="generate_new_dungeon"]
 [connection signal="floor_conversion_changed" from="CanvasLayer/Settings" to="." method="set_floor_conversion"]

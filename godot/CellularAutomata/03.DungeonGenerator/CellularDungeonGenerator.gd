@@ -1,8 +1,5 @@
 extends Node2D
 
-signal dungeon_generation_started
-signal dungeon_generation_completed
-
 export var _map_size := Vector2(80, 45)
 export (PackedScene) var treasure_scene
 
@@ -42,8 +39,6 @@ func _ready() -> void:
 
 
 func generate_new_dungeon() -> void:
-	emit_signal("dungeon_generation_started")
-
 	for treasure in get_tree().get_nodes_in_group("treasure"):
 		treasure.queue_free()
 
@@ -60,7 +55,6 @@ func generate_new_dungeon() -> void:
 	_paint_map()
 	_add_start_and_exit()
 	_add_treasure()
-	emit_signal("dungeon_generation_completed")
 
 
 func _initialize_map() -> void:
@@ -73,17 +67,17 @@ func _advance_simulation() -> Dictionary:
 	var new_map := {}
 	for cell in _map:
 		var floor_neighbor_count = _count_floor_neighbors(cell)
-		if _map[cell] == CellType.FLOOR:
-			new_map[cell] = (
-				CellType.WALL
-				if floor_neighbor_count < _wall_conversion
-				else CellType.FLOOR
-			)
-		else:
+		if _map[cell] == CellType.WALL:
 			new_map[cell] = (
 				CellType.FLOOR
 				if floor_neighbor_count > _floor_conversion
 				else CellType.WALL
+			)
+		else:
+			new_map[cell] = (
+				CellType.WALL
+				if 8 - floor_neighbor_count > _wall_conversion
+				else CellType.FLOOR
 			)
 	return new_map
 
