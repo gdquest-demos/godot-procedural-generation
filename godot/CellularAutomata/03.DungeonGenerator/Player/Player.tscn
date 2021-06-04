@@ -2,8 +2,8 @@
 
 [ext_resource path="res://CellularAutomata/03.DungeonGenerator/Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://CellularAutomata/03.DungeonGenerator/Player/miner.png" type="Texture" id=2]
-[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Player/drillTop.png" type="Texture" id=3]
-[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Player/drillBlade.png" type="Texture" id=4]
+[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Player/drill-top.png" type="Texture" id=3]
+[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Player/drill-blade.png" type="Texture" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 24.0
