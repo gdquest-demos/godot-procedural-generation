@@ -20,14 +20,6 @@ onready var min_cavern_area_value := $MinimumCavernArea/Value
 onready var min_exit_distance := $MinimumExitDistance/Value
 
 
-func enable() -> void:
-	button_generate.disabled = false
-
-
-func disable() -> void:
-	button_generate.disabled = true
-
-
 func _on_SliderStepSpeed_value_changed(value: float) -> void:
 	step_time_value.text = "%s" % [value]
 	emit_signal("step_time_changed", value)

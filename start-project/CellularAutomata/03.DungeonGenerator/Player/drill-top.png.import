@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/treasure.svg-dd65e842edd8fa7f7e009414a8c00475.stex"
+path="res://.import/drill-top.png-10ec986ed9090827bbe2b462e3e1035f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CellularAutomata/03.DungeonGenerator/Props/treasure.svg"
-dest_files=[ "res://.import/treasure.svg-dd65e842edd8fa7f7e009414a8c00475.stex" ]
+source_file="res://CellularAutomata/03.DungeonGenerator/Player/drill-top.png"
+dest_files=[ "res://.import/drill-top.png-10ec986ed9090827bbe2b462e3e1035f.stex" ]
 
 [params]
 

@@ -1,15 +1,17 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://CellularAutomata/03.DungeonGenerator/Props/Exit.tscn" type="PackedScene" id=1]
+[ext_resource path="res://CellularAutomata/02.CavernGenerator/tileset_basic.tres" type="TileSet" id=2]
 [ext_resource path="res://CellularAutomata/03.DungeonGenerator/Player/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://CellularAutomata/03.DungeonGenerator/ButtonCameraSwitch.gd" type="Script" id=5]
-[ext_resource path="res://CellularAutomata/03.DungeonGenerator/SettingsAdvanced.gd" type="Script" id=6]
+[ext_resource path="res://CellularAutomata/03.DungeonGenerator/UISettingsAdvanced.gd" type="Script" id=6]
 [ext_resource path="res://CellularAutomata/03.DungeonGenerator/CellularDungeonGenerator.gd" type="Script" id=7]
 
 [node name="CellularDungeonGenerator" type="Node2D"]
 script = ExtResource( 7 )
 
 [node name="TileMapDungeon" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
 format = 1
 
 [node name="CameraDungeon" type="Camera2D" parent="."]
@@ -31,7 +33,7 @@ monitoring = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Settings" type="Control" parent="CanvasLayer"]
+[node name="UISettings" type="Control" parent="CanvasLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 6 )
@@ -39,7 +41,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Settings"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/UISettings"]
 margin_top = 521.0
 margin_right = 540.0
 margin_bottom = 721.0
@@ -48,7 +50,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ButtonGenerate" type="Button" parent="CanvasLayer/Settings"]
+[node name="ButtonGenerate" type="Button" parent="CanvasLayer/UISettings"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -64,7 +66,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ButtonCameraSwitch" type="Button" parent="CanvasLayer/Settings"]
+[node name="ButtonCameraSwitch" type="Button" parent="CanvasLayer/UISettings"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -83,7 +85,7 @@ __meta__ = {
 camera_one_path = NodePath("../../../CameraDungeon")
 camera_two_path = NodePath("../../../Player/CameraPlayer")
 
-[node name="MinimumCavernArea" type="HBoxContainer" parent="CanvasLayer/Settings"]
+[node name="MinimumCavernArea" type="HBoxContainer" parent="CanvasLayer/UISettings"]
 margin_left = 8.0
 margin_top = 547.996
 margin_right = 400.0
@@ -92,7 +94,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Description" type="Label" parent="CanvasLayer/Settings/MinimumCavernArea"]
+[node name="Description" type="Label" parent="CanvasLayer/UISettings/MinimumCavernArea"]
 margin_top = 3.0
 margin_right = 132.0
 margin_bottom = 17.0
@@ -101,7 +103,7 @@ hint_tooltip = "The chance a cell initially spawns as a wall tile."
 mouse_filter = 1
 text = "Min Cavern Size"
 
-[node name="SliderMinimumCavernArea" type="HSlider" parent="CanvasLayer/Settings/MinimumCavernArea" groups=[
+[node name="SliderMinimumCavernArea" type="HSlider" parent="CanvasLayer/UISettings/MinimumCavernArea" groups=[
 "slider",
 ]]
 margin_left = 136.0
@@ -115,7 +117,7 @@ min_value = 1.0
 max_value = 200.0
 value = 50.0
 
-[node name="Value" type="Label" parent="CanvasLayer/Settings/MinimumCavernArea"]
+[node name="Value" type="Label" parent="CanvasLayer/UISettings/MinimumCavernArea"]
 margin_left = 360.0
 margin_top = 3.0
 margin_right = 392.0
@@ -126,7 +128,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MinimumExitDistance" type="HBoxContainer" parent="CanvasLayer/Settings"]
+[node name="MinimumExitDistance" type="HBoxContainer" parent="CanvasLayer/UISettings"]
 margin_left = 8.0
 margin_top = 527.996
 margin_right = 400.0
@@ -135,7 +137,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Description" type="Label" parent="CanvasLayer/Settings/MinimumExitDistance"]
+[node name="Description" type="Label" parent="CanvasLayer/UISettings/MinimumExitDistance"]
 margin_top = 3.0
 margin_right = 132.0
 margin_bottom = 17.0
@@ -144,7 +146,7 @@ hint_tooltip = "The chance a cell initially spawns as a wall tile."
 mouse_filter = 1
 text = "Min Exit Distance"
 
-[node name="SliderMinimumExitDistance" type="HSlider" parent="CanvasLayer/Settings/MinimumExitDistance" groups=[
+[node name="SliderMinimumExitDistance" type="HSlider" parent="CanvasLayer/UISettings/MinimumExitDistance" groups=[
 "slider",
 ]]
 margin_left = 136.0
@@ -158,7 +160,7 @@ min_value = 1.0
 max_value = 50.0
 value = 10.0
 
-[node name="Value" type="Label" parent="CanvasLayer/Settings/MinimumExitDistance"]
+[node name="Value" type="Label" parent="CanvasLayer/UISettings/MinimumExitDistance"]
 margin_left = 360.0
 margin_top = 3.0
 margin_right = 392.0
@@ -169,7 +171,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MaximumTreasure" type="HBoxContainer" parent="CanvasLayer/Settings"]
+[node name="MaximumTreasure" type="HBoxContainer" parent="CanvasLayer/UISettings"]
 margin_left = 8.0
 margin_top = 567.088
 margin_right = 400.0
@@ -178,7 +180,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Description" type="Label" parent="CanvasLayer/Settings/MaximumTreasure"]
+[node name="Description" type="Label" parent="CanvasLayer/UISettings/MaximumTreasure"]
 margin_top = 3.0
 margin_right = 132.0
 margin_bottom = 17.0
@@ -187,7 +189,7 @@ hint_tooltip = "The chance a cell initially spawns as a wall tile."
 mouse_filter = 1
 text = "Maximum Treasure"
 
-[node name="SliderMaximumTreasure" type="HSlider" parent="CanvasLayer/Settings/MaximumTreasure" groups=[
+[node name="SliderMaximumTreasure" type="HSlider" parent="CanvasLayer/UISettings/MaximumTreasure" groups=[
 "slider",
 ]]
 margin_left = 136.0
@@ -200,7 +202,7 @@ size_flags_vertical = 1
 max_value = 50.0
 value = 10.0
 
-[node name="Value" type="Label" parent="CanvasLayer/Settings/MaximumTreasure"]
+[node name="Value" type="Label" parent="CanvasLayer/UISettings/MaximumTreasure"]
 margin_left = 360.0
 margin_top = 3.0
 margin_right = 392.0
@@ -211,7 +213,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="WallChance" type="HBoxContainer" parent="CanvasLayer/Settings"]
+[node name="WallChance" type="HBoxContainer" parent="CanvasLayer/UISettings"]
 margin_left = 8.0
 margin_top = 600.0
 margin_right = 400.0
@@ -220,7 +222,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Description" type="Label" parent="CanvasLayer/Settings/WallChance"]
+[node name="Description" type="Label" parent="CanvasLayer/UISettings/WallChance"]
 margin_top = 3.0
 margin_right = 132.0
 margin_bottom = 17.0
@@ -229,7 +231,7 @@ hint_tooltip = "The chance a cell initially spawns as a wall tile."
 mouse_filter = 1
 text = "Wall Chance"
 
-[node name="SliderWallChance" type="HSlider" parent="CanvasLayer/Settings/WallChance" groups=[
+[node name="SliderWallChance" type="HSlider" parent="CanvasLayer/UISettings/WallChance" groups=[
 "slider",
 ]]
 margin_left = 136.0
@@ -243,7 +245,7 @@ max_value = 1.0
 step = 0.01
 value = 0.5
 
-[node name="Value" type="Label" parent="CanvasLayer/Settings/WallChance"]
+[node name="Value" type="Label" parent="CanvasLayer/UISettings/WallChance"]
 margin_left = 360.0
 margin_top = 3.0
 margin_right = 392.0
@@ -254,7 +256,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="WallConversion" type="HBoxContainer" parent="CanvasLayer/Settings"]
+[node name="WallConversion" type="HBoxContainer" parent="CanvasLayer/UISettings"]
 margin_left = 8.0
 margin_top = 620.0
 margin_right = 400.0
@@ -263,7 +265,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Description" type="Label" parent="CanvasLayer/Settings/WallConversion"]
+[node name="Description" type="Label" parent="CanvasLayer/UISettings/WallConversion"]
 margin_top = 3.0
 margin_right = 132.0
 margin_bottom = 17.0
@@ -272,7 +274,7 @@ hint_tooltip = "Each step, a floor cell turns into a wall if it has less than th
 mouse_filter = 1
 text = "Wall Conversion"
 
-[node name="SliderWallConversion" type="HSlider" parent="CanvasLayer/Settings/WallConversion" groups=[
+[node name="SliderWallConversion" type="HSlider" parent="CanvasLayer/UISettings/WallConversion" groups=[
 "slider",
 ]]
 margin_left = 136.0
@@ -285,7 +287,7 @@ size_flags_vertical = 1
 max_value = 8.0
 value = 4.0
 
-[node name="Value" type="Label" parent="CanvasLayer/Settings/WallConversion"]
+[node name="Value" type="Label" parent="CanvasLayer/UISettings/WallConversion"]
 margin_left = 360.0
 margin_top = 3.0
 margin_right = 392.0
@@ -296,7 +298,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="FloorConversion" type="HBoxContainer" parent="CanvasLayer/Settings"]
+[node name="FloorConversion" type="HBoxContainer" parent="CanvasLayer/UISettings"]
 margin_left = 8.0
 margin_top = 640.0
 margin_right = 400.0
@@ -305,7 +307,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Description" type="Label" parent="CanvasLayer/Settings/FloorConversion"]
+[node name="Description" type="Label" parent="CanvasLayer/UISettings/FloorConversion"]
 margin_top = 3.0
 margin_right = 132.0
 margin_bottom = 17.0
@@ -314,7 +316,7 @@ hint_tooltip = "Each step, a wall cell turns into a floor if it has greater than
 mouse_filter = 1
 text = "Floor Conversion"
 
-[node name="SliderFloorConversion" type="HSlider" parent="CanvasLayer/Settings/FloorConversion" groups=[
+[node name="SliderFloorConversion" type="HSlider" parent="CanvasLayer/UISettings/FloorConversion" groups=[
 "slider",
 ]]
 margin_left = 136.0
@@ -327,7 +329,7 @@ size_flags_vertical = 1
 max_value = 8.0
 value = 4.0
 
-[node name="Value" type="Label" parent="CanvasLayer/Settings/FloorConversion"]
+[node name="Value" type="Label" parent="CanvasLayer/UISettings/FloorConversion"]
 margin_left = 360.0
 margin_top = 3.0
 margin_right = 392.0
@@ -338,7 +340,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StepCount" type="HBoxContainer" parent="CanvasLayer/Settings"]
+[node name="StepCount" type="HBoxContainer" parent="CanvasLayer/UISettings"]
 margin_left = 8.0
 margin_top = 680.0
 margin_right = 400.0
@@ -347,14 +349,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Description" type="Label" parent="CanvasLayer/Settings/StepCount"]
+[node name="Description" type="Label" parent="CanvasLayer/UISettings/StepCount"]
 margin_top = 3.0
 margin_right = 132.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 132, 0 )
 text = "Step Count"
 
-[node name="SliderStepCount" type="HSlider" parent="CanvasLayer/Settings/StepCount" groups=[
+[node name="SliderStepCount" type="HSlider" parent="CanvasLayer/UISettings/StepCount" groups=[
 "slider",
 ]]
 margin_left = 136.0
@@ -367,7 +369,7 @@ size_flags_vertical = 1
 max_value = 20.0
 value = 10.0
 
-[node name="Value" type="Label" parent="CanvasLayer/Settings/StepCount"]
+[node name="Value" type="Label" parent="CanvasLayer/UISettings/StepCount"]
 margin_left = 360.0
 margin_top = 3.0
 margin_right = 392.0
@@ -378,7 +380,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StepSpeed" type="HBoxContainer" parent="CanvasLayer/Settings"]
+[node name="StepSpeed" type="HBoxContainer" parent="CanvasLayer/UISettings"]
 margin_left = 8.0
 margin_top = 700.0
 margin_right = 400.0
@@ -387,14 +389,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Description" type="Label" parent="CanvasLayer/Settings/StepSpeed"]
+[node name="Description" type="Label" parent="CanvasLayer/UISettings/StepSpeed"]
 margin_top = 3.0
 margin_right = 132.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 132, 0 )
 text = "Step Time"
 
-[node name="SliderStepSpeed" type="HSlider" parent="CanvasLayer/Settings/StepSpeed" groups=[
+[node name="SliderStepSpeed" type="HSlider" parent="CanvasLayer/UISettings/StepSpeed" groups=[
 "slider",
 ]]
 margin_left = 136.0
@@ -408,7 +410,7 @@ max_value = 0.5
 step = 0.1
 value = 0.1
 
-[node name="Value" type="Label" parent="CanvasLayer/Settings/StepSpeed"]
+[node name="Value" type="Label" parent="CanvasLayer/UISettings/StepSpeed"]
 margin_left = 360.0
 margin_top = 3.0
 margin_right = 392.0
@@ -419,23 +421,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="pickaxe_used" from="Player" to="." method="remove_wall"]
 [connection signal="player_entered" from="Exit" to="." method="generate_new_dungeon"]
-[connection signal="floor_conversion_changed" from="CanvasLayer/Settings" to="." method="set_floor_conversion"]
-[connection signal="maximum_treasure_changed" from="CanvasLayer/Settings" to="." method="set_maximum_treasure"]
-[connection signal="min_cavern_area_changed" from="CanvasLayer/Settings" to="." method="set_minimum_cavern_area"]
-[connection signal="min_exit_distance_changed" from="CanvasLayer/Settings" to="." method="set_minimum_exit_distance"]
-[connection signal="step_count_changed" from="CanvasLayer/Settings" to="." method="set_step_count"]
-[connection signal="step_time_changed" from="CanvasLayer/Settings" to="." method="set_step_time"]
-[connection signal="wall_chance_changed" from="CanvasLayer/Settings" to="." method="set_wall_chance"]
-[connection signal="wall_conversion_changed" from="CanvasLayer/Settings" to="." method="set_wall_conversion"]
-[connection signal="pressed" from="CanvasLayer/Settings/ButtonGenerate" to="." method="generate_new_dungeon"]
-[connection signal="pressed" from="CanvasLayer/Settings/ButtonCameraSwitch" to="CanvasLayer/Settings/ButtonCameraSwitch" method="_on_pressed"]
-[connection signal="value_changed" from="CanvasLayer/Settings/MinimumCavernArea/SliderMinimumCavernArea" to="CanvasLayer/Settings" method="_on_SliderMinimumCavernArea_value_changed"]
-[connection signal="value_changed" from="CanvasLayer/Settings/MinimumExitDistance/SliderMinimumExitDistance" to="CanvasLayer/Settings" method="_on_SliderMinimumExitDistance_value_changed"]
-[connection signal="value_changed" from="CanvasLayer/Settings/MaximumTreasure/SliderMaximumTreasure" to="CanvasLayer/Settings" method="_on_SliderMaximumTreasure_value_changed"]
-[connection signal="value_changed" from="CanvasLayer/Settings/WallChance/SliderWallChance" to="CanvasLayer/Settings" method="_on_SliderWallChance_value_changed"]
-[connection signal="value_changed" from="CanvasLayer/Settings/WallConversion/SliderWallConversion" to="CanvasLayer/Settings" method="_on_SliderWallConversion_value_changed"]
-[connection signal="value_changed" from="CanvasLayer/Settings/FloorConversion/SliderFloorConversion" to="CanvasLayer/Settings" method="_on_SliderFloorConversion_value_changed"]
-[connection signal="value_changed" from="CanvasLayer/Settings/StepCount/SliderStepCount" to="CanvasLayer/Settings" method="_on_SliderStepCount_value_changed"]
-[connection signal="value_changed" from="CanvasLayer/Settings/StepSpeed/SliderStepSpeed" to="CanvasLayer/Settings" method="_on_SliderStepSpeed_value_changed"]
+[connection signal="floor_conversion_changed" from="CanvasLayer/UISettings" to="." method="set_floor_conversion"]
+[connection signal="maximum_treasure_changed" from="CanvasLayer/UISettings" to="." method="set_maximum_treasure"]
+[connection signal="min_cavern_area_changed" from="CanvasLayer/UISettings" to="." method="set_minimum_cavern_area"]
+[connection signal="min_exit_distance_changed" from="CanvasLayer/UISettings" to="." method="set_minimum_exit_distance"]
+[connection signal="step_count_changed" from="CanvasLayer/UISettings" to="." method="set_step_count"]
+[connection signal="step_time_changed" from="CanvasLayer/UISettings" to="." method="set_step_time"]
+[connection signal="wall_chance_changed" from="CanvasLayer/UISettings" to="." method="set_wall_chance"]
+[connection signal="wall_conversion_changed" from="CanvasLayer/UISettings" to="." method="set_wall_conversion"]
+[connection signal="pressed" from="CanvasLayer/UISettings/ButtonGenerate" to="." method="generate_new_dungeon"]
+[connection signal="pressed" from="CanvasLayer/UISettings/ButtonCameraSwitch" to="CanvasLayer/UISettings/ButtonCameraSwitch" method="_on_pressed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/MinimumCavernArea/SliderMinimumCavernArea" to="CanvasLayer/UISettings" method="_on_SliderMinimumCavernArea_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/MinimumExitDistance/SliderMinimumExitDistance" to="CanvasLayer/UISettings" method="_on_SliderMinimumExitDistance_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/MaximumTreasure/SliderMaximumTreasure" to="CanvasLayer/UISettings" method="_on_SliderMaximumTreasure_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/WallChance/SliderWallChance" to="CanvasLayer/UISettings" method="_on_SliderWallChance_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/WallConversion/SliderWallConversion" to="CanvasLayer/UISettings" method="_on_SliderWallConversion_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/FloorConversion/SliderFloorConversion" to="CanvasLayer/UISettings" method="_on_SliderFloorConversion_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/StepCount/SliderStepCount" to="CanvasLayer/UISettings" method="_on_SliderStepCount_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/StepSpeed/SliderStepSpeed" to="CanvasLayer/UISettings" method="_on_SliderStepSpeed_value_changed"]

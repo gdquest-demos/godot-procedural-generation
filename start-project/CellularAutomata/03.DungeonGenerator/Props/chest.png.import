@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/drillBlade.png-629c865dc9c77b6aa4e62ef74d10db2c.stex"
+path="res://.import/chest.png-44cfea0735d31b7af6bc109aae4c8048.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CellularAutomata/03.DungeonGenerator/Player/drillBlade.png"
-dest_files=[ "res://.import/drillBlade.png-629c865dc9c77b6aa4e62ef74d10db2c.stex" ]
+source_file="res://CellularAutomata/03.DungeonGenerator/Props/chest.png"
+dest_files=[ "res://.import/chest.png-44cfea0735d31b7af6bc109aae4c8048.stex" ]
 
 [params]
 
