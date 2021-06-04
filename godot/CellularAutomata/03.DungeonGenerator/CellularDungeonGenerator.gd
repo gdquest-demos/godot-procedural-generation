@@ -1,10 +1,10 @@
 extends Node2D
 
-export var _map_size := Vector2(80, 45)
 export (PackedScene) var treasure_scene
 
 enum CellType { WALL, FLOOR }
 
+const MAP_SIZE := Vector2(80, 45)
 const CELL_SIZE := 64
 const CELL_NEIGHBORS := [
 	Vector2.LEFT,
@@ -42,7 +42,7 @@ func generate_new_dungeon() -> void:
 	for treasure in get_tree().get_nodes_in_group("treasure"):
 		treasure.queue_free()
 
-	_initialize_map()
+	_map = _generate_random_map()
 
 	for step in _step_count:
 		if _step_time > 0:
@@ -57,10 +57,12 @@ func generate_new_dungeon() -> void:
 	_add_treasure()
 
 
-func _initialize_map() -> void:
-	for x in range(_map_size.x):
-		for y in range(_map_size.y):
-			_map[Vector2(x, y)] = CellType.WALL if randf() < _wall_chance else CellType.FLOOR
+func _generate_random_map() -> Dictionary:
+	var map := {}
+	for x in range(MAP_SIZE.x):
+		for y in range(MAP_SIZE.y):
+			map[Vector2(x, y)] = CellType.WALL if randf() < _wall_chance else CellType.FLOOR
+	return map
 
 
 func _advance_simulation() -> Dictionary:
@@ -85,9 +87,9 @@ func _advance_simulation() -> Dictionary:
 func _remove_small_caverns():
 	var caverns = _find_caverns()
 
-	for cavern in caverns:
-		if caverns[cavern].size() < _minimum_cavern_area:
-			for cell in caverns[cavern]:
+	for cavern_index in caverns:
+		if caverns[cavern_index].size() < _minimum_cavern_area:
+			for cell in caverns[cavern_index]:
 				_map[cell] = CellType.WALL
 
 
@@ -98,8 +100,8 @@ func _find_caverns() -> Dictionary:
 	# We assign a unique id to each cavern to differentiate them.
 	# When we paint the tiles, any cell with a value >= 1 is set to a floor tile.
 	var cavern_index := 2
-
-	for cell in _map:
+	
+	for cell in map_copy:
 		if not map_copy[cell] == CellType.FLOOR:
 			continue
 		caverns[cavern_index] = _assign_cavern(cell, cavern_index, map_copy)

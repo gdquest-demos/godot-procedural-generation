@@ -2,6 +2,7 @@ extends Node2D
 
 enum CellType { WALL, FLOOR }
 
+const MAP_SIZE := Vector2(80, 45)
 const CELL_NEIGHBORS := [
 	Vector2.LEFT,
 	Vector2.RIGHT,
@@ -12,8 +13,6 @@ const CELL_NEIGHBORS := [
 	Vector2(1, -1),
 	Vector2(1, 1)
 ]
-
-const MAP_SIZE := Vector2(80, 45)
 
 var _wall_conversion := 4 setget set_wall_conversion
 var _floor_conversion := 4 setget set_floor_conversion
