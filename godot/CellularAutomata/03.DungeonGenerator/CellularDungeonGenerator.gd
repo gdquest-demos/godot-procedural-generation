@@ -117,17 +117,19 @@ func _assign_cavern(cell: Vector2, index: int, map: Dictionary) -> Array:
 
 	while queue:
 		var current = queue.pop_front()
-
+		
+		if not map.has(current):
+			continue
+		
+		if not map[current] == CellType.FLOOR:
+			continue
+		
 		map[current] = index
 		cavern_cells.append(current)
+		
 		for direction in check_cells:
 			var neighbor = current + direction
-			if map.has(neighbor):
-				if queue.has(neighbor):
-					continue
-
-				if map[neighbor] == CellType.FLOOR:
-					queue.append(neighbor)
+			queue.append(neighbor)
 
 	return cavern_cells
 
