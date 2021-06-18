@@ -138,8 +138,7 @@ func _assign_cavern(cell: Vector2, index: int, map: Dictionary) -> Array:
 
 func _paint_map() -> void:
 	for cell in _map:
-		var cell_type = CellType.WALL if _map[cell] == CellType.WALL else CellType.FLOOR
-		_tilemap.set_cellv(cell, cell_type)
+		_tilemap.set_cellv(cell, _map[cell])
 	_tilemap.update_bitmask_region()
 
 
