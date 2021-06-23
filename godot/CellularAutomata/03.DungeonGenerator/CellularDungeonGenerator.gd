@@ -53,7 +53,7 @@ func generate_new_dungeon() -> void:
 
 	_remove_small_caverns()
 	_paint_map()
-	_add_start_and_exit()
+	_position_start_and_exit()
 	_add_treasure()
 
 
@@ -98,7 +98,6 @@ func _find_caverns() -> Dictionary:
 	var map_copy = _map.duplicate(true)
 
 	# We assign a unique id to each cavern to differentiate them.
-	# When we paint the tiles, any cell with a value >= 1 is set to a floor tile.
 	var cavern_index := 2
 	
 	for cell in map_copy:
@@ -142,28 +141,38 @@ func _paint_map() -> void:
 	_tilemap.update_bitmask_region()
 
 
-func _add_start_and_exit() -> void:
+func _position_start_and_exit() -> void:
 	var floor_cells = _tilemap.get_used_cells_by_id(CellType.FLOOR)
 	if not floor_cells:
 		return
 
-	floor_cells.shuffle()
 	var player_cell := Vector2.ZERO
-
-	for floor_cell in floor_cells:
-		if _count_floor_neighbors(floor_cell) > 7:
-			player_cell = floor_cell
-			break
-
-	_player.position = player_cell * CELL_SIZE
-
 	var exit_cell := Vector2.ZERO
-	for floor_cell in floor_cells:
-		if floor_cell.distance_to(player_cell) >= _minimum_distance_to_exit:
-			if _count_floor_neighbors(floor_cell) > 7:
-				exit_cell = floor_cell
-				break
 
+	floor_cells.shuffle()
+	
+	while floor_cells:
+		var cell = floor_cells.pop_back()
+		
+		if _count_floor_neighbors(cell) < 8:
+			continue
+		
+		player_cell = cell
+		break
+
+	while floor_cells:
+		var cell = floor_cells.pop_back()
+		
+		if cell.distance_to(player_cell) < _minimum_distance_to_exit:
+			continue
+		
+		if _count_floor_neighbors(cell) < 8:
+			continue
+		
+		exit_cell = cell
+		break
+	
+	_player.position = player_cell * CELL_SIZE
 	_exit.position = exit_cell * CELL_SIZE
 
 
