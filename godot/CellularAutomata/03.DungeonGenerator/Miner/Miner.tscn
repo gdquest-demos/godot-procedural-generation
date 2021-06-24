@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Player/Player.gd" type="Script" id=1]
-[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Player/miner.png" type="Texture" id=2]
-[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Player/drill-top.png" type="Texture" id=3]
-[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Player/drill-blade.png" type="Texture" id=4]
+[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Miner/Miner.gd" type="Script" id=1]
+[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Miner/miner.png" type="Texture" id=2]
+[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Miner/drill-top.png" type="Texture" id=3]
+[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Miner/drill-blade.png" type="Texture" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 24.0
@@ -24,7 +24,7 @@ tracks/0/keys = {
 "values": [ 0.0, 360.0 ]
 }
 
-[node name="Player" type="KinematicBody2D"]
+[node name="Miner" type="KinematicBody2D"]
 collision_mask = 2
 script = ExtResource( 1 )
 

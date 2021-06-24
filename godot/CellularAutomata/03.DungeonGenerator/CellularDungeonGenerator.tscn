@@ -2,7 +2,7 @@
 
 [ext_resource path="res://CellularAutomata/03.DungeonGenerator/Props/Exit.tscn" type="PackedScene" id=1]
 [ext_resource path="res://CellularAutomata/03.DungeonGenerator/Props/Treasure.tscn" type="PackedScene" id=2]
-[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Player/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://CellularAutomata/03.DungeonGenerator/Miner/Miner.tscn" type="PackedScene" id=3]
 [ext_resource path="res://CellularAutomata/03.DungeonGenerator/tileset_advanced.tres" type="TileSet" id=4]
 [ext_resource path="res://CellularAutomata/03.DungeonGenerator/ButtonCameraSwitch.gd" type="Script" id=5]
 [ext_resource path="res://CellularAutomata/03.DungeonGenerator/UISettingsAdvanced.gd" type="Script" id=6]
@@ -20,10 +20,10 @@ format = 1
 anchor_mode = 0
 zoom = Vector2( 4, 4 )
 
-[node name="Player" parent="." instance=ExtResource( 3 )]
+[node name="Miner" parent="." instance=ExtResource( 3 )]
 z_index = 1
 
-[node name="CameraPlayer" type="Camera2D" parent="Player"]
+[node name="CameraPlayer" type="Camera2D" parent="Miner"]
 current = true
 smoothing_enabled = true
 smoothing_speed = 10.0
@@ -85,7 +85,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 camera_one_path = NodePath("../../../CameraDungeon")
-camera_two_path = NodePath("../../../Player/CameraPlayer")
+camera_two_path = NodePath("../../../Miner/CameraPlayer")
 
 [node name="MinimumCavernArea" type="HBoxContainer" parent="CanvasLayer/UISettings"]
 margin_left = 8.0
@@ -423,8 +423,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="pickaxe_used" from="Player" to="." method="remove_walls"]
-[connection signal="player_entered" from="Exit" to="." method="generate_new_dungeon"]
+[connection signal="pickaxe_used" from="Miner" to="." method="remove_walls"]
+[connection signal="miner_entered" from="Exit" to="." method="generate_new_dungeon"]
 [connection signal="floor_conversion_changed" from="CanvasLayer/UISettings" to="." method="set_floor_conversion"]
 [connection signal="maximum_treasure_changed" from="CanvasLayer/UISettings" to="." method="set_maximum_treasure"]
 [connection signal="min_cavern_area_changed" from="CanvasLayer/UISettings" to="." method="set_minimum_cavern_area"]

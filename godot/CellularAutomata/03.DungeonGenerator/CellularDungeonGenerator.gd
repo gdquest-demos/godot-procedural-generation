@@ -30,7 +30,7 @@ var _maximum_treasure := 10
 var _map := {}
 
 onready var _tilemap := $TileMapDungeon
-onready var _player := $Player
+onready var _miner := $Miner
 onready var _exit := $Exit
 
 
@@ -146,7 +146,7 @@ func _position_start_and_exit() -> void:
 	if not floor_cells:
 		return
 
-	var player_cell := Vector2.ZERO
+	var miner_cell := Vector2.ZERO
 	var exit_cell := Vector2.ZERO
 
 	floor_cells.shuffle()
@@ -157,13 +157,13 @@ func _position_start_and_exit() -> void:
 		if _count_floor_neighbors(cell) < 8:
 			continue
 		
-		player_cell = cell
+		miner_cell = cell
 		break
 
 	while floor_cells:
 		var cell = floor_cells.pop_back()
 		
-		if cell.distance_to(player_cell) < _minimum_distance_to_exit:
+		if cell.distance_to(miner_cell) < _minimum_distance_to_exit:
 			continue
 		
 		if _count_floor_neighbors(cell) < 8:
@@ -172,7 +172,7 @@ func _position_start_and_exit() -> void:
 		exit_cell = cell
 		break
 	
-	_player.position = player_cell * CELL_SIZE
+	_miner.position = miner_cell * CELL_SIZE
 	_exit.position = exit_cell * CELL_SIZE
 
 
