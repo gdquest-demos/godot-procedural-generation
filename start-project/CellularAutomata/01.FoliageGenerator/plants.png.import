@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/foliage.svg-a0743f5343dacd2ce3da608aa49d3424.stex"
+path="res://.import/plants.png-3c35404687f314420a8a6a57a0bc89f1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CellularAutomata/01.FoliageGenerator/foliage.svg"
-dest_files=[ "res://.import/foliage.svg-a0743f5343dacd2ce3da608aa49d3424.stex" ]
+source_file="res://CellularAutomata/01.FoliageGenerator/plants.png"
+dest_files=[ "res://.import/plants.png-3c35404687f314420a8a6a57a0bc89f1.stex" ]
 
 [params]
 

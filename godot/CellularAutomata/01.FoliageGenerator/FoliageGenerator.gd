@@ -1,6 +1,6 @@
 extends Node2D
 
-enum PlantState { ALIVE, DEAD = -1 }
+enum PlantState { DEAD, ALIVE }
 
 const NEIGHBORS := [
 	Vector2.LEFT,
@@ -25,25 +25,6 @@ func _ready() -> void:
 	randomize()
 	_initialize_map()
 	_paint_map()
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if not event is InputEventMouseButton or not event.pressed:
-		return
-
-	var click_position := get_global_mouse_position()
-	var grid_position := _tilemap.world_to_map(click_position)
-
-	if not _map.has(grid_position):
-		return
-
-	if event.button_index == BUTTON_LEFT:
-		_map[grid_position] = (
-			PlantState.DEAD
-			if not _map[grid_position] == PlantState.DEAD
-			else PlantState.ALIVE
-		)
-		_paint_map()
 
 
 func _initialize_map() -> void:
@@ -100,4 +81,10 @@ func _advance_simulation(input_map: Dictionary) -> Dictionary:
 
 func _paint_map() -> void:
 	for cell in _map:
-		_tilemap.set_cellv(cell, _map[cell])
+		
+		var flower_frame = PlantState.DEAD
+		
+		if _map[cell] == PlantState.ALIVE:
+			flower_frame = 1 + randi() % 4
+		
+		_tilemap.set_cellv(cell, flower_frame)
