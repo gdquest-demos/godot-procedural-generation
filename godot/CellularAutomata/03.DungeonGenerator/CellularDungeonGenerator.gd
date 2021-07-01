@@ -219,16 +219,6 @@ func remove_walls(global_positions: Array) -> void:
 
 		_tilemap.set_cellv(cell, CellType.FLOOR)
 		_tilemap.update_bitmask_area(cell)
-		# Subtiles (0, 3) and (1, 3) correspond to different versions of the floor tile.
-		# We have this line to prevent them from appearing while digging.
-		for n in CELL_NEIGHBORS:
-			var variants := [Vector2(0, 3), Vector2(1, 3)]
-			var subtile = _tilemap.get_cell_autotile_coord(cell.x + n.x, cell.y + n.y)
-
-			if variants.has(subtile):
-				_tilemap.set_cell(
-					cell.x + n.x, cell.y + n.y, CellType.FLOOR, false, false, false, Vector2(1, 1)
-				)
 
 
 ## We use the setters below to update values when changing the sliders.
