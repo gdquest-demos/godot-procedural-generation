@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-signal pickaxe_used(dig_positions)
+signal drill_used(dig_positions)
 
 export var speed := 500
 
@@ -12,12 +12,12 @@ onready var _pivot := $Pivot
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
 		var dig_positions := []
-		var angles_of_attack := [0, PI/8, -PI/8]
+		var angles_of_attack := [0, PI/6, -PI/6]
 
 		for angle in angles_of_attack:
 			dig_positions.append(global_position + Vector2.RIGHT.rotated(_pivot.rotation + angle) * DRILL_RANGE)
 
-		emit_signal("pickaxe_used", dig_positions)
+		emit_signal("drill_used", dig_positions)
 
 
 func _physics_process(_delta: float) -> void:
