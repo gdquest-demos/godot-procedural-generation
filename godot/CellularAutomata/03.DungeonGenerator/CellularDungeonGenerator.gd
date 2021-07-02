@@ -39,9 +39,6 @@ func _ready() -> void:
 
 
 func generate_new_dungeon() -> void:
-	for treasure in get_tree().get_nodes_in_group("treasure"):
-		treasure.queue_free()
-
 	_map = _generate_random_map()
 
 	for step in _step_count:
@@ -177,6 +174,10 @@ func _position_start_and_exit() -> void:
 
 
 func _add_treasure() -> void:
+	
+	for treasure in get_tree().get_nodes_in_group("treasure"):
+		treasure.queue_free()
+	
 	var floor_cells = _tilemap.get_used_cells_by_id(CellType.FLOOR)
 	var treasures_placed := 0
 
@@ -189,12 +190,15 @@ func _add_treasure() -> void:
 
 		var subtile = _tilemap.get_cell_autotile_coord(cell.x, cell.y)
 
-		if corner_subtiles.has(subtile):
-			var treasure = treasure_scene.instance()
-			# Offset the treasure based on which corner subtile the treasure appears in. This is based on the subtiles' position in relation to each other in the tileset.
-			treasure.position = cell * CELL_SIZE + (subtile - Vector2(1, 1)) * -CELL_SIZE / 2
-			add_child(treasure)
-			treasures_placed += 1
+		if not corner_subtiles.has(subtile):
+			continue
+		
+		var treasure = treasure_scene.instance()
+		# The treasure offset is based on which corner subtile the treasure appears in. This is based on the subtiles' position in relation to each other in the tileset.
+		var offset = Vector2.ZERO#(Vector2(1, 1) - subtile) * CELL_SIZE / 2
+		treasure.position = cell * CELL_SIZE + offset
+		add_child(treasure)
+		treasures_placed += 1
 
 
 func _count_floor_neighbors(location: Vector2) -> int:
