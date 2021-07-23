@@ -10,7 +10,7 @@ config_version=4
 
 [application]
 
-config/name="Procedural Generation Demos"
+config/name="Procedural Generation Demos Start Project"
 config/description="Implementations and demos of procedural generation algorithms."
 config/icon="res://icon.png"
 
