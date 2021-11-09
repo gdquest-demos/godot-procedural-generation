@@ -44,7 +44,9 @@ Finally, the `PersistentWorldGenerator` builds upon the previous demo and adds t
 
 ## How to use
 
-Clone the repository. Each demo is in a separate directory.
+Clone the repository and import the `godot/` directory as a Godot project. Each demo is in a separate sub-directory.
+
+The `start-project/` directory contains starters for students of our course [Godot PCG Secrets](https://gdquest.mavenseed.com/courses/godot-pcg-secrets) and not the complete demos.
 
 In the demos, where relevant, we use a timer to show you the content generation steps, as the final level would otherwise appear instantly. Doing so helps to visualize and debug algorithms. Remove that timer code for the algorithm to run at full speed.
 
