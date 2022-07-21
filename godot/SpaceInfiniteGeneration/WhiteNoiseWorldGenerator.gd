@@ -24,7 +24,7 @@ func _physics_process(_delta: float) -> void:
 	# Every frame, we compare the player's position to the current sector. If
 	# they move far enough from it, we need to update the world.
 	var sector_location := _current_sector * sector_size
-	if _player.global_position.distance_squared_to(sector_location) > _total_sector_count:
+	if _player.global_position.distance_squared_to(sector_location) > _sector_size_squared:
 		# Our function to update the sectors takes a vector to offset. As the
 		# player can be moving left, right, up, or down, we store that
 		# information in our sector_offset variable.

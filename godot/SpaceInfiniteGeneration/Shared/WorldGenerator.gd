@@ -27,11 +27,8 @@ var _current_sector := Vector2.ZERO
 var _rng := RandomNumberGenerator.new()
 
 ## We will reuse the three values below several times so we pre-calculate them.
-## Half of `sector_size`.
 onready var _half_sector_size := sector_size / 2.0
-## Total number of sectors to generate around the player.
-onready var _total_sector_count := sector_size * sector_size
-## And this is half of `_total_sector_count`.
+onready var _sector_size_squared := sector_size * sector_size
 onready var _half_sector_count := int(sector_axis_count / 2.0)
 
 

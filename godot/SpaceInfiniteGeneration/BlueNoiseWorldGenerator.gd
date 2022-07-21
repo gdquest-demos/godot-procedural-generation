@@ -26,7 +26,7 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	var sector_offset := Vector2.ZERO
 	var sector_location := _current_sector * sector_size
-	if _player.global_position.distance_squared_to(sector_location) > _total_sector_count:
+	if _player.global_position.distance_squared_to(sector_location) > _sector_size_squared:
 		sector_offset = (_player.global_position - sector_location) / sector_size
 		sector_offset.x = int(sector_offset.x)
 		sector_offset.y = int(sector_offset.y)
