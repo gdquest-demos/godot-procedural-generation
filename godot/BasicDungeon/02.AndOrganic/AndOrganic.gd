@@ -3,12 +3,12 @@ extends Node2D
 
 const FACTOR := 1.0 / 8.0
 
-export var level_size := Vector2(100, 80)
-export var rooms_size := Vector2(10, 14)
-export var rooms_max := 15
+@export var level_size := Vector2(100, 80)
+@export var rooms_size := Vector2(10, 14)
+@export var rooms_max := 15
 
-onready var level: TileMap = $Level
-onready var camera: Camera2D = $Camera2D
+@onready var level: TileMap = $Level
+@onready var camera: Camera2D = $Camera2D
 
 
 func _ready() -> void:
@@ -17,15 +17,15 @@ func _ready() -> void:
 
 
 func _setup_camera() -> void:
-	camera.position = level.map_to_world(level_size / 2)
-	var z := max(level_size.x, level_size.y) / 8
+	camera.position = level.map_to_local(level_size / 2)
+	var z : float = 8 / max(level_size.x, level_size.y)
 	camera.zoom = Vector2(z, z)
 
 
 func _generate() -> void:
 	level.clear()
 	for vector in _generate_data():
-		level.set_cellv(vector, 0)
+		level.set_cell(0,vector, 0, Vector2i(0,0), 0)
 
 
 func _generate_data() -> Array:
@@ -78,15 +78,15 @@ func _add_room(rng: RandomNumberGenerator, data: Dictionary, rooms: Array, room:
 					rng.randf_range(rect.position.x, rect.end.x),
 					rng.randf_range(rect.position.y, rect.end.y)
 				))
-			poly_partial.sort_custom(self, "_lessv_x" if is_even else "_lessv_y")
+			poly_partial.sort_custom(Callable(self,"_lessv_x" if is_even else "_lessv_y"))
 			if index > 1:
-				poly_partial.invert()
+				poly_partial.reverse()
 			poly += poly_partial
 		
 		for x in range(room.position.x, room.end.x):
 			for y in range(room.position.y, room.end.y):
 				var point := Vector2(x, y)
-				if Geometry.is_point_in_polygon(point, poly):
+				if Geometry2D.is_point_in_polygon(point, poly):
 					data[point] = null
 
 
