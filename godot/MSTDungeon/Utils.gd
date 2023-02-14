@@ -33,12 +33,12 @@ static func mst(points: Array) -> AStar2D:
 	out.add_point(out.get_available_point_id(), points.pop_back())
 
 	# Loop through all points, erasing them as we connect them.
-	while not points.empty():
+	while not points.is_empty():
 		var current_position := Vector2.ZERO
 		var min_position := Vector2.ZERO
 		var min_distance := INF
 
-		for point1_id in out.get_points():
+		for point1_id in out.get_point_ids():
 			# Compare each point added to the `Astar2D` graph
 			# to each remaining point to find the closest one.
 			var point1_position = out.get_point_position(point1_id)
