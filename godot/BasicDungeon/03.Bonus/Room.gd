@@ -1,16 +1,16 @@
 class_name BasicDungeonRoom
 
 
-var position := Vector2.ZERO setget _no_op, get_position
-var end := Vector2.ZERO setget _no_op, get_end
-var center := Vector2.ZERO setget _no_op, get_center
+var position := Vector2.ZERO : get = get_position, set = _no_op
+var end := Vector2.ZERO : get = get_end, set = _no_op
+var center := Vector2.ZERO : get = get_center, set = _no_op
 var rect: Rect2
 
 var _rect_area: float
 var _iter_index: int
 
 
-func _init(rect: Rect2) -> void:
+func _init(rect: Rect2):
 	update(rect)
 
 

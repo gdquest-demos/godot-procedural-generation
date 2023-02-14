@@ -7,8 +7,10 @@ const FACTOR := 1.0 / 8.0
 var _data: Array
 var _data_size: int
 
-
-func _init(rect: Rect2).(rect) -> void:
+# the previous Godot 3 code does not work anymore like this
+# func _init(rect: Rect2).(rect) -> void:
+func _init(rect: Rect2) -> void:
+	super._init(rect)
 	pass
 
 
@@ -17,7 +19,7 @@ func _iter_get(_arg) -> Vector2:
 
 
 func update(rect: Rect2) -> void:
-	.update(rect)
+	super.update(rect)
 	var rng := RandomNumberGenerator.new()
 	rng.randomize()
 	
@@ -38,16 +40,16 @@ func update(rect: Rect2) -> void:
 				rng.randf_range(rect_current.position.x, rect_current.end.x),
 				rng.randf_range(rect_current.position.y, rect_current.end.y)
 			))
-		poly_partial.sort_custom(BasicDungeonUtils, "lessv_x" if is_even else "lessv_y")
+		poly_partial.sort_custom(Callable(BasicDungeonUtils,"lessv_x" if is_even else "lessv_y"))
 		if index > 1:
-			poly_partial.invert()
+			poly_partial.reverse()
 		poly += poly_partial
 	
 	_data = []
 	for x in range(rect.position.x, rect.end.x):
 		for y in range(rect.position.y, rect.end.y):
 			var point := Vector2(x, y)
-			if Geometry.is_point_in_polygon(point, poly):
+			if Geometry2D.is_point_in_polygon(point, poly):
 				_data.push_back(point)
 	_data_size = _data.size()
 
