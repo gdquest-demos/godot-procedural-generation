@@ -1,12 +1,12 @@
 extends Node2D
 
 
-export var level_size := Vector2(100, 80)
-export var rooms_size := Vector2(10, 14)
-export var rooms_max := 15
+@export var level_size := Vector2(100, 80) # export is now @export
+@export var rooms_size := Vector2(10, 14)
+@export var rooms_max := 15
 
-onready var level: TileMap = $Level
-onready var camera: Camera2D = $Camera2D
+@onready var level: TileMap = $Level # onready is now @onready
+@onready var camera: Camera2D = $Camera2D
 
 
 func _ready() -> void:
@@ -15,15 +15,15 @@ func _ready() -> void:
 
 
 func _setup_camera() -> void:
-	camera.position = level.map_to_world(level_size / 2)
-	var z := max(level_size.x, level_size.y) / 8
+	camera.position = level.map_to_local(level_size / 2) # function renamed
+	var z : float = 8 / max(level_size.x, level_size.y) # zoom logic reversed from Godot 3 to 4
 	camera.zoom = Vector2(z, z)
 
 
 func _generate() -> void:
 	level.clear()
 	for vector in _generate_data():
-		level.set_cellv(vector, 0)
+		level.set_cell(0,vector, 0, Vector2i(0,0), 0) # set_cellv not in Godot 4, new set_cell function more complex
 
 
 func _generate_data() -> Array:
