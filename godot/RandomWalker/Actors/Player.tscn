@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://RandomWalker/Levels/tiles.svg" type="Texture" id=1]
+[ext_resource path="res://RandomWalker/Levels/tiles.svg" type="Texture2D" id=1]
 [ext_resource path="res://RandomWalker/Actors/Player.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -10,13 +10,13 @@ extents = Vector2( 11.185, 29.5827 )
 radius = 15.0
 height = 30.0
 
-[node name="Player" type="KinematicBody2D" groups=[
+[node name="Player" type="CharacterBody2D" groups=[
 "player",
 ]]
 collision_layer = 0
 script = ExtResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource( 1 )
 offset = Vector2( 0, -30 )
 region_enabled = true

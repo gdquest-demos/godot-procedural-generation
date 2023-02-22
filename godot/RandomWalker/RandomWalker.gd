@@ -1,4 +1,4 @@
-# Procedural level generator based on tilemaps and a random walker algorithm. It uses chunks or
+# Procedural level generator based checked tilemaps and a random walker algorithm. It uses chunks or
 # rooms designed by hand. See [Rooms.gd].
 #
 # The generator walks semi-randomly around a grid to draw an unobstructed path from the level's
@@ -14,41 +14,43 @@ signal level_completed(player_position)
 # directions, although some rules may override that. See [_update_next_position].
 const STEP := [Vector2.LEFT, Vector2.LEFT, Vector2.RIGHT, Vector2.RIGHT, Vector2.DOWN]
 
-export (PackedScene) var Rooms := preload("Rooms.tscn")
-export var grid_size := Vector2(8, 6)
+@export var Rooms : PackedScene = preload("Rooms.tscn")
+@export var grid_size := Vector2(8, 6)
 
 var _rng := RandomNumberGenerator.new()
 var _rooms: Node2D = null
-var _player: KinematicBody2D = null
+var _player: CharacterBody2D = null
 var _state := {}
 var _horizontal_chance := 0.0
 var _camera_limits := {}
-var _resolution := OS.window_size
+var _resolution := DisplayServer.window_get_size()
 
-onready var scene_tree: SceneTree = get_tree()
-onready var camera: Camera2D = $Camera2D
-onready var tween: Tween = $Camera2D/Tween
-onready var level_main: TileMap = $Level/TileMapMain
-onready var level_danger: TileMap = $Level/TileMapDanger
-onready var level_extra: Node2D = $Level/Extra
-onready var timer: Timer = $Timer
-onready var background: ParallaxBackground = $ParallaxBackground
+@onready var scene_tree: SceneTree = get_tree()
+@onready var camera: Camera2D = $Camera2D
+#onready var tween: Tween = $Camera2D/Tween
+@onready var level_main: TileMap = $Level/TileMapMain
+@onready var level_danger: TileMap = $Level/TileMapDanger
+@onready var level_extra: Node2D = $Level/Extra
+@onready var timer: Timer = $Timer
+@onready var background: ParallaxBackground = $ParallaxBackground
 
 
 func _ready() -> void:
 	_rng.randomize()
-	_rooms = Rooms.instance()
+	_rooms = Rooms.instantiate()
 	_horizontal_chance = 1.0 - STEP.count(Vector2.DOWN) / float(STEP.size())
 	
 	_camera_limits = {
-		"min": level_main.map_to_world(-Vector2.ONE),
-		"max": level_main.map_to_world(_grid_to_map(grid_size) + Vector2.ONE)
+		"min": level_main.map_to_local(-Vector2.ONE),
+		"max": level_main.map_to_local(_grid_to_map(grid_size) + Vector2.ONE)
 	}
 	camera.setup(_resolution, _grid_to_world(grid_size))
 	
 	scene_tree.paused = true
+	print("start generate level")
 	generate_level()
-	yield(self, "level_completed")
+	await self.level_completed
+	print("done generate level")
 	scene_tree.paused = false
 
 
@@ -63,6 +65,7 @@ func _on_Tween_tween_all_completed() -> void:
 	camera.limit_top = _camera_limits.min.y
 	camera.limit_right = _camera_limits.max.x
 	camera.limit_bottom = _camera_limits.max.y
+	print("all_tween_completed")
 
 
 # Generates a new level.
@@ -95,7 +98,7 @@ func _reset() -> void:
 			_state.empty_cells[Vector2(x, y)] = 0
 
 
-# Picks a random start position on the first row of the generation grid.
+# Picks a random start position checked the first row of the generation grid.
 func _update_start_position() -> void:
 	# warning-ignore:narrowing_conversion
 	var x := _rng.randi_range(0, grid_size.x - 1)
@@ -147,10 +150,10 @@ func _update_down_counter() -> void:
 	)
 
 
-# Picks a room type to use on the cell the algorithm is currently visiting.
+# Picks a room type to use checked the cell the algorithm is currently visiting.
 # Uses some rules to prevent the room from blocking the player.
 func _update_room_type() -> void:
-	if not _state.path.empty():
+	if not _state.path.is_empty():
 		var last: Dictionary = _state.path.back()
 
 		if last.type in _rooms.BOTTOM_CLOSED and _state.delta.is_equal_approx(Vector2.DOWN):
@@ -169,7 +172,7 @@ func _update_room_type() -> void:
 	)
 
 	_state.empty_cells.erase(_state.offset)
-	_state.path.push_back({"offset": _state.offset, "type": type, "start": _state.path.empty()})
+	_state.path.push_back({"offset": _state.offset, "type": type, "start": _state.path.is_empty()})
 
 
 func _place_walls(type: int = 0) -> void:
@@ -177,27 +180,31 @@ func _place_walls(type: int = 0) -> void:
 
 	for x in [-2, -1, cell_grid_size.x, cell_grid_size.x + 1]:
 		for y in range(-2, cell_grid_size.y + 2):
-			level_main.set_cell(x, y, type)
+			# need to add the atlas coords or nothing will happen
+			level_main.set_cell(0, Vector2i(x, y), type, Vector2i(0,0))
 
 	for x in range(-1, cell_grid_size.x + 2):
 		for y in [-2, -1, cell_grid_size.y, cell_grid_size.y + 1]:
-			level_main.set_cell(x, y, type)
+			level_main.set_cell(0, Vector2i(x, y), type, Vector2i(0,0))
 
 
 func _place_path_rooms() -> void:
 	for path in _state.path:
-		yield(timer, "timeout")
+		await timer.timeout
 		_copy_room(path.offset, path.type, path.start)
 	emit_signal("path_completed")
 
 
 func _place_side_rooms() -> void:
-	yield(self, "path_completed")
+	await self.path_completed
 	for key in _state.empty_cells:
 		var type := _rng.randi_range(0, _rooms.Type.size() - 1)
 		_copy_room(key, type, false)
 	
-	level_main.update_bitmask_region()
+	# this one is a bit more convoluted in Godot 4, but on the other hand
+	# it's more straightforward in how it works.
+	#level_main.update_bitmask_region()
+	level_main.set_cells_terrain_connect( 0, level_main.get_used_cells(0), 0, 0)
 	emit_signal("level_completed", _player.position)
 
 
@@ -219,7 +226,7 @@ func _copy_room(offset: Vector2, type: int, start: bool) -> void:
 	
 	for d in data.tilemap:
 		var tilemap := level_main if d.cell != _rooms.Cell.SPIKES else level_danger
-		tilemap.set_cellv(map_offset + d.offset, d.cell)
+		tilemap.set_cell(0,Vector2i(map_offset) + d.offset, d.cell,d.atlas_coords)
 
 
 func _grid_to_map(vector: Vector2) -> Vector2:

@@ -1,7 +1,7 @@
 extends "Actor.gd"
 
 
-onready var visibility_enabler : VisibilityEnabler2D = $VisibilityEnabler2D
+@onready var visibility_enabler : VisibleOnScreenEnabler2D = $VisibleOnScreenEnabler2D
 
 
 func _ready() -> void:
@@ -11,5 +11,8 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 	velocity.x *= -1 if is_on_wall() else 1
-	velocity.y = move_and_slide(velocity, FLOOR_NORMAL).y
+	set_velocity(velocity)
+	set_up_direction(FLOOR_NORMAL)
+	move_and_slide()
+	velocity.y = velocity.y
 	

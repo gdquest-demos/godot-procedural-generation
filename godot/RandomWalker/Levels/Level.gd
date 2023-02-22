@@ -1,9 +1,9 @@
 extends Node2D
 
 
-var _player: KinematicBody2D = null
+var _player: CharacterBody2D = null
 
-onready var extra: Node2D = $Extra
+@onready var extra: Node2D = $Extra
 
 
 func _ready() -> void:
@@ -11,7 +11,7 @@ func _ready() -> void:
 		if n.is_in_group("player"):
 			_player = n
 		elif n.is_in_group("enemy"):
-			n.visibility_enabler.connect("screen_entered", self, "_on_Enemy_screen_enetered", [n])
+			n.visibility_enabler.connect("screen_entered",Callable(self,"_on_Enemy_screen_enetered").bind(n))
 
 
 func _on_Enemy_screen_enetered(enemy: Node2D) -> void:

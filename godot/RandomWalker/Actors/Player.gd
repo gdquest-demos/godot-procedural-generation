@@ -3,17 +3,17 @@ extends "Actor.gd"
 
 const TIME_DEATH := 0.2
 
-onready var danger_detector: Area2D = $DangerDetector
-onready var tween: Tween = $Tween
+@onready var danger_detector: Area2D = $DangerDetector
+#@onready var tween: Tween = $Tween
 
 
 func _on_DangerDetector_body_entered(_body: Node):
 	set_physics_process(false)
 	
-	tween.interpolate_property(self, "scale", null, Vector2.ZERO, TIME_DEATH, Tween.TRANS_LINEAR)
-	tween.start()
+#	tween.interpolate_property(self, "scale", null, Vector2.ZERO, TIME_DEATH, Tween.TRANS_LINEAR)#
+#	tween.start()
 	
-	yield(tween, "tween_all_completed")
+#	await tween.tween_all_completed
 	queue_free()
 
 
@@ -21,7 +21,12 @@ func _physics_process(_delta: float) -> void:
 	var direction := _get_direction()
 	var is_jump_interrupted := Input.is_action_just_released("jump") and velocity.y < 0.0
 	velocity = calculate_velocity(velocity, direction, speed, is_jump_interrupted)
-	velocity = move_and_slide(velocity, FLOOR_NORMAL)
+	set_velocity(velocity)
+	set_up_direction(FLOOR_NORMAL)
+	move_and_slide()
+	velocity = velocity
+	if Input.is_action_just_pressed("ui_cancel"):
+		get_tree().quit()
 
 
 func _get_direction() -> Vector2:
