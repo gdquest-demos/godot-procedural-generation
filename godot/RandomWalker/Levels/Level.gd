@@ -13,6 +13,7 @@ func _ready() -> void:
 		elif n.is_in_group("enemy"):
 			n.visibility_enabler.connect("screen_entered",Callable(self,"_on_Enemy_screen_enetered").bind(n))
 
-
+# this func is currently not used an may be removed
 func _on_Enemy_screen_enetered(enemy: Node2D) -> void:
-	enemy.velocity.x = sign((_player.position - enemy.position).x) * enemy.speed.x
+	pass
+#	enemy.direction .velocity.x = sign((_player.position - enemy.position).x) * enemy.speed.x

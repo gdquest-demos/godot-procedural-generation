@@ -4,10 +4,11 @@
 [ext_resource type="Script" path="res://RandomWalker/Actors/Enemy.gd" id="2"]
 
 [sub_resource type="CapsuleShape2D" id="1"]
-radius = 0.0
-height = 0.0
+custom_solver_bias = 0.1
+radius = 15.0
 
 [node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
+process_mode = 1
 collision_layer = 2
 script = ExtResource("2")
 speed = Vector2(300, 1000)
@@ -16,7 +17,7 @@ speed = Vector2(300, 1000)
 texture = ExtResource("1")
 offset = Vector2(0, -15)
 region_enabled = true
-region_rect = Rect2(330, 270, 30, 30)
+region_rect = Rect2(331, 270, 28, 30)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -15)
@@ -25,3 +26,7 @@ shape = SubResource("1")
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
 position = Vector2(0, -15)
 rect = Rect2(-15, -15, 30, 30)
+enable_mode = 1
+
+[connection signal="screen_entered" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]

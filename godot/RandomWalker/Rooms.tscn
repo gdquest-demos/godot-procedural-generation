@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://1ucdyvyni7la"]
 
-[ext_resource type="PackedScene" path="res://RandomWalker/Actors/Player.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://bvew0uroh2hcu" path="res://RandomWalker/Actors/Player.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://bvbk1abn8b804" path="res://RandomWalker/Actors/Enemy.tscn" id="2"]
 [ext_resource type="Texture2D" uid="uid://bv5ogdkv48xuk" path="res://RandomWalker/Levels/tiles.svg" id="3"]
 [ext_resource type="TileSet" uid="uid://cd00vubx3rfc7" path="res://RandomWalker/Levels/tileset.tres" id="4"]

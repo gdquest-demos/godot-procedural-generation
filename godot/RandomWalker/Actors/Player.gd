@@ -4,47 +4,32 @@ extends "Actor.gd"
 const TIME_DEATH := 0.2
 
 @onready var danger_detector: Area2D = $DangerDetector
-#@onready var tween: Tween = $Tween
 
 
 func _on_DangerDetector_body_entered(_body: Node):
 	set_physics_process(false)
 	
-#	tween.interpolate_property(self, "scale", null, Vector2.ZERO, TIME_DEATH, Tween.TRANS_LINEAR)#
-#	tween.start()
-	
-#	await tween.tween_all_completed
-	queue_free()
+	var tween = get_tree().create_tween().bind_node(self)
+	tween.tween_property(self,"scale",Vector2.ZERO,TIME_DEATH)
+	tween.tween_callback(self.queue_free)
 
-
+# refactored since move_and_slide now directly operates on the pre-existing velocity class property
 func _physics_process(_delta: float) -> void:
-	var direction := _get_direction()
-	var is_jump_interrupted := Input.is_action_just_released("jump") and velocity.y < 0.0
-	velocity = calculate_velocity(velocity, direction, speed, is_jump_interrupted)
-	set_velocity(velocity)
-	set_up_direction(FLOOR_NORMAL)
+	if not is_on_floor():
+		velocity.y += 3500 * _delta
+
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		velocity.y = -speed.y
+
+	var direction = Input.get_axis("move_left", "move_right")
+	if direction:
+		velocity.x = direction * speed.x
+	else:
+		velocity.x = move_toward(velocity.x, 0, speed.x)
+
 	move_and_slide()
-	velocity = velocity
+
+	# convenience function
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
 
-
-func _get_direction() -> Vector2:
-	var x := Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-	var y := (
-		-Input.get_action_strength("jump")
-		if is_on_floor() and Input.is_action_just_pressed("jump")
-		else 0.0
-	)
-	return Vector2(x, y)
-
-
-func calculate_velocity(
-	velocity: Vector2, direction: Vector2, speed: Vector2, is_jump_interrupted: bool
-) -> Vector2:
-	velocity.x = speed.x * direction.x
-	if direction.y != 0.0:
-		velocity.y = speed.y * direction.y
-	if is_jump_interrupted:
-		velocity.y = 0.0
-	return velocity

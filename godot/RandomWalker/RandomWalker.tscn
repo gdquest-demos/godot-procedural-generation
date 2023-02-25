@@ -8,22 +8,16 @@
 [ext_resource type="Texture2D" uid="uid://bt6db7bktvnye" path="res://RandomWalker/Levels/background-gradient.svg" id="8"]
 
 [node name="RandomWalker" type="Node2D"]
-process_mode = 2
+process_mode = 3
 script = ExtResource("2")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+limit_smoothed = true
+position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 drag_left_margin = 0.0
 drag_right_margin = 0.0
 script = ExtResource("4")
-
-[node name="Tween" type="Tween" parent="Camera2D"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-editor_description = ""
-script = null
 
 [node name="Level" parent="." instance=ExtResource("1")]
 process_mode = 1

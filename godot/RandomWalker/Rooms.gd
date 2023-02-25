@@ -58,11 +58,9 @@ func get_room_data(type: int) -> Dictionary:
 		# I just added a custom data layer and get the chance value directly
 		var cell_data = room.get_cell_tile_data(0,v)
 		var chance: float = cell_data.get_custom_data("chance")
+		var target_id: int = cell_data.get_custom_data("target_id")
 		var cell_source_id : int = room.get_cell_source_id(0,v)
 		var atlas_coords : Vector2i = room.get_cell_atlas_coords(0,v)
-#		if room.get_cell_source_id(0,v) != 0:
-#			print("cell id {0}".format("0":str(room.get_cell_source_id(0,v)))
-#		if _rng.randf() > mapping.chance:
 		if _rng.randf() > chance:
 			continue
 		
@@ -71,5 +69,5 @@ func get_room_data(type: int) -> Dictionary:
 #			for y in range(mapping.size.y):
 #		data.tilemap.push_back({"offset": v + Vector2i(x, y), "cell": cell_data})
 		# but we need to take care of the atlas now
-		data.tilemap.push_back({"offset": v, "cell": cell_source_id, "atlas_coords": atlas_coords})
+		data.tilemap.push_back({"offset": v, "cell": cell_source_id, "atlas_coords": atlas_coords, "target_id": target_id})
 	return data

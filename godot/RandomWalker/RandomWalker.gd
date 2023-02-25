@@ -6,6 +6,27 @@
 # rooms.
 extends Node2D
 
+# NOTES ON PORTING THIS TO GODOT 4:
+# this one was really hard. tilemaps and tilesets are currently not handled well on
+# project conversion, so I made my own little converter. The the game as such had a few
+# very Godot 3 specific uses of features that have completly changed for Godot 4
+#
+# Node.pause_mode no longer exists and is replaced by a Node.process_mode - when converted 
+# the RandomWalker.pause_mode was transferred to an unsuitable process_mode as for how
+# this is used here. I guess this is due to enum matching (process_mode 2 is "when paused")
+# so the game effectively stopped as scene_tree.pause = False was set. Took a long time 
+# digging in all the wrong corners to find this
+#
+# TileMap.update_bitmask_region() does not exist anymore, now TileMap.set_cells_terrain_connect()
+# is needed. Since all tiles are on the same layer - layers are also new - updating autotiles
+# is a bit more convoluted than would be necessary.
+#
+# Camera2.zoom is reversed now, so everything regarding calculations on zoom needed to be adapted
+#
+# The dictionary to map tiles is no longer useful as the data can be directly mapped in the
+# tileset using custom_data
+
+
 
 signal path_completed
 signal level_completed(player_position)
@@ -27,7 +48,6 @@ var _resolution := DisplayServer.window_get_size()
 
 @onready var scene_tree: SceneTree = get_tree()
 @onready var camera: Camera2D = $Camera2D
-#onready var tween: Tween = $Camera2D/Tween
 @onready var level_main: TileMap = $Level/TileMapMain
 @onready var level_danger: TileMap = $Level/TileMapDanger
 @onready var level_extra: Node2D = $Level/Extra
@@ -47,12 +67,10 @@ func _ready() -> void:
 	camera.setup(_resolution, _grid_to_world(grid_size))
 	
 	scene_tree.paused = true
-	print("start generate level")
 	generate_level()
 	await self.level_completed
-	print("done generate level")
 	scene_tree.paused = false
-
+	
 
 func _on_Camera2D_zoom_changed(zoom: Vector2) -> void:
 	for n in background.get_children():
@@ -65,8 +83,6 @@ func _on_Tween_tween_all_completed() -> void:
 	camera.limit_top = _camera_limits.min.y
 	camera.limit_right = _camera_limits.max.x
 	camera.limit_bottom = _camera_limits.max.y
-	print("all_tween_completed")
-
 
 # Generates a new level.
 func generate_level() -> void:
@@ -194,7 +210,6 @@ func _place_path_rooms() -> void:
 		_copy_room(path.offset, path.type, path.start)
 	emit_signal("path_completed")
 
-
 func _place_side_rooms() -> void:
 	await self.path_completed
 	for key in _state.empty_cells:
@@ -204,7 +219,14 @@ func _place_side_rooms() -> void:
 	# this one is a bit more convoluted in Godot 4, but on the other hand
 	# it's more straightforward in how it works.
 	#level_main.update_bitmask_region()
-	level_main.set_cells_terrain_connect( 0, level_main.get_used_cells(0), 0, 0)
+	var all_cells = level_main.get_used_cells(0)
+	var terrain_cells = []
+	for tc in all_cells:
+		var cell_source_id = level_main.get_cell_source_id(0,tc)
+		if cell_source_id == 0 or cell_source_id == 3:
+#		if tc.source_id == 0:
+			terrain_cells.push_back(tc)
+	level_main.set_cells_terrain_connect( 0, terrain_cells , 0, 0)
 	emit_signal("level_completed", _player.position)
 
 
@@ -212,7 +234,6 @@ func _copy_room(offset: Vector2, type: int, start: bool) -> void:
 	var world_offset := _grid_to_world(offset)
 	var map_offset := _grid_to_map(offset)
 	var data: Dictionary = _rooms.get_room_data(type)
-	
 	for object in data.objects:
 		if (not start and object.is_in_group("player")) or (start and object.is_in_group("enemy")):
 			continue
@@ -225,8 +246,8 @@ func _copy_room(offset: Vector2, type: int, start: bool) -> void:
 			_player = new_object
 	
 	for d in data.tilemap:
-		var tilemap := level_main if d.cell != _rooms.Cell.SPIKES else level_danger
-		tilemap.set_cell(0,Vector2i(map_offset) + d.offset, d.cell,d.atlas_coords)
+		var tilemap := level_main if d.cell != _rooms.Cell.MAYBE_SPIKES else level_danger
+		tilemap.set_cell(0,Vector2i(map_offset) + d.offset, d.target_id,d.atlas_coords)
 
 
 func _grid_to_map(vector: Vector2) -> Vector2:
