@@ -20,23 +20,22 @@ const BRANCH_ANGLE := Vector2(20, 45)
 
 # Returns rivers generated from a noise-based height map as an image texture.
 static func generate_rivers(
-	rng: RandomNumberGenerator, texture: Texture, rivers_count: int, rivers_level: Vector2
+	rng: RandomNumberGenerator, texture: Texture2D, rivers_count: int, rivers_level: Vector2
 ) -> ImageTexture:
 	var rivers := _generate_rivers(rng, texture, rivers_count, rivers_level)
-	return _generate_rivers_texture(rng, rivers, texture.get_width(), texture.get_height())
+	return _generate_rivers_texture(rivers, texture.get_width(), texture.get_height())
 
 
 # Generate all rivers in the map as an array of pixel positions.
 static func _generate_rivers(
-	rng: RandomNumberGenerator, texture: Texture, rivers_count: int, rivers_level: Vector2
+	rng: RandomNumberGenerator, texture: Texture2D, rivers_count: int, rivers_level: Vector2
 ) -> Array:
 	var out := []
 
 	var available_start_positions := []
 	var available_end_positions := []
 	
-	var image := texture.get_data()
-	image.lock()
+	var image := texture.get_image()
 	for x in range(texture.get_width()):
 		for y in range(texture.get_height()):
 			var noise := image.get_pixel(x, y).r
@@ -44,11 +43,10 @@ static func _generate_rivers(
 				available_start_positions.push_back(Vector2(x, y))
 			elif rivers_level.y < noise:
 				available_end_positions.push_back(Vector2(x, y))
-	image.unlock()
 
 	for _i in range(rivers_count):
 		var river := _generate_river(rng, available_start_positions, available_end_positions)
-		if river.empty():
+		if river.is_empty():
 			break
 		out += river
 
@@ -59,12 +57,12 @@ static func _generate_river(
 	rng: RandomNumberGenerator, available_start_positions: Array, available_end_positions: Array
 ) -> Array:
 	var out := []
-	if available_start_positions.empty():
+	if available_start_positions.is_empty():
 		return out
 	
 	var r := rng.randi_range(0, available_start_positions.size() - 1)
 	var start: Vector2 = available_start_positions[r]
-	available_start_positions.remove(r)
+	available_start_positions.remove_at(r)
 	
 	var end := Vector2.ZERO
 	var min_distance := INF
@@ -85,12 +83,12 @@ static func _generate_river_branches(rng: RandomNumberGenerator, start: Vector2,
 	
 	var river_vector := end - start
 	for _j in range(rng.randi_range(0, RIVERS_MAX_BRANCHES)):
-		var branch_angle := deg2rad(rng.randf_range(BRANCH_ANGLE.x, BRANCH_ANGLE.y))
+		var branch_angle := deg_to_rad(rng.randf_range(BRANCH_ANGLE.x, BRANCH_ANGLE.y))
 		if rng.randf() < 0.5:
 			branch_angle *= -1
 		
 		var branch_length := rng.randf_range(BRANCH_LENGTH.x, BRANCH_LENGTH.y)
-		var branch_start := start.linear_interpolate(end, rng.randf())
+		var branch_start := start.lerp(end, rng.randf())
 		var branch_end := (branch_start + branch_length * river_vector.rotated(branch_angle))
 		out.push_back([branch_start, branch_end])
 	
@@ -99,27 +97,24 @@ static func _generate_river_branches(rng: RandomNumberGenerator, start: Vector2,
 
 # Converts generated rivers array as an image texture.
 static func _generate_rivers_texture(
-	rng: RandomNumberGenerator, rivers: Array, width: float, height: float
+	rivers: Array, width: int, height: int
 ) -> ImageTexture:
-	var image := Image.new()
-	image.create(width, height, true, Image.FORMAT_RF)
+	# in Godot 4 create is a static function and yields an image
+	var image := Image.create(width, height, true, Image.FORMAT_RF)
 
-	image.lock()
 	for river in rivers:
 		var distance: float = (river[1] - river[0]).length()
 		var step := 1 / distance
 		var t := 0.0
 		while t <= 1:
 			for offset in OFFSETS:
-				var position: Vector2 = river[0].linear_interpolate(river[1], t) + offset
+				var position: Vector2 = river[0].lerp(river[1], t) + offset
 				if position.x < 0 or width <= position.x or position.y < 0 or height <= position.y:
 					continue
 
 				image.set_pixelv(position, Color(1, 0, 0, 0))
 			t += step
-	image.unlock()
 	image.generate_mipmaps()
 	
-	var out := ImageTexture.new()
-	out.create_from_image(image)
+	var out := ImageTexture.create_from_image(image)
 	return out

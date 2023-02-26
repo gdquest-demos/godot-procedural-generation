@@ -2,7 +2,8 @@ shader_type canvas_item;
 
 
 const float UNCERTAINTY = 1e-2;
-const float PI = 3.14159265358979323846;
+// Godot 4: "redefinition of PI"
+//const float PI = 3.14159265358979323846;
 const float SPAN = 1e-1;
 
 const float COLDEST = 0.025;
@@ -28,16 +29,16 @@ const int TROPICAL_RAINFOREST = 9;
 
 
 // A step-wise color map for assigning flat colors to the water/land masses and biomes.
-uniform sampler2D color_map : hint_black;
+uniform sampler2D color_map : hint_default_black;
 // We pass in the `color_map.gradient.offsets` array as a `sampler2D` as we need the positions of
 // the gradient offsets to determine water and land masses.
-uniform sampler2D color_map_offsets : hint_black;
+uniform sampler2D color_map_offsets : hint_default_black;
 // The following three variables are noise values for height, heat and moisture.
-uniform sampler2D height_map : hint_black;
-uniform sampler2D heat_map : hint_black;
-uniform sampler2D moisture_map : hint_black;
+uniform sampler2D height_map : hint_default_black;
+uniform sampler2D heat_map : hint_default_black;
+uniform sampler2D moisture_map : hint_default_black;
 // GDScript generated texture with linear rivers for post-processing in the shader.
-uniform sampler2D rivers_map : hint_black;
+uniform sampler2D rivers_map : hint_default_black;
 
 // This is the value of `color_map.gradient.offsets.size()`. We need it to get values
 // at the given indices.

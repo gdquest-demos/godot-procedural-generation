@@ -1,8 +1,9 @@
 shader_type canvas_item;
 
 
-uniform vec4 edge_color : hint_color;
+uniform vec4 edge_color : source_color;
 uniform vec2 edge_width = vec2(0.1);
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
 
 
 float sobel(sampler2D tex, vec2 uv, vec2 pixel_size) {
