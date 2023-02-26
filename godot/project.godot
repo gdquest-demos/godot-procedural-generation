@@ -6,187 +6,53 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
-
-_global_script_classes=[ {
-"base": "Reference",
-"class": "BasicDungeonGenerator",
-"language": "GDScript",
-"path": "res://BasicDungeon/03.Bonus/Generator.gd"
-}, {
-"base": "Reference",
-"class": "BasicDungeonRoom",
-"language": "GDScript",
-"path": "res://BasicDungeon/03.Bonus/Room.gd"
-}, {
-"base": "BasicDungeonRoom",
-"class": "BasicDungeonRoomOrganic",
-"language": "GDScript",
-"path": "res://BasicDungeon/03.Bonus/RoomOrganic.gd"
-}, {
-"base": "Reference",
-"class": "BasicDungeonUtils",
-"language": "GDScript",
-"path": "res://BasicDungeon/03.Bonus/Utils.gd"
-}, {
-"base": "WorldGenerator",
-"class": "BlueNoiseWorldGenerator",
-"language": "GDScript",
-"path": "res://SpaceInfiniteGeneration/BlueNoiseWorldGenerator.gd"
-}, {
-"base": "ProjectileEvent",
-"class": "ExplosionEvent",
-"language": "GDScript",
-"path": "res://ModularWeapons/ModularWeapon/src/ProjectileEvents/Events/ExplosionEvent/ExplosionEvent.gd"
-}, {
-"base": "ProjectileMotion",
-"class": "HomingMotion",
-"language": "GDScript",
-"path": "res://ModularWeapons/ModularWeapon/src/ProjectileMotion/Motions/HomingMotion.gd"
-}, {
-"base": "WorldGenerator",
-"class": "LayeredWorldGenerator",
-"language": "GDScript",
-"path": "res://SpaceInfiniteGeneration/LayeredWorldGenerator.gd"
-}, {
-"base": "RigidBody2D",
-"class": "MSTDungeonRoom",
-"language": "GDScript",
-"path": "res://MSTDungeon/Room.gd"
-}, {
-"base": "Reference",
-"class": "MSTDungeonUtils",
-"language": "GDScript",
-"path": "res://MSTDungeon/Utils.gd"
-}, {
-"base": "Node2D",
-"class": "ModularWeapon",
-"language": "GDScript",
-"path": "res://ModularWeapons/ModularWeapon/src/ModularWeapon.gd"
-}, {
-"base": "LayeredWorldGenerator",
-"class": "PersistentWorldGenerator",
-"language": "GDScript",
-"path": "res://SpaceInfiniteGeneration/PersistentWorldGenerator.gd"
-}, {
-"base": "KinematicBody2D",
-"class": "Projectile",
-"language": "GDScript",
-"path": "res://ModularWeapons/ModularWeapon/src/Projectile/Projectile.gd"
-}, {
-"base": "Node2D",
-"class": "ProjectileEmitter",
-"language": "GDScript",
-"path": "res://ModularWeapons/ModularWeapon/src/Projectile/ProjectileEmitter.gd"
-}, {
-"base": "Resource",
-"class": "ProjectileEvent",
-"language": "GDScript",
-"path": "res://ModularWeapons/ModularWeapon/src/ProjectileEvents/ProjectileEvent.gd"
-}, {
-"base": "Resource",
-"class": "ProjectileMotion",
-"language": "GDScript",
-"path": "res://ModularWeapons/ModularWeapon/src/ProjectileMotion/ProjectileMotion.gd"
-}, {
-"base": "ProjectileMotion",
-"class": "SineMotion",
-"language": "GDScript",
-"path": "res://ModularWeapons/ModularWeapon/src/ProjectileMotion/Motions/SineMotion.gd"
-}, {
-"base": "ProjectileMotion",
-"class": "StraightMotion",
-"language": "GDScript",
-"path": "res://ModularWeapons/ModularWeapon/src/ProjectileMotion/Motions/StraightMotion.gd"
-}, {
-"base": "WorldGenerator",
-"class": "WhiteNoiseWorldGenerator",
-"language": "GDScript",
-"path": "res://SpaceInfiniteGeneration/WhiteNoiseWorldGenerator.gd"
-}, {
-"base": "Node2D",
-"class": "WorldGenerator",
-"language": "GDScript",
-"path": "res://SpaceInfiniteGeneration/Shared/WorldGenerator.gd"
-}, {
-"base": "Reference",
-"class": "WorldMapRiverGenerator",
-"language": "GDScript",
-"path": "res://WorldMap/RiverGenerator.gd"
-}, {
-"base": "Reference",
-"class": "WorldMapUtils",
-"language": "GDScript",
-"path": "res://WorldMap/Utils.gd"
-} ]
-_global_script_class_icons={
-"BasicDungeonGenerator": "",
-"BasicDungeonRoom": "",
-"BasicDungeonRoomOrganic": "",
-"BasicDungeonUtils": "",
-"BlueNoiseWorldGenerator": "",
-"ExplosionEvent": "",
-"HomingMotion": "",
-"LayeredWorldGenerator": "",
-"MSTDungeonRoom": "",
-"MSTDungeonUtils": "",
-"ModularWeapon": "",
-"PersistentWorldGenerator": "",
-"Projectile": "",
-"ProjectileEmitter": "",
-"ProjectileEvent": "",
-"ProjectileMotion": "",
-"SineMotion": "",
-"StraightMotion": "",
-"WhiteNoiseWorldGenerator": "",
-"WorldGenerator": "",
-"WorldMapRiverGenerator": "",
-"WorldMapUtils": ""
-}
+config_version=5
 
 [application]
 
 config/name="Procedural Generation Demos"
 config/description="Implementations and demos of procedural generation algorithms."
+run/main_scene="res://WorldMap/WorldMap.tscn"
+config/features=PackedStringArray("4.0")
 config/icon="res://icon.png"
 
 [display]
 
+window/size/resizable=false
 window/size/width=1280
 window/size/height=720
-window/size/resizable=false
 
 [input]
 
 move_left={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":65,"unicode":0,"echo":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":65,"key_label":0,"unicode":97,"echo":false,"script":null)
+]
 }
 move_right={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"unicode":0,"echo":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":68,"key_label":0,"unicode":100,"echo":false,"script":null)
+]
 }
 jump={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"unicode":0,"echo":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":32,"key_label":0,"unicode":32,"echo":false,"script":null)
+]
 }
 forwards={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"unicode":0,"echo":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":87,"key_label":0,"unicode":119,"echo":false,"script":null)
+]
 }
 back={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"unicode":0,"echo":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"key_label":0,"unicode":115,"echo":false,"script":null)
+]
 }
 fire={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"unicode":0,"echo":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194325,"key_label":0,"unicode":0,"echo":false,"script":null)
+]
 }
 
 [layer_names]
@@ -197,6 +63,6 @@ fire={
 [rendering]
 
 2d/snapping/use_gpu_pixel_snap=true
-environment/default_clear_color=Color( 0.258824, 0.141176, 0.270588, 1 )
+environment/default_clear_color=Color(0.258824, 0.141176, 0.270588, 1)
 environment/default_environment="res://default_env.tres"
 quality/2d/use_pixel_snap=true
