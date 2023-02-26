@@ -2,9 +2,9 @@ class_name SineMotion
 extends ProjectileMotion
 
 # Amplitude of the sine wave in pixels relative to the emission point.
-export var amplitude := 100.0
+@export var amplitude := 100.0
 # Number of waves the sine draws per second.
-export var frequency := 2
+@export var frequency := 2
 
 var elapsed_time := 0.0
 

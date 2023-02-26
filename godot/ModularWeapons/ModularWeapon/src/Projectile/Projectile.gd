@@ -14,7 +14,7 @@
 # are a way to communicate back to its emitter/the weapons system.
 # @tags - abstract
 class_name Projectile
-extends KinematicBody2D
+extends CharacterBody2D
 
 
 #warning-ignore: unused_signal
@@ -72,7 +72,7 @@ func _miss() -> void:
 func _update_movement(delta: float) -> Vector2:
 	var movement_vector := Vector2.ZERO
 	
-	if motions.empty():
+	if motions.is_empty():
 		return movement_vector
 
 	for motion in motions:

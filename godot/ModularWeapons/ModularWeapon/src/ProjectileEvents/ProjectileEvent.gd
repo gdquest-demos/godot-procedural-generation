@@ -8,7 +8,7 @@ class_name ProjectileEvent
 extends Resource
 
 
-export var triggers_on_misses := false
+@export var triggers_on_misses := false
 
 
 # Base function for triggering an impact event. Will check if it should or

@@ -1,15 +1,15 @@
 extends ProjectileEmitter
 
 
-export var collisions_per_second := 4
+@export var collisions_per_second := 4
 
 var is_firing := false
 var current_lifetime := 0.0
 
-onready var tracer := $LaserTracer
-onready var laser_line := $Line2D
-onready var timer := $Timer
-onready var casting_particles := $CastingParticles
+@onready var tracer := $LaserTracer
+@onready var laser_line := $Line2D
+@onready var timer := $Timer
+@onready var casting_particles := $CastingParticles
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -19,7 +19,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		for i in range(1, 10):
 			current_lifetime = float(projectile_lifetime / i)
 			
-			yield(get_tree(), "physics_frame")
+			await get_tree().physics_frame
 
 		laser_line.points = []
 		tracer.hide()
@@ -59,5 +59,5 @@ func _do_fire(_direction: Vector2, _motions: Array, _lifetime: float) -> void:
 # @tags - virtual
 func _on_projectile_collided(target: Node, _hit_location: Vector2) -> void:
 	if timer.is_stopped():
-		._on_projectile_collided(target, _hit_location)
+		super._on_projectile_collided(target, _hit_location)
 		timer.start(1.0 / float(collisions_per_second))

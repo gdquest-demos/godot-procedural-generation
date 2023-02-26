@@ -1,13 +1,13 @@
 class_name HomingMotion
 extends ProjectileMotion
 
-export var homing_radius := 60.0
-export (float, 0.0, 0.5, 0.025) var homing_strength := 0.067
-export (int, LAYERS_2D_PHYSICS) var collision_mask: int
+@export var homing_radius := 60.0
+@export_range(0.0, 0.5, 0.025) var homing_strength : float = 0.067
+@export_flags_2d_physics var collision_mask: int
 
 var _circle: CircleShape2D
-var _space: Physics2DDirectSpaceState
-var _query: Physics2DShapeQueryParameters
+var _space: PhysicsDirectSpaceState2D
+var _query: PhysicsShapeQueryParameters2D
 
 
 # Sets up a circle with the specified radius, and gets the world 2D space state.
@@ -18,9 +18,9 @@ func _setup_shape() -> void:
 	_circle.radius = homing_radius
 
 	_space = projectile.get_world_2d().direct_space_state
-	_query = Physics2DShapeQueryParameters.new()
-	_query.set_shape(_circle)
-	_query.collision_layer = collision_mask
+	_query = PhysicsShapeQueryParameters2D.new()
+	_query.shape = _circle
+	_query.collision_mask = collision_mask
 
 
 # Locates the nearest target using an intersect shape call to the 2D space state.

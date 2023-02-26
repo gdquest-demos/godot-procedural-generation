@@ -4,7 +4,7 @@ const TIME_STEP := 1.0 / 60.0
 
 var collision_normal := Vector2.ZERO
 
-onready var impact_particles := $ImpactParticles
+@onready var impact_particles := $ImpactParticles
 
 
 # Moves the laser tracer along the path it would have taken over time as a
@@ -17,28 +17,28 @@ func trace_path(lifetime_actual: float) -> Array:
 
 	var current_time := 0.0
 
-	var collided := false
+	var has_collided := false
 	
 	while current_time < lifetime:
 		current_time += TIME_STEP
 
 		var planned_movement := _update_movement(TIME_STEP)
 		
-		if not collided and current_time < lifetime_actual:
+		if not has_collided and current_time < lifetime_actual:
 			var collision := move_and_collide(planned_movement)
 		
 			if not collision:
 				positions.append(global_position)
 			else:
-				positions.append(collision.position)
-				emit_signal("collided", collision.collider, collision.position)
+				positions.append(collision.get_position())
+				emit_signal("collided", collision.get_collider(), collision.get_position())
 				
-				collision_normal = collision.normal
+				collision_normal = collision.get_normal()
 				_impact()
 				
-				collided = true
+				has_collided = true
 	
-	if not collided:
+	if not has_collided:
 		_miss()
 		return positions.slice(0, int(lifetime_actual / lifetime * positions.size()))
 	else:

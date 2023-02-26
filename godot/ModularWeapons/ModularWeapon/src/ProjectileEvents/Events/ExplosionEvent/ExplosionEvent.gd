@@ -1,10 +1,10 @@
 class_name ExplosionEvent
 extends ProjectileEvent
 
-export var explosion_radius := 130.0
-export var explosion_damage := 30.0
-export var damage_scales_with_distances := true
-export (int, LAYERS_2D_PHYSICS) var collision_mask: int
+@export var explosion_radius := 130.0
+@export var explosion_damage := 30.0
+@export var damage_scales_with_distances := true
+@export_flags_2d_physics var collision_mask: int
 
 var explosion_effect := preload("Explosion.tscn")
 
@@ -13,7 +13,7 @@ var explosion_effect := preload("Explosion.tscn")
 # Causes damage based on proximity to the explosion.
 # @tags - virtual
 func _do_trigger(_spawn_location: Vector2, _spawn_parent: Node, _weapons_system, _missed: bool) -> void:
-	var explosion := explosion_effect.instance()
+	var explosion := explosion_effect.instantiate()
 	
 	explosion.position = _spawn_location
 	
@@ -23,7 +23,7 @@ func _do_trigger(_spawn_location: Vector2, _spawn_parent: Node, _weapons_system,
 	
 	explosion.trigger()
 	
-	yield(explosion.get_tree(), "physics_frame")
+	await explosion.get_tree().physics_frame
 	
 	var bodies: Array = explosion.area.get_overlapping_bodies()
 	for body in bodies:

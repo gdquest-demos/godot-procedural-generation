@@ -2,7 +2,7 @@ class_name StraightMotion
 extends ProjectileMotion
 
 # Speed at which the projectile travels.
-export var travel_speed := 300.0
+@export var travel_speed := 300.0
 
 
 # Moves in a straight line by the projectile's speed

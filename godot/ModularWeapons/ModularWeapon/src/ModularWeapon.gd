@@ -6,10 +6,10 @@ extends Node2D
 #warning-ignore: unused_signal
 signal damaged(target, amount)
 
-export var emitter_configuration: PackedScene setget _set_emitter_configuration
-export var projectile_emitter: PackedScene setget _set_emitter
-export (Array, Resource) var projectile_motions := []
-export (Array, Resource) var projectile_impact_events := []
+@export var emitter_configuration: PackedScene : set = _set_emitter_configuration
+@export var projectile_emitter: PackedScene : set = _set_emitter
+@export var projectile_motions : Array[Resource] = []
+@export var projectile_impact_events : Array[Resource] = []
 
 
 # Appends the specified motion to the projectile motions array. Checks for and prevents
@@ -41,7 +41,7 @@ func add_impact_event(new_event: ProjectileEvent, allows_duplicates := false) ->
 func _set_emitter_configuration(value: PackedScene) -> void:
 	emitter_configuration = value
 	if not is_inside_tree():
-		yield(self, "ready")
+		await self.ready
 
 	_clear_emitters()
 	_add_new_emitters()
@@ -64,10 +64,10 @@ func _clear_emitters() -> void:
 # Adds new projectile emitters that are positioned and rotated according to the
 # provided configuration scene.
 func _add_new_emitters() -> void:
-	var configuration := emitter_configuration.instance()
+	var configuration := emitter_configuration.instantiate()
 
 	for weapon_position in configuration.get_children():
-		var new_emitter := projectile_emitter.instance()
+		var new_emitter := projectile_emitter.instantiate()
 		new_emitter.position = weapon_position.position
 		new_emitter.rotation = weapon_position.rotation
 

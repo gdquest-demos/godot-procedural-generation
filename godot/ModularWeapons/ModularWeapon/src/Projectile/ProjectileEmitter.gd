@@ -6,13 +6,13 @@ class_name ProjectileEmitter
 extends Node2D
 
 
-export var damage_per_collision := 5
-export var projectiles_per_second := 1.0
-export var projectile_lifetime := 1.0
+@export var damage_per_collision := 5
+@export var projectiles_per_second := 1.0
+@export var projectile_lifetime := 1.0
 
 var weapons_system: Node
 
-onready var spawned_objects: Node = get_tree().get_nodes_in_group("spawned_objects").front()
+@onready var spawned_objects: Node = get_tree().get_nodes_in_group("spawned_objects").front()
 
 
 # Base function to shoot a projectile. Calls the virtual `_do_fire` function.
