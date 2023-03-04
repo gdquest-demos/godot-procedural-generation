@@ -28,29 +28,28 @@ const LAYERS = {
 }
 
 ## Hides or shows the grid and the planetary seeding points.
-export var show_debug := false setget _set_show_debug
+@export var show_debug := false : set = _set_show_debug
 
 ## Percentage to keep the planetary seeding points away from the sector edges.
-export var sector_margin_proportion := 0.1
+@export var sector_margin_proportion := 0.1
 
 ## The maximum area covered by the three seeding vertices for a planet to form.
-export var planet_generation_area_threshold := 5000.0
+@export var planet_generation_area_threshold := 5000.0
 
 ## The probability of a moon being generated next to a planet.
-export var moon_generation_chance := 1.1 / 3.0
-export var max_moon_count := 5
+@export var moon_generation_chance := 1.1 / 3.0
+@export var max_moon_count := 5
 
 ## The probability of asteroids being generated next to a planet.
-export var asteroid_generation_chance := 3.0 / 4.0
+@export var asteroid_generation_chance := 3.0 / 4.0
 ## The maximum number of asteroids we can generate in one sector.
-export var max_asteroid_count := 10
+@export var max_asteroid_count := 10
 
 ## The pixel value of the margin calculated from the margin percentage
-onready var _sector_margin := sector_size * sector_margin_proportion
+@onready var _sector_margin := sector_size * sector_margin_proportion
 
-onready var _player := $Player
-onready var _grid_drawer := $GridDrawer
-
+@onready var _player := $Player
+@onready var _grid_drawer := $GridDrawer
 
 func _ready() -> void:
 	generate()
@@ -65,12 +64,17 @@ func _ready() -> void:
 ## This creates our world's layers, each one smaller than the one before it, but
 ## all contained within the player's view (normally.)
 func generate() -> void:
-	var index := -1
+	var index : int = -1
 	for layer in LAYERS:
 		index += 1
 		for x in range(
+			
 			_current_sector.x - _half_sector_count + index,
+#			0 - _half_sector_count + index,
+#			-8,
 			_current_sector.x + _half_sector_count - index
+#			0 + _half_sector_count - index
+#			_current_sector.x
 		):
 			for y in range(
 				_current_sector.y - _half_sector_count + index,
@@ -91,7 +95,7 @@ func generate() -> void:
 						_generate_travel_lanes_at(sector)
 					"asteroids":
 						_generate_asteroids_at(sector)
-	update()
+	queue_redraw()
 
 
 # Draws the generated data.
@@ -103,15 +107,15 @@ func _draw() -> void:
 				draw_circle(point, 12, Color(0.5, 0.5, 0.5, 0.5))
 
 		if data.planet:
-			draw_circle(data.planet.position, PLANET_BASE_SIZE * data.planet.scale, Color.bisque)
+			draw_circle(data.planet.position, PLANET_BASE_SIZE * data.planet.scale, Color.BISQUE)
 		for moon in data.moons:
-			draw_circle(moon.position, MOON_BASE_SIZE * moon.scale, Color.aquamarine)
+			draw_circle(moon.position, MOON_BASE_SIZE * moon.scale, Color.AQUAMARINE)
 		for path in data.travel_lanes:
 			var start: Vector2 = path.source
 			var end: Vector2 = path.destination
-			draw_line(start, end, Color.cornflower, 6.0)
+			draw_line(start, end, Color.CORNFLOWER_BLUE, 6.0)
 		for asteroid in data.asteroids:
-			draw_circle(asteroid.position, ASTEROID_BASE_SIZE * asteroid.scale, Color.orangered)
+			draw_circle(asteroid.position, ASTEROID_BASE_SIZE * asteroid.scale, Color.ORANGE_RED)
 
 
 # Whenever the player changes sector, erase those that fall out of scope and generate new ones
@@ -194,9 +198,9 @@ func _generate_moons_at(sector: Vector2) -> void:
 		return
 
 	# Get the sector's planet layer and check if there is a planet. If there is
-	# not, cancel and move on.
+	# not, cancel and move checked.
 	var planet: Dictionary = _sectors[sector].planet
-	if not planet:
+	if planet.is_empty():
 		return
 
 	# Generate a seed for moons in the sector
@@ -226,14 +230,14 @@ func _generate_travel_lanes_at(sector: Vector2) -> void:
 
 	# If there is no planet, don't generate anything.
 	var planet: Dictionary = _sectors[sector].planet
-	if not planet:
+	if planet.is_empty():
 		return
 
 	# Check each neighbor for a planet. If there is one, create a dictionary that
 	# links the two worlds together with a line to indicate a trading partner.
 	for neighbor in NEIGHBORS:
 		var neighbor_sector: Vector2 = sector + neighbor
-		if not _sectors[neighbor_sector].planet:
+		if _sectors[neighbor_sector].planet.is_empty():
 			continue
 
 		var neighbor_position: Vector2 = _sectors[neighbor_sector].planet.position
@@ -252,7 +256,7 @@ func _generate_asteroids_at(sector: Vector2) -> void:
 	# Check for planet, moons and travel lanes. If there is a planet and neither
 	# moon or travel lane, begin generating an asteroid belt in an orbit.
 	var planet: Dictionary = _sectors[sector].planet
-	if not planet or _sectors[sector].moons or _sectors[sector].travel_lanes:
+	if planet.is_empty() or _sectors[sector].moons or _sectors[sector].travel_lanes:
 		return
 
 	_rng.seed = make_seed_for(sector.x, sector.y, "asteroids")
@@ -314,9 +318,9 @@ func _update_along_axis(axis: int, difference: float) -> void:
 func _set_show_debug(value: bool) -> void:
 	show_debug = value
 	if not is_inside_tree():
-		yield(self, "ready")
+		await self.ready
 	_grid_drawer.visible = show_debug
-	update()
+	queue_redraw()
 
 
 ## Returns the area of a triangle.

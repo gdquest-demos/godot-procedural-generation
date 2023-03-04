@@ -23,7 +23,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	# If there is not already a planet in the sector, left mouse button adds it
 	# to the mouse click position
-	if event.button_index == BUTTON_LEFT and not _sectors[sector].planet:
+	if event.button_index == MOUSE_BUTTON_LEFT and _sectors[sector].planet.is_empty():
 		if not _modifications.has(sector):
 			_modifications[sector] = {}
 
@@ -33,7 +33,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	# If there is a planet in the sector and it corresponds to the location
 	# clicked by the mouse, erase it from the world.
-	elif event.button_index == BUTTON_RIGHT and _sectors[sector].planet:
+	elif event.button_index == MOUSE_BUTTON_RIGHT and not _sectors[sector].planet.is_empty():
 		if not _modifications.has(sector):
 			_modifications[sector] = {}
 
@@ -71,6 +71,6 @@ func _generate_planets_at(sector: Vector2) -> void:
 ## that sector.
 func _find_sector(world_position: Vector2) -> Vector2:
 	return Vector2(
-		int((world_position.x - _half_sector_size) / sector_size),
-		int((world_position.y - _half_sector_size) / sector_size)
+		floor((world_position.x - _half_sector_size) / sector_size) + 1,
+		floor((world_position.y - _half_sector_size) / sector_size) + 1
 	)

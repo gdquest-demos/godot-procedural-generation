@@ -1,19 +1,19 @@
-## World generator that uses white noise to place asteroids in sectors.
+## World3D generator that uses white noise to place asteroids in sectors.
 class_name WhiteNoiseWorldGenerator
 extends WorldGenerator
 
 ## The asteroid scene to instantiate inside sectors.
-export var Asteroid: PackedScene
+@export var Asteroid: PackedScene
 ## The number of asteroids to place in each sector.
-export var asteroid_density := 3
+@export var asteroid_density := 3
 
-onready var _grid_drawer := $GridDrawer
-onready var _player := $Player
+@onready var _grid_drawer := $GridDrawer
+@onready var _player := $Player
 
 
 # Upon starting the game, we generate sectors around the player and initialise
 # the grid drawer, which needs to know the sector size and the number of sector
-# we generate on each axis.
+# we generate checked each axis.
 func _ready() -> void:
 	generate()
 	_grid_drawer.setup(sector_size, sector_axis_count)
@@ -47,7 +47,7 @@ func _generate_sector(x_id: int, y_id: int) -> void:
 	# Generates random Vector2 in a square and assign an asteroid to it, with a
 	# random angle and scale. The asteroids can overlap.
 	for _i in range(asteroid_density):
-		var asteroid := Asteroid.instance()
+		var asteroid := Asteroid.instantiate()
 		add_child(asteroid)
 
 		# We generate a random position for each asteroid within the rectangle's bounds.
@@ -62,7 +62,7 @@ func _generate_sector(x_id: int, y_id: int) -> void:
 
 # Returns a random position within the sector's bounds, given the sector's coordinates.
 func _generate_random_position(x_id: int, y_id: int) -> Vector2:
-	# Calculate the sector boundaries based on the current x and y sector
+	# Calculate the sector boundaries based checked the current x and y sector
 	# coordinates.
 	var sector_position = Vector2(x_id * sector_size, y_id * sector_size)
 	var sector_top_left = Vector2(

@@ -24,15 +24,16 @@ func _draw() -> void:
 				Vector2(cell_size, cell_size)
 			)
 
-			draw_rect(cell_rect, Color.skyblue, false)
+			draw_rect(cell_rect, Color.SKY_BLUE, false)
 
 
 func setup(size: float, count: int) -> void:
 	cell_size = size
 	cell_count = count
-	update()
+	
+	queue_redraw()
 
 
 func move_grid_to(origin: Vector2) -> void:
 	grid_origin = origin
-	update()
+	queue_redraw()

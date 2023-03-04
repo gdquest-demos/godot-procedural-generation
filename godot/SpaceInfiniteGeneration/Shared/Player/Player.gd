@@ -1,29 +1,28 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
-export var speed_max := 675.0
-export var acceleration := 1500.0
-export var angular_speed_max := deg2rad(150)
-export var angular_acceleration := deg2rad(1200)
-export var drag_factor := 0.05
-export var angular_drag_factor := 0.1
+@export var speed_max := 675.0
+@export var acceleration := 1500.0
+@export var angular_speed_max := deg_to_rad(150)
+@export var angular_acceleration := deg_to_rad(1200)
+@export var drag_factor := 0.05
+@export var angular_drag_factor := 0.1
 
-var velocity := Vector2.ZERO
-var angular_velocity := 0.0
+@onready var angular_velocity : float = 0.0
 
 
 func _physics_process(delta: float) -> void:
-	velocity = velocity.clamped(speed_max)
-
+	velocity = velocity.limit_length(speed_max)
+	
 	angular_velocity = clamp(angular_velocity, -angular_speed_max, angular_speed_max)
-	angular_velocity = lerp(angular_velocity, 0, angular_drag_factor)
+	angular_velocity = lerp(angular_velocity, 0.0, angular_drag_factor)
 
-	velocity = move_and_slide(velocity)
+	move_and_slide()
 	rotation += angular_velocity * delta
 
 	var movement := _get_movement()
 	
 	if is_equal_approx(movement.y, 0):
-		velocity = (velocity.linear_interpolate(Vector2.ZERO, drag_factor))
+		velocity = (velocity.lerp(Vector2.ZERO, drag_factor))
 
 	var direction := Vector2.UP.rotated(rotation)
 

@@ -1,21 +1,21 @@
 class_name BlueNoiseWorldGenerator
 extends WorldGenerator
 
-export var Asteroid: PackedScene
-export var asteroid_density := 3
-export var sector_margin_proportion := 0.1
-export var subsector_margin_proportion := 0.1
+@export var Asteroid: PackedScene
+@export var asteroid_density := 3
+@export var sector_margin_proportion := 0.1
+@export var subsector_margin_proportion := 0.1
 
-onready var _subsector_grid_width: int = ceil(sqrt(asteroid_density))
-onready var _subsector_count := _subsector_grid_width * _subsector_grid_width
+@onready var _subsector_grid_width: int = ceil(sqrt(asteroid_density))
+@onready var _subsector_count := _subsector_grid_width * _subsector_grid_width
 
-onready var _sector_margin := sector_size * sector_margin_proportion
-onready var _subsector_base_size := (sector_size - _sector_margin * 2) / _subsector_grid_width
-onready var _subsector_margin := _subsector_base_size * subsector_margin_proportion
-onready var _subsector_size := _subsector_base_size - _subsector_margin * 2
+@onready var _sector_margin := sector_size * sector_margin_proportion
+@onready var _subsector_base_size := (sector_size - _sector_margin * 2) / _subsector_grid_width
+@onready var _subsector_margin := _subsector_base_size * subsector_margin_proportion
+@onready var _subsector_size := _subsector_base_size - _subsector_margin * 2
 
-onready var _grid_drawer := $GridDrawer
-onready var _player := $Player
+@onready var _grid_drawer := $GridDrawer
+@onready var _player := $Player
 
 
 func _ready() -> void:
@@ -52,7 +52,7 @@ func _generate_sector(x_id: int, y_id: int) -> void:
 		var x := int(sector_indices[i] / _subsector_grid_width)
 		var y: int = sector_indices[i] - x * _subsector_grid_width
 
-		var asteroid := Asteroid.instance()
+		var asteroid := Asteroid.instantiate()
 		add_child(asteroid)
 		asteroid.position = _generate_random_position(Vector2(x, y), sector_top_left)
 		asteroid.rotation = _rng.randf_range(-PI, PI)

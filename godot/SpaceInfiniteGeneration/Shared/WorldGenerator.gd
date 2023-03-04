@@ -12,24 +12,24 @@ extends Node2D
 enum { AXIS_X, AXIS_Y }
 
 ## Size of a sector in pixels.
-export var sector_size := 1000.0
+@export var sector_size := 1000.0
 ## Number of sectors to generate around the player on a given axis.
-export var sector_axis_count := 10
+@export var sector_axis_count := 10
 ## Seed to generate the world. We will use a hash function to convert it to a unique number for each sector. See the `make_seed_for()` function below.
 ## This makes the world generation deterministic.
-export var start_seed := "world_generation"
+@export var start_seed := "world_generation"
 
 ## This dictionary can store important data about any generated sector, or even custom data for persistent worlds.
 var _sectors := {}
 ## Coordinates of the sector the player currently is in. We use it to generate _sectors around the player.
-var _current_sector := Vector2.ZERO
+var _current_sector : Vector2 = Vector2.ZERO
 ## There are some built-in functions in GDScript to generate random numbers, but the random number generator allows us to use a specific seed and provides more methods, which is useful for procedural generation.
 var _rng := RandomNumberGenerator.new()
 
 ## We will reuse the three values below several times so we pre-calculate them.
-onready var _half_sector_size := sector_size / 2.0
-onready var _sector_size_squared := sector_size * sector_size
-onready var _half_sector_count := int(sector_axis_count / 2.0)
+@onready var _half_sector_size := sector_size / 2.0
+@onready var _sector_size_squared := sector_size * sector_size
+@onready var _half_sector_count := int(sector_axis_count / 2.0)
 
 
 ## Calls `_generate_sector()` for each sector in a grid around the player.
@@ -43,7 +43,7 @@ func generate() -> void:
 ## This allows us to use it with the `RandomNumberGenerator.seed` property.
 func make_seed_for(_x_id: int, _y_id: int, custom_data := "") -> int:
 	var new_seed := "%s_%s_%s" % [start_seed, _x_id, _y_id]
-	if not custom_data.empty():
+	if not custom_data.is_empty():
 		new_seed = "%s_%s" % [new_seed, custom_data]
 	return new_seed.hash()
 
