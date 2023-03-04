@@ -16,16 +16,16 @@ const CELL_NEIGHBORS := [
 
 const MAP_SIZE := Vector2(80, 45)
 
-var _wall_conversion := 4 setget set_wall_conversion
-var _floor_conversion := 4 setget set_floor_conversion
+var _wall_conversion := 4 : set = set_wall_conversion
+var _floor_conversion := 4 : set = set_floor_conversion
 
-var _step_count := 10 setget set_step_count
-var _step_time := 0.1 setget set_step_time
-var _wall_chance := 0.5 setget set_wall_chance
+var _step_count := 10 : set = set_step_count
+var _step_time := 0.1 : set = set_step_time
+var _wall_chance := 0.5 : set = set_wall_chance
 
 var _map := {}
 
-onready var _tilemap := $TileMapDungeon
+@onready var _tilemap := $TileMapDungeon
 
 
 func _ready() -> void:
@@ -39,7 +39,7 @@ func generate_new_dungeon() -> void:
 	for step in _step_count:
 		if _step_time > 0:
 			_paint_map()
-			yield(get_tree().create_timer(_step_time), "timeout")
+			await get_tree().create_timer(_step_time).timeout
 		_map = _advance_simulation()
 
 	_paint_map()
@@ -77,7 +77,7 @@ func _advance_simulation() -> Dictionary:
 ## Draws tiles on the tilemap.
 func _paint_map() -> void:
 	for cell in _map:
-		_tilemap.set_cellv(cell, _map[cell])
+		_tilemap.set_cell(0, cell, _map[cell], Vector2i.ZERO)
 
 
 ## Returns the number of neighboring cells that are of type FLOOR.

@@ -13,12 +13,12 @@ const NEIGHBORS := [
 	Vector2(1, 1)
 ]
 
-export var chance_to_start_alive := 0.52
+@export var chance_to_start_alive := 0.52
 
 var _map := {}
 var _grid_size := Vector2(20, 11)
 
-onready var _tilemap: TileMap = $FoliageTileMap
+@onready var _tilemap: TileMap = $FoliageTileMap
 
 
 func _ready() -> void:
@@ -87,4 +87,4 @@ func _paint_map() -> void:
 		if _map[cell] == PlantState.ALIVE:
 			flower_frame = 1 + randi() % 4
 		
-		_tilemap.set_cellv(cell, flower_frame)
+		_tilemap.set_cell(0,cell, flower_frame, Vector2i.ZERO)

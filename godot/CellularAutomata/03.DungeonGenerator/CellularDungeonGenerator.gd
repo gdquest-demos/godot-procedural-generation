@@ -1,6 +1,6 @@
 extends Node2D
 
-export (PackedScene) var treasure_scene
+@export  var treasure_scene : PackedScene
 
 enum CellType { WALL, FLOOR }
 
@@ -17,21 +17,21 @@ const CELL_NEIGHBORS := [
 	Vector2(1, 1)
 ]
 
-var _wall_conversion := 4 setget set_wall_conversion
-var _floor_conversion := 4 setget set_floor_conversion
+var _wall_conversion := 4 : set = set_wall_conversion
+var _floor_conversion := 4 : set = set_floor_conversion
 
-var _step_count := 10 setget set_step_count
-var _step_time := 0.1 setget set_step_time
-var _wall_chance := 0.5 setget set_wall_chance
+var _step_count := 10 : set = set_step_count
+var _step_time := 0.1 : set = set_step_time
+var _wall_chance := 0.5 : set = set_wall_chance
 var _minimum_cavern_area := 50
 var _minimum_distance_to_exit := 10
 var _maximum_treasure := 10
 
 var _map := {}
 
-onready var _tilemap := $TileMapDungeon
-onready var _miner := $Miner
-onready var _exit := $Exit
+@onready var _tilemap := $TileMapDungeon
+@onready var _miner := $Miner
+@onready var _exit := $Exit
 
 
 func _ready() -> void:
@@ -44,7 +44,7 @@ func generate_new_dungeon() -> void:
 	for step in _step_count:
 		if _step_time > 0:
 			_paint_map()
-			yield(get_tree().create_timer(_step_time), "timeout")
+			await get_tree().create_timer(_step_time).timeout
 
 		_map = _advance_simulation()
 
@@ -134,13 +134,14 @@ func _assign_cavern(cell: Vector2, index: int, map: Dictionary) -> Array:
 
 func _paint_map() -> void:
 	for cell in _map:
-		_tilemap.set_cellv(cell, _map[cell])
-	_tilemap.update_bitmask_region()
-
-
+		_tilemap.set_cell(0, cell, _map[cell],Vector2i.ZERO)
+	var all_cells = _tilemap.get_used_cells_by_id(0,CellType.FLOOR)
+##	_tilemap.update_bitmask_region()
+	_tilemap.set_cells_terrain_connect(0, all_cells, 0, 0, false)
+	
 func _position_start_and_exit() -> void:
-	var floor_cells = _tilemap.get_used_cells_by_id(CellType.FLOOR)
-	if not floor_cells:
+	var floor_cells = _tilemap.get_used_cells_by_id(0,CellType.FLOOR)
+	if floor_cells.is_empty():
 		return
 
 	var miner_cell := Vector2.ZERO
@@ -158,7 +159,7 @@ func _position_start_and_exit() -> void:
 		break
 
 	while floor_cells:
-		var cell = floor_cells.pop_back()
+		var cell : Vector2 = floor_cells.pop_back()
 		
 		if cell.distance_to(miner_cell) < _minimum_distance_to_exit:
 			continue
@@ -178,25 +179,24 @@ func _add_treasure() -> void:
 	for treasure in get_tree().get_nodes_in_group("treasure"):
 		treasure.queue_free()
 	
-	var floor_cells = _tilemap.get_used_cells_by_id(CellType.FLOOR)
+	var floor_cells = _tilemap.get_used_cells_by_id(0,CellType.FLOOR)
 	var treasures_placed := 0
 
-	var corner_subtiles := [Vector2(0, 0), Vector2(0, 2), Vector2(2, 0), Vector2(2, 2)]
+	var corner_subtiles := [Vector2i(0, 0), Vector2i(0, 2), Vector2i(2, 0), Vector2i(2, 2)]
 
 	floor_cells.shuffle()
 
 	while treasures_placed < _maximum_treasure and floor_cells:
 		var cell = floor_cells.pop_back()
 
-		var subtile = _tilemap.get_cell_autotile_coord(cell.x, cell.y)
-
+		var subtile = _tilemap.get_cell_atlas_coords(0,Vector2i(cell.x, cell.y))
 		if not corner_subtiles.has(subtile):
 			continue
 		
-		var treasure = treasure_scene.instance()
-		# The treasure offset is based on which corner subtile the treasure appears in. This is based on the subtiles' position in relation to each other in the tileset.
-		var offset = Vector2.ZERO#(Vector2(1, 1) - subtile) * CELL_SIZE / 2
-		treasure.position = cell * CELL_SIZE + offset
+		var treasure = treasure_scene.instantiate()
+		# The treasure offset is based checked which corner subtile the treasure appears in. This is based checked the subtiles' position in relation to each other in the tileset.
+		var offset = (Vector2(1, 1) - Vector2(subtile)) * CELL_SIZE / 2
+		treasure.position = Vector2(cell) * CELL_SIZE + offset
 		add_child(treasure)
 		treasures_placed += 1
 
@@ -216,13 +216,21 @@ func _count_floor_neighbors(location: Vector2) -> int:
 
 func remove_walls(global_positions: Array) -> void:
 	for pos in global_positions:
-		var cell = _tilemap.world_to_map(pos)
+		var cell = _tilemap.local_to_map(pos)
 
-		if _tilemap.get_cellv(cell) == CellType.FLOOR:
+		if _tilemap.get_cell_source_id(0,cell) == CellType.FLOOR:
 			continue
 
-		_tilemap.set_cellv(cell, CellType.FLOOR)
-		_tilemap.update_bitmask_area(cell)
+		_tilemap.set_cell(0,cell, CellType.FLOOR,Vector2i.ZERO)
+#		_tilemap.update_bitmask_area(cell)
+#
+		# instead of updating the full map we only update the immediate surrounding:
+		var surrounding_cells = _tilemap.get_surrounding_cells(cell)
+		var surrounding_floor_cells : Array[Vector2i] = []
+		for surrounding_cell in surrounding_cells:
+			if _tilemap.get_cell_source_id(0,surrounding_cell) == CellType.FLOOR:
+				surrounding_floor_cells.push_back(surrounding_cell)
+		_tilemap.set_cells_terrain_connect(0, surrounding_floor_cells, 0, 0, false)
 
 
 ## We use the setters below to update values when changing the sliders.

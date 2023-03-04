@@ -1,0 +1,50 @@
+[gd_resource type="TileSet" load_steps=7 format=3 uid="uid://brghypklahquq"]
+
+[ext_resource type="Texture2D" uid="uid://c4cprsx5wbupg" path="res://CellularAutomata/01.FoliageGenerator/plants.png" id="1"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_83gno"]
+resource_name = "plants.png 0"
+texture = ExtResource("1")
+texture_region_size = Vector2i(64, 96)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 16)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_udiwq"]
+resource_name = "plants.png 1"
+texture = ExtResource("1")
+margins = Vector2i(64, 0)
+texture_region_size = Vector2i(64, 96)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 16)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bqfjf"]
+resource_name = "plants.png 2"
+texture = ExtResource("1")
+margins = Vector2i(128, 0)
+texture_region_size = Vector2i(64, 96)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 16)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0ivk4"]
+resource_name = "plants.png 3"
+texture = ExtResource("1")
+margins = Vector2i(192, 0)
+texture_region_size = Vector2i(64, 96)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 16)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0jvpe"]
+resource_name = "plants.png 4"
+texture = ExtResource("1")
+margins = Vector2i(256, 0)
+texture_region_size = Vector2i(64, 96)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 16)
+
+[resource]
+tile_size = Vector2i(64, 64)
+sources/0 = SubResource("TileSetAtlasSource_83gno")
+sources/1 = SubResource("TileSetAtlasSource_udiwq")
+sources/2 = SubResource("TileSetAtlasSource_bqfjf")
+sources/3 = SubResource("TileSetAtlasSource_0ivk4")
+sources/4 = SubResource("TileSetAtlasSource_0jvpe")

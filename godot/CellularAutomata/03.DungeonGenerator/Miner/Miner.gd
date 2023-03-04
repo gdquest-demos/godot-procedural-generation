@@ -1,12 +1,12 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 signal drill_used(dig_positions)
 
-export var speed := 500
+@export var speed := 500
 
 const DRILL_RANGE := 100
 
-onready var _pivot := $Pivot
+@onready var _pivot := $Pivot
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -25,5 +25,5 @@ func _physics_process(_delta: float) -> void:
 	
 	_pivot.look_at(global_position + direction)
 
-	var velocity := direction * speed
-	move_and_slide(velocity)
+	velocity = direction * speed
+	move_and_slide()

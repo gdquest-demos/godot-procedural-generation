@@ -9,15 +9,15 @@ signal maximum_treasure_changed(value)
 signal min_cavern_area_changed(value)
 signal min_exit_distance_changed(value)
 
-onready var button_generate := $ButtonGenerate
-onready var step_time_value := $StepSpeed/Value
-onready var wall_chance_value := $WallChance/Value
-onready var wall_conversion_value := $WallConversion/Value
-onready var floor_conversion_value := $FloorConversion/Value
-onready var step_count_value := $StepCount/Value
-onready var max_treasure_value := $MaximumTreasure/Value
-onready var min_cavern_area_value := $MinimumCavernArea/Value
-onready var min_exit_distance := $MinimumExitDistance/Value
+@onready var button_generate := $ButtonGenerate
+@onready var step_time_value := $StepSpeed/Value
+@onready var wall_chance_value := $WallChance/Value
+@onready var wall_conversion_value := $WallConversion/Value
+@onready var floor_conversion_value := $FloorConversion/Value
+@onready var step_count_value := $StepCount/Value
+@onready var max_treasure_value := $MaximumTreasure/Value
+@onready var min_cavern_area_value := $MinimumCavernArea/Value
+@onready var min_exit_distance := $MinimumExitDistance/Value
 
 
 func enable() -> void:
