@@ -12,12 +12,13 @@ config_version=5
 
 config/name="Procedural Generation Demos"
 config/description="Implementations and demos of procedural generation algorithms."
-run/main_scene="res://WorldMap/WorldMap.tscn"
 config/features=PackedStringArray("4.0")
 config/icon="res://icon.png"
 
 [display]
 
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/size/resizable=false
 window/size/width=1280
 window/size/height=720
@@ -62,6 +63,7 @@ fire={
 
 [rendering]
 
+environment/defaults/default_clear_color=Color(0.301961, 0.301961, 0.301961, 1)
 2d/snapping/use_gpu_pixel_snap=true
 environment/default_clear_color=Color(0.258824, 0.141176, 0.270588, 1)
 environment/default_environment="res://default_env.tres"
