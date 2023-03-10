@@ -1,17 +1,17 @@
 class_name BasicDungeonRoom
 
 
-var position := Vector2.ZERO : get = get_position, set = _no_op
-var end := Vector2.ZERO : get = get_end, set = _no_op
-var center := Vector2.ZERO : get = get_center, set = _no_op
+var position := Vector2.ZERO : get = get_position
+var end := Vector2.ZERO : get = get_end
+var center := Vector2.ZERO : get = get_center
 var rect: Rect2
 
 var _rect_area: float
 var _iter_index: int
 
 
-func _init(rect: Rect2):
-	update(rect)
+func _init(rectangle: Rect2):
+	update(rectangle)
 
 
 func _iter_init(_arg) -> bool:
@@ -29,9 +29,9 @@ func _iter_get(_arg) -> Vector2:
 	return rect.position + offset
 
 
-func update(rect: Rect2) -> void:
-	self.rect = rect.abs()
-	_rect_area = rect.get_area()
+func update(rectangle: Rect2) -> void:
+	self.rect = rectangle.abs()
+	_rect_area = rectangle.get_area()
 
 
 func intersects(room: BasicDungeonRoom) -> bool:
@@ -52,7 +52,3 @@ func get_center() -> Vector2:
 
 func _iter_is_running() -> bool:
 	return _iter_index < _rect_area
-
-
-func _no_op(val) -> void:
-	pass

@@ -9,8 +9,8 @@ var _data_size: int
 
 # the previous Godot 3 code does not work anymore like this
 # func _init(rect: Rect2).(rect) -> void:
-func _init(rect: Rect2) -> void:
-	super._init(rect)
+func _init(rectangle: Rect2) -> void:
+	super._init(rectangle)
 	pass
 
 
@@ -18,17 +18,17 @@ func _iter_get(_arg) -> Vector2:
 	return _data[_iter_index]
 
 
-func update(rect: Rect2) -> void:
-	super.update(rect)
+func update(rectangle: Rect2) -> void:
+	super.update(rectangle)
 	var rng := RandomNumberGenerator.new()
 	rng.randomize()
 	
-	var unit := FACTOR * rect.size
+	var unit := FACTOR * rectangle.size
 	var order := [
-		rect.grow_individual(-unit.x, 0, -unit.x, unit.y - rect.size.y),
-		rect.grow_individual(unit.x - rect.size.x, -unit.y, 0, -unit.y),
-		rect.grow_individual(-unit.x, unit.y - rect.size.y, -unit.x, 0),
-		rect.grow_individual(0, -unit.y, unit.x - rect.size.x, -unit.y)
+		rectangle.grow_individual(-unit.x, 0, -unit.x, unit.y - rectangle.size.y),
+		rectangle.grow_individual(unit.x - rectangle.size.x, -unit.y, 0, -unit.y),
+		rectangle.grow_individual(-unit.x, unit.y - rectangle.size.y, -unit.x, 0),
+		rectangle.grow_individual(0, -unit.y, unit.x - rectangle.size.x, -unit.y)
 	]
 	var poly = []
 	for index in range(order.size()):
@@ -46,8 +46,8 @@ func update(rect: Rect2) -> void:
 		poly += poly_partial
 	
 	_data = []
-	for x in range(rect.position.x, rect.end.x):
-		for y in range(rect.position.y, rect.end.y):
+	for x in range(rectangle.position.x, rectangle.end.x):
+		for y in range(rectangle.position.y, rectangle.end.y):
 			var point := Vector2(x, y)
 			if Geometry2D.is_point_in_polygon(point, poly):
 				_data.push_back(point)
