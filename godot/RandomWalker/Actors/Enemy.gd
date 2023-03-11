@@ -18,7 +18,7 @@ func _physics_process(_delta: float) -> void:
 		_direction *= -1
 	velocity.x = inital_speed * _direction #if is_on_wall() else 1
 	if not is_on_floor():
-		velocity.y += 10 * _delta
+		velocity.y += 3500 * _delta
 	
 	move_and_slide()
 

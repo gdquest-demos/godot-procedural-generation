@@ -65,7 +65,8 @@ func _ready() -> void:
 		"max": level_main.map_to_local(_grid_to_map(grid_size) + Vector2.ONE)
 	}
 	camera.setup(_resolution, _grid_to_world(grid_size))
-	
+	# ParallaxBackground seems to work different now regarding its offset
+	background.offset = _resolution / 2
 	scene_tree.paused = true
 	generate_level()
 	await self.level_completed
@@ -74,7 +75,7 @@ func _ready() -> void:
 
 func _on_Camera2D_zoom_changed(zoom: Vector2) -> void:
 	for n in background.get_children():
-		n.modulate.a = 1 / zoom.x
+		n.modulate.a = zoom.x
 
 
 func _on_Tween_tween_all_completed() -> void:

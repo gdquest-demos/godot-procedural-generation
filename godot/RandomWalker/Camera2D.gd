@@ -1,7 +1,7 @@
 extends Camera2D
 
 
-signal zoom_changed(zoom)
+signal zoom_changed(zoom:float)
 
 const LIMIT_DEFAULT := 10000000
 #unused variables
@@ -10,6 +10,7 @@ const LIMIT_DEFAULT := 10000000
 #const SPEED_ZOOM := Vector2(0.2, 0.2)
 const TIME_START := 0.8
 const TIME_TWEEN := 1.0
+const TARGET_ZOOM := Vector2.ONE
 
 var _direction := Vector2.ZERO
 var _resolution := Vector2.ZERO
@@ -21,18 +22,15 @@ var _resolution := Vector2.ZERO
 
 func _on_LevelGenerator_level_completed(player_position: Vector2) -> void:
 	await scene_tree.create_timer(TIME_START).timeout
-	var tween = get_tree().create_tween().set_trans(Tween.TRANS_LINEAR)
-	tween.tween_property(self,"zoom",Vector2(0.8,0.8),TIME_TWEEN)
-	tween.connect("step_finished",self._on_Tween_tween_step.bind(self))
+	var tween = get_tree().create_tween()
+	tween.tween_property(self,"zoom",TARGET_ZOOM,TIME_TWEEN).set_delay(0.2)
+	tween.parallel().tween_method(_on_Tween_tween_step,self.zoom,TARGET_ZOOM,TIME_TWEEN)
+	tween.parallel().tween_property(self,"position",player_position,TIME_TWEEN).set_trans(Tween.TRANS_QUAD)
 	tween.connect("finished",get_parent()._on_Tween_tween_all_completed)
-	tween.parallel().tween_property(self,"position",player_position,TIME_TWEEN)
 
 
-func _on_Tween_tween_step(i:int, camera: Camera2D) -> void:
-	if i == 1:
-		emit_signal("zoom_changed", camera.zoom)
-#	if key == "zoom":
-#		emit_signal("zoom_changed", value)
+func _on_Tween_tween_step(zoom: Vector2) -> void:
+	emit_signal("zoom_changed", zoom)
 
 
 func setup(resolution: Vector2, world_size: Vector2) -> void:
