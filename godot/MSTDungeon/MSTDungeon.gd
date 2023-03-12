@@ -88,7 +88,7 @@ func _on_Room_sleeping_state_changed(room: MSTDungeonRoom) -> void:
 func _process(_delta: float) -> void:
 	level.clear()
 	for room in rooms.get_children():
-		for offset in room:
+		for offset in room as MSTDungeonRoom:
 			level.set_cell(0,offset, 0, Vector2i(0,0), 0)
 
 
