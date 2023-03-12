@@ -132,6 +132,7 @@ func _generate() -> void:
 
 # Adds room tile positions to `_data`.
 func _add_room(room: MSTDungeonRoom) -> void:
+	print("_add_room")
 	for offset in room:
 		_data[offset] = null
 
