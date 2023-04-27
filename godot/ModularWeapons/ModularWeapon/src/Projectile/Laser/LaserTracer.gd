@@ -14,30 +14,22 @@ func trace_path(lifetime_actual: float) -> Array:
 	position = Vector2.ZERO
 
 	var positions := [global_position]
-
 	var current_time := 0.0
-
 	var has_collided := false
-	
 	while current_time < lifetime:
 		current_time += TIME_STEP
-
 		var planned_movement := _update_movement(TIME_STEP)
-		
 		if not has_collided and current_time < lifetime_actual:
 			var collision := move_and_collide(planned_movement)
-		
 			if not collision:
 				positions.append(global_position)
 			else:
 				positions.append(collision.get_position())
-				emit_signal("collided", collision.get_collider(), collision.get_position())
-				
+				collided.emit(collision.get_collider(), collision.get_position())
 				collision_normal = collision.get_normal()
 				_impact()
-				
 				has_collided = true
-	
+
 	if not has_collided:
 		_miss()
 		return positions.slice(0, int(lifetime_actual / lifetime * positions.size()))

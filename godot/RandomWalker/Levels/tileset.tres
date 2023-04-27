@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" load_steps=11 format=3 uid="uid://cd00vubx3rfc7"]
 
-[ext_resource type="Texture2D" uid="uid://cjwfu2fojslq5" path="res://RandomWalker/Levels/tiles.svg" id="1"]
+[ext_resource type="Texture2D" uid="uid://cqv8s40eawu7i" path="res://RandomWalker/Levels/tiles.svg" id="1"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e4bvo"]
 resource_name = "Ground"

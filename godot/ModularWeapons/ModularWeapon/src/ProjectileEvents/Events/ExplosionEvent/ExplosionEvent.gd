@@ -14,23 +14,23 @@ var explosion_effect := preload("Explosion.tscn")
 # @tags - virtual
 func _do_trigger(_spawn_location: Vector2, _spawn_parent: Node, _weapons_system, _missed: bool) -> void:
 	var explosion := explosion_effect.instantiate()
-	
+
 	explosion.position = _spawn_location
-	
+
 	_spawn_parent.add_child(explosion)
 	explosion.shape.radius = explosion_radius
 	explosion.area.collision_mask = collision_mask
-	
+
 	explosion.trigger()
-	
+
 	await explosion.get_tree().physics_frame
-	
+
 	var bodies: Array = explosion.area.get_overlapping_bodies()
 	for body in bodies:
 		var distance: float = body.global_position.distance_to(explosion.global_position)
-		
+
 		var damage := explosion_damage
 		if damage_scales_with_distances:
 			damage *= clamp(1.0 - distance / explosion_radius, 0, 1)
-		
-		_weapons_system.emit_signal("damaged", body, damage)
+
+		_weapons_system.damaged.emit(body, damage)

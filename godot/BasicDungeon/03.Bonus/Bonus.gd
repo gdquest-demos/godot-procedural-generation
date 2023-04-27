@@ -21,7 +21,7 @@ func _unhandled_input(event: InputEvent):
 
 func _setup_camera() -> void:
 	camera.position = level.map_to_local(level_size / 2)
-	var z : float = 8 / max(level_size.x, level_size.y)
+	var z := 8 / maxf(level_size.x, level_size.y)
 	camera.zoom = Vector2(z, z)
 
 

@@ -6,7 +6,7 @@ extends Projectile
 # Called after the base _setup to allow for specialized configuration.
 func _post_setup() -> void:
 	if not is_inside_tree():
-		await self.ready
+		await ready
 	timer.start(lifetime)
 
 
@@ -16,7 +16,7 @@ func _physics_process(delta: float) -> void:
 	var collision : KinematicCollision2D= move_and_collide(movement)
 
 	if collision:
-		emit_signal("collided", collision.get_collider(), collision.get_position())
+		collided.emit(collision.get_collider(), collision.get_position())
 		_impact()
 
 
@@ -26,31 +26,20 @@ func _on_Timer_timeout() -> void:
 
 # What the projectile does after it has hit a valid target.
 # Flares up in size and fades out.
-# @tags - virtual
 func _impact() -> void:
 	set_physics_process(false)
-#	tween.interpolate_property(self, "modulate", modulate, modulate * 3, 0.1, Tween.TRANS_CUBIC)
-#	tween.interpolate_property(self, "modulate", modulate * 3, Color.TRANSPARENT, 0.2, 0, 2, 0.1)
-#	tween.start()
-#	await tween.tween_all_completed
-#	queue_free()
-	var tween = get_tree().create_tween().bind_node(self)
-	tween.tween_property(self,"modulate",modulate*3,0.1).set_trans(Tween.TRANS_CUBIC)
-	tween.tween_property(self,"modulate",Color.TRANSPARENT,0.1).set_delay(0.1)
-	tween.tween_callback(self.queue_free)
+	var tween = create_tween()
+	tween.tween_property(self, "modulate", modulate * 3, 0.1).set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property(self, "modulate", Color.TRANSPARENT, 0.1).set_delay(0.1)
+	tween.tween_callback(queue_free)
 
 
 # What the projectile does after it has not hit any target.
 # Shrinks and fades out
-# @tags - virtual
 func _miss() -> void:
-	emit_signal("missed", global_position)
+	missed.emit(global_position)
 	collision_layer = 0
 	collision_mask = 0
-#	tween.interpolate_property(self, "scale", scale, Vector2.ZERO, 0.25)
-#	tween.start()
-#	await tween.tween_all_completed
-#	queue_free()
-	var tween = get_tree().create_tween().bind_node(self)
-	tween.tween_property(self,"scale",Vector2.ZERO,0.25)
-	tween.tween_callback(self.queue_free)
+	var tween = create_tween()
+	tween.tween_property(self, "scale", Vector2.ZERO, 0.25)
+	tween.tween_callback(queue_free)

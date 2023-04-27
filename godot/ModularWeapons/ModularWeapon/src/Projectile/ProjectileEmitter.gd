@@ -30,7 +30,7 @@ func _do_fire(_direction: Vector2, _motions: Array, _lifetime: float) -> void:
 
 # Emits the damaged signal and triggers any impact event in the system.
 func _on_projectile_collided(target: Node, hit_location: Vector2) -> void:
-	weapons_system.emit_signal("damaged", target, damage_per_collision)
+	weapons_system.damaged.emit(target, damage_per_collision)
 	for event in weapons_system.projectile_impact_events:
 		event.trigger(hit_location, spawned_objects, weapons_system, false)
 

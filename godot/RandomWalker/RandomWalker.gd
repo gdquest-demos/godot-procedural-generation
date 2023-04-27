@@ -11,10 +11,10 @@ extends Node2D
 # project conversion, so I made my own little converter. The the game as such had a few
 # very Godot 3 specific uses of features that have completly changed for Godot 4
 #
-# Node.pause_mode no longer exists and is replaced by a Node.process_mode - when converted 
+# Node.pause_mode no longer exists and is replaced by a Node.process_mode - when converted
 # the RandomWalker.pause_mode was transferred to an unsuitable process_mode as for how
 # this is used here. I guess this is due to enum matching (process_mode 2 is "when paused")
-# so the game effectively stopped as scene_tree.pause = False was set. Took a long time 
+# so the game effectively stopped as scene_tree.pause = False was set. Took a long time
 # digging in all the wrong corners to find this
 #
 # TileMap.update_bitmask_region() does not exist anymore, now TileMap.set_cells_terrain_connect()
@@ -59,7 +59,7 @@ func _ready() -> void:
 	_rng.randomize()
 	_rooms = Rooms.instantiate()
 	_horizontal_chance = 1.0 - STEP.count(Vector2.DOWN) / float(STEP.size())
-	
+
 	_camera_limits = {
 		"min": level_main.map_to_local(-Vector2.ONE),
 		"max": level_main.map_to_local(_grid_to_map(grid_size) + Vector2.ONE)
@@ -71,7 +71,7 @@ func _ready() -> void:
 	generate_level()
 	await self.level_completed
 	scene_tree.paused = false
-	
+
 
 func _on_Camera2D_zoom_changed(zoom: Vector2) -> void:
 	for n in background.get_children():
@@ -115,7 +115,7 @@ func _reset() -> void:
 			_state.empty_cells[Vector2(x, y)] = 0
 
 
-# Picks a random start position checked the first row of the generation grid.
+# Picks a random start position on the first row of the generation grid.
 func _update_start_position() -> void:
 	# warning-ignore:narrowing_conversion
 	var x := _rng.randi_range(0, grid_size.x - 1)
@@ -167,7 +167,7 @@ func _update_down_counter() -> void:
 	)
 
 
-# Picks a room type to use checked the cell the algorithm is currently visiting.
+# Picks a room type to use on the cell the algorithm is currently visiting.
 # Uses some rules to prevent the room from blocking the player.
 func _update_room_type() -> void:
 	if not _state.path.is_empty():
@@ -202,33 +202,29 @@ func _place_walls(type: int = 0) -> void:
 
 	for x in range(-1, cell_grid_size.x + 2):
 		for y in [-2, -1, cell_grid_size.y, cell_grid_size.y + 1]:
-			level_main.set_cell(0, Vector2i(x, y), type, Vector2i(0,0))
+			level_main.set_cell(0, Vector2i(x, y), type, Vector2i.ZERO)
 
 
 func _place_path_rooms() -> void:
 	for path in _state.path:
 		await timer.timeout
 		_copy_room(path.offset, path.type, path.start)
-	emit_signal("path_completed")
+	path_completed.emit()
 
 func _place_side_rooms() -> void:
 	await self.path_completed
 	for key in _state.empty_cells:
 		var type := _rng.randi_range(0, _rooms.Type.size() - 1)
 		_copy_room(key, type, false)
-	
-	# this one is a bit more convoluted in Godot 4, but on the other hand
-	# it's more straightforward in how it works.
-	#level_main.update_bitmask_region()
+
 	var all_cells = level_main.get_used_cells(0)
 	var terrain_cells = []
 	for tc in all_cells:
-		var cell_source_id = level_main.get_cell_source_id(0,tc)
+		var cell_source_id = level_main.get_cell_source_id(0, tc)
 		if cell_source_id == 0 or cell_source_id == 3:
-#		if tc.source_id == 0:
 			terrain_cells.push_back(tc)
-	level_main.set_cells_terrain_connect( 0, terrain_cells , 0, 0)
-	emit_signal("level_completed", _player.position)
+	level_main.set_cells_terrain_connect(0, terrain_cells , 0, 0)
+	level_completed.emit(_player.position)
 
 
 func _copy_room(offset: Vector2, type: int, start: bool) -> void:
@@ -238,17 +234,17 @@ func _copy_room(offset: Vector2, type: int, start: bool) -> void:
 	for object in data.objects:
 		if (not start and object.is_in_group("player")) or (start and object.is_in_group("enemy")):
 			continue
-		
+
 		var new_object: Node2D = object.duplicate()
 		new_object.position += world_offset
 		level_extra.add_child(new_object)
-		
+
 		if start and new_object.is_in_group("player"):
 			_player = new_object
-	
+
 	for d in data.tilemap:
 		var tilemap := level_main if d.cell != _rooms.Cell.MAYBE_SPIKES else level_danger
-		tilemap.set_cell(0,Vector2i(map_offset) + d.offset, d.target_id,d.atlas_coords)
+		tilemap.set_cell(0, Vector2i(map_offset) + d.offset, d.target_id, d.atlas_coords)
 
 
 func _grid_to_map(vector: Vector2) -> Vector2:

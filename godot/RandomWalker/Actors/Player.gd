@@ -6,14 +6,13 @@ const TIME_DEATH := 0.2
 @onready var danger_detector: Area2D = $DangerDetector
 
 
-func _on_DangerDetector_body_entered(_body: Node):
+func _on_DangerDetector_body_entered(_body: Node) -> void:
 	set_physics_process(false)
-	
-	var tween = get_tree().create_tween().bind_node(self)
-	tween.tween_property(self,"scale",Vector2.ZERO,TIME_DEATH)
-	tween.tween_callback(self.queue_free)
+	var tween = create_tween()
+	tween.tween_property(self, "scale", Vector2.ZERO, TIME_DEATH)
+	tween.tween_callback(queue_free)
 
-# refactored since move_and_slide now directly operates on the pre-existing velocity class property
+
 func _physics_process(_delta: float) -> void:
 	if not is_on_floor():
 		velocity.y += 3500 * _delta
@@ -26,10 +25,8 @@ func _physics_process(_delta: float) -> void:
 		velocity.x = direction * speed.x
 	else:
 		velocity.x = move_toward(velocity.x, 0, speed.x)
-
 	move_and_slide()
 
-	# convenience function
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
 

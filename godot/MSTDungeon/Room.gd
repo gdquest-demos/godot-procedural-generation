@@ -17,8 +17,8 @@ var _rng: RandomNumberGenerator = null
 var _previous_xform := Transform2D()
 var _consecutive_equalities := 0
 
-var _area: float = 0.0
-var _iter_index: int = 0
+var _area := 0.0
+var _iter_index := 0
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
@@ -30,11 +30,9 @@ func setup(rng: RandomNumberGenerator, level: TileMap) -> void:
 
 func _ready() -> void:
 	position = MSTDungeonUtils.get_rng_point_in_circle(_rng, radius)
-
-	var w: int = _rng.randi_range(room_size.x, room_size.y)
-	var h: int = _rng.randi_range(room_size.x, room_size.y)
+	var w := _rng.randi_range(room_size.x, room_size.y)
+	var h := _rng.randi_range(room_size.x, room_size.y)
 	_area = w * h
-
 	size = Vector2(w, h)
 	collision_shape.shape.extents = _level.map_to_local(size) / 2
 
@@ -61,6 +59,7 @@ func _iter_init(_arg) -> bool:
 func _iter_next(_arg) -> bool:
 	_iter_index += 1
 	return _iter_is_running()
+
 
 # Returns the coordinates of a tile in the `_level` tilemap that our room overlaps.
 # Running over the entire loop yields all the tiles we should fill

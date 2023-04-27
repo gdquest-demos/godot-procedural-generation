@@ -16,10 +16,10 @@ func _physics_process(_delta: float) -> void:
 func _do_fire(_direction: Vector2, _motions: Array, _lifetime: float) -> void:
 	if not spawned_objects:
 		return
-	
+
 	var new_projectile := projectile.instantiate()
 	new_projectile.setup(global_position, _direction, _motions, _lifetime)
 	spawned_objects.add_child(new_projectile)
-	
-	var _error := new_projectile.connect("collided",Callable(self,"_on_projectile_collided"))
-	_error = new_projectile.connect("missed",Callable(self,"_on_projectile_missed"))
+
+	new_projectile.connect("collided", _on_projectile_collided)
+	new_projectile.connect("missed", _on_projectile_missed)

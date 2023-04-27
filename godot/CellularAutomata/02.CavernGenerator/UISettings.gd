@@ -19,24 +19,24 @@ signal min_exit_distance_changed(value)
 
 func _on_SliderStepSpeed_value_changed(value: float) -> void:
 	step_time_value.text = "%s" % [value]
-	emit_signal("step_time_changed", value)
+	step_time_changed.emit(value)
 
 
 func _on_SliderWallChance_value_changed(value) -> void:
 	wall_chance_value.text = "%s" % [value]
-	emit_signal("wall_chance_changed", value)
+	wall_chance_changed.emit(value)
 
 
 func _on_SliderWallConversion_value_changed(value: int) -> void:
 	wall_conversion_value.text = "< %s" % [value]
-	emit_signal("wall_conversion_changed", value)
+	wall_conversion_changed.emit(value)
 
 
 func _on_SliderFloorConversion_value_changed(value: int) -> void:
 	floor_conversion_value.text = "> %s" % [value]
-	emit_signal("floor_conversion_changed", value)
+	floor_conversion_changed.emit(value)
 
 
 func _on_SliderStepCount_value_changed(value) -> void:
 	step_count_value.text = "%s" % [value]
-	emit_signal("step_count_changed", value)
+	step_count_changed.emit(value)

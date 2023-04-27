@@ -15,7 +15,7 @@ var angular_velocity : float = 0.0
 
 
 func _ready() -> void:
-	var _error := weapons.connect("damaged",Callable(self,"_on_Weapons_damaged"))
+	weapons.connect("damaged", _on_Weapons_damaged)
 
 
 func _physics_process(delta: float) -> void:
@@ -41,7 +41,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	linear_velocity = velocity
 	rotation += angular_velocity * delta
-	
+
 	#convenience function
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()

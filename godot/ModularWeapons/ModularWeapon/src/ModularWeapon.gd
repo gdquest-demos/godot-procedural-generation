@@ -41,7 +41,7 @@ func add_impact_event(new_event: ProjectileEvent, allows_duplicates := false) ->
 func _set_emitter_configuration(value: PackedScene) -> void:
 	emitter_configuration = value
 	if not is_inside_tree():
-		await self.ready
+		await ready
 
 	_clear_emitters()
 	_add_new_emitters()

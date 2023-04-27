@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bvbk1abn8b804"]
 
-[ext_resource type="Texture2D" uid="uid://bv5ogdkv48xuk" path="res://RandomWalker/Levels/tiles.svg" id="1"]
+[ext_resource type="Texture2D" uid="uid://cqv8s40eawu7i" path="res://RandomWalker/Levels/tiles.svg" id="1"]
 [ext_resource type="Script" path="res://RandomWalker/Actors/Enemy.gd" id="2"]
 
 [sub_resource type="CapsuleShape2D" id="1"]
@@ -27,6 +27,3 @@ shape = SubResource("1")
 position = Vector2(0, -15)
 rect = Rect2(-15, -15, 30, 30)
 enable_mode = 1
-
-[connection signal="screen_entered" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_entered"]
-[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]

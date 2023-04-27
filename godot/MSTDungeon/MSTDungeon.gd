@@ -4,7 +4,7 @@
 #
 # 1. Spawns and spreads collision shapes around the game world using the physics engine.
 # 2. Waits for the rooms to be in a more or less resting state.
-# 3. Selects some main rooms for the level based checked the average room size.
+# 3. Selects some main rooms for the level based on the average room size.
 # 4. Creates a Minimum Spanning Tree graph that connects the rooms.
 # 5. Adds back some connections after calculating the MST so the player doesn't need to backtrack.
 extends Node2D
@@ -39,7 +39,7 @@ func _ready() -> void:
 # Calld every time stabilizes (mode changes to RigidBody2D.FREEZE_MODE_STATIC).
 #
 # Once all rooms have stabilized it calcualtes a playable dungeon `_path` using the MST
-# algorithm. Based checked the calculated `_path`, it populates `_data` with room and corridor tile
+# algorithm. Based on the calculated `_path`, it populates `_data` with room and corridor tile
 # positions.
 #
 # It emits the "rooms_placed" signal when it finishes so we can begin the tileset placement.
@@ -51,8 +51,6 @@ func _on_Room_sleeping_state_changed(room: MSTDungeonRoom) -> void:
 
 	var main_rooms := []
 	var main_rooms_positions := []
-	# GDScript 2 does not allow this reuse of the variable room
-	# for room in rooms.get_children():
 	for child_room in rooms.get_children():
 		if _is_main_room(child_room):
 			main_rooms.push_back(child_room)
@@ -74,14 +72,14 @@ func _on_Room_sleeping_state_changed(room: MSTDungeonRoom) -> void:
 				_draw_extra.push_back(
 					[_path.get_point_position(point1_id), _path.get_point_position(point2_id)]
 				)
-
+#
 	queue_redraw()
 	for child_room in main_rooms:
 		_add_room(child_room)
 	_add_corridors()
-
+#
 	set_process(false)
-	emit_signal("rooms_placed")
+	rooms_placed.emit()
 
 
 # This is for visual feedback. We just re-render the rooms every frame.
@@ -89,7 +87,7 @@ func _process(_delta: float) -> void:
 	level.clear()
 	for room in rooms.get_children():
 		for offset in room as MSTDungeonRoom:
-			level.set_cell(0,offset, 0, Vector2i(0,0), 0)
+			level.set_cell(0, offset, 0, Vector2i.ZERO, 0)
 
 
 # This is for visual feedback. We draw red lines for the MST path, and green lines for
@@ -108,6 +106,7 @@ func _draw() -> void:
 		for pair in _draw_extra:
 			draw_line(pair[0], pair[1], Color.GREEN, 20)
 
+
 # Places the rooms and starts the physics simulation. Once the simulation is done
 # ("rooms_placed" gets emitted), it continues by assigning tiles in the Level node.
 func _generate() -> void:
@@ -117,24 +116,26 @@ func _generate() -> void:
 		room.sleeping_state_changed.connect(_on_Room_sleeping_state_changed.bind(room))
 		room.setup(_rng, level)
 		rooms.add_child(room)
-
 		_mean_room_size += room.size
 	_mean_room_size /= rooms.get_child_count()
 
 	# Wait for all rooms to be positioned in the game world.
-	await self.rooms_placed
+	await rooms_placed
 
 	rooms.queue_free()
-	# Draws the tiles checked the `level` tilemap.
+	# Draws the tiles on the `level` tilemap.
 	level.clear()
 	for point in _data:
-		level.set_cell(0,point, 0, Vector2i(0,0), 0)
+		level.set_cell(0, point, 0, Vector2i.ZERO, 0)
+
 
 # Adds room tile positions to `_data`.
 func _add_room(room: MSTDungeonRoom) -> void:
-	print("_add_room")
 	for offset in room:
 		_data[offset] = null
+	# FIXME: There's a weird bug: without the `print()` statement the project
+	#        closes without warning.
+	print()
 
 
 # Adds both secondary room and corridor tile positions to `_data`. Secondary rooms are the ones

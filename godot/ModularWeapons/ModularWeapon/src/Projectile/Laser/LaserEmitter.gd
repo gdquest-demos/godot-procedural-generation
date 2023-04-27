@@ -18,7 +18,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		var points: Array = laser_line.points
 		for i in range(1, 10):
 			current_lifetime = float(projectile_lifetime / i)
-			
 			await get_tree().physics_frame
 
 		laser_line.points = []
@@ -45,7 +44,6 @@ func _physics_process(_delta: float) -> void:
 
 # Resets the persistent tracer's properties and position. Also keeps the direction
 # vector up to date with the emitter's rotation.
-# @tags - virtual
 func _do_fire(_direction: Vector2, _motions: Array, _lifetime: float) -> void:
 	if not is_firing:
 		is_firing = true
@@ -56,8 +54,7 @@ func _do_fire(_direction: Vector2, _motions: Array, _lifetime: float) -> void:
 
 
 # Triggers the damage signal only when the DPS timer is not running.
-# @tags - virtual
 func _on_projectile_collided(target: Node, _hit_location: Vector2) -> void:
 	if timer.is_stopped():
-		super._on_projectile_collided(target, _hit_location)
+		super(target, _hit_location)
 		timer.start(1.0 / float(collisions_per_second))

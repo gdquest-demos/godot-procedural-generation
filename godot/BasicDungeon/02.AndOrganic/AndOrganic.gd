@@ -18,14 +18,14 @@ func _ready() -> void:
 
 func _setup_camera() -> void:
 	camera.position = level.map_to_local(level_size / 2)
-	var z : float = 8 / max(level_size.x, level_size.y)
+	var z := 8 / maxf(level_size.x, level_size.y)
 	camera.zoom = Vector2(z, z)
 
 
 func _generate() -> void:
 	level.clear()
 	for vector in _generate_data():
-		level.set_cell(0,vector, 0, Vector2i(0,0), 0)
+		level.set_cell(0, vector, 0, Vector2i.ZERO, 0)
 
 
 func _generate_data() -> Array:
@@ -38,7 +38,7 @@ func _generate_data() -> Array:
 		var room := _get_random_room(rng)
 		if _intersects(rooms, room):
 			continue
-		
+
 		_add_room(rng, data, rooms, room)
 		if rooms.size() > 1:
 			var room_previous: Rect2 = rooms[-2]
@@ -78,11 +78,11 @@ func _add_room(rng: RandomNumberGenerator, data: Dictionary, rooms: Array, room:
 					rng.randf_range(rect.position.x, rect.end.x),
 					rng.randf_range(rect.position.y, rect.end.y)
 				))
-			poly_partial.sort_custom(Callable(self,"_lessv_x" if is_even else "_lessv_y"))
+			poly_partial.sort_custom(_lessv_x if is_even else _lessv_y)
 			if index > 1:
 				poly_partial.reverse()
 			poly += poly_partial
-		
+
 		for x in range(room.position.x, room.end.x):
 			for y in range(room.position.y, room.end.y):
 				var point := Vector2(x, y)
