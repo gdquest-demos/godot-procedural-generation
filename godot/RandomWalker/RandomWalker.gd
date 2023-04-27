@@ -6,28 +6,6 @@
 # rooms.
 extends Node2D
 
-# NOTES ON PORTING THIS TO GODOT 4:
-# this one was really hard. tilemaps and tilesets are currently not handled well on
-# project conversion, so I made my own little converter. The the game as such had a few
-# very Godot 3 specific uses of features that have completly changed for Godot 4
-#
-# Node.pause_mode no longer exists and is replaced by a Node.process_mode - when converted
-# the RandomWalker.pause_mode was transferred to an unsuitable process_mode as for how
-# this is used here. I guess this is due to enum matching (process_mode 2 is "when paused")
-# so the game effectively stopped as scene_tree.pause = False was set. Took a long time
-# digging in all the wrong corners to find this
-#
-# TileMap.update_bitmask_region() does not exist anymore, now TileMap.set_cells_terrain_connect()
-# is needed. Since all tiles are on the same layer - layers are also new - updating autotiles
-# is a bit more convoluted than would be necessary.
-#
-# Camera2.zoom is reversed now, so everything regarding calculations on zoom needed to be adapted
-#
-# The dictionary to map tiles is no longer useful as the data can be directly mapped in the
-# tileset using custom_data
-
-
-
 signal path_completed
 signal level_completed(player_position)
 

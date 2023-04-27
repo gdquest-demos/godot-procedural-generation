@@ -34,7 +34,7 @@ static func _generate_rivers(
 
 	var available_start_positions := []
 	var available_end_positions := []
-	
+
 	var image := texture.get_image()
 	for x in range(texture.get_width()):
 		for y in range(texture.get_height()):
@@ -59,11 +59,11 @@ static func _generate_river(
 	var out := []
 	if available_start_positions.is_empty():
 		return out
-	
+
 	var r := rng.randi_range(0, available_start_positions.size() - 1)
 	var start: Vector2 = available_start_positions[r]
 	available_start_positions.remove_at(r)
-	
+
 	var end := Vector2.ZERO
 	var min_distance := INF
 	for position in available_end_positions:
@@ -71,27 +71,27 @@ static func _generate_river(
 		if min_distance > distance:
 			min_distance = distance
 			end = position
-	
+
 	out.push_back([start, end])
 	out += _generate_river_branches(rng, start, end)
-	
+
 	return out
 
 
 static func _generate_river_branches(rng: RandomNumberGenerator, start: Vector2, end: Vector2) -> Array:
 	var out := []
-	
+
 	var river_vector := end - start
 	for _j in range(rng.randi_range(0, RIVERS_MAX_BRANCHES)):
 		var branch_angle := deg_to_rad(rng.randf_range(BRANCH_ANGLE.x, BRANCH_ANGLE.y))
 		if rng.randf() < 0.5:
 			branch_angle *= -1
-		
+
 		var branch_length := rng.randf_range(BRANCH_LENGTH.x, BRANCH_LENGTH.y)
 		var branch_start := start.lerp(end, rng.randf())
 		var branch_end := (branch_start + branch_length * river_vector.rotated(branch_angle))
 		out.push_back([branch_start, branch_end])
-	
+
 	return out
 
 
@@ -99,7 +99,6 @@ static func _generate_river_branches(rng: RandomNumberGenerator, start: Vector2,
 static func _generate_rivers_texture(
 	rivers: Array, width: int, height: int
 ) -> ImageTexture:
-	# in Godot 4 create is a static function and yields an image
 	var image := Image.create(width, height, true, Image.FORMAT_RF)
 
 	for river in rivers:
@@ -115,6 +114,6 @@ static func _generate_rivers_texture(
 				image.set_pixelv(position, Color(1, 0, 0, 0))
 			t += step
 	image.generate_mipmaps()
-	
+
 	var out := ImageTexture.create_from_image(image)
 	return out

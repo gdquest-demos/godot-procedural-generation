@@ -2,8 +2,6 @@ shader_type canvas_item;
 
 
 const float UNCERTAINTY = 1e-2;
-// Godot 4: "redefinition of PI"
-//const float PI = 3.14159265358979323846;
 const float SPAN = 1e-1;
 
 const float COLDEST = 0.025;

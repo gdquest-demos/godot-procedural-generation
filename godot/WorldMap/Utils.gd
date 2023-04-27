@@ -17,9 +17,6 @@ static func get_minmax_noise(texture: NoiseTexture2D) -> Vector2:
 	var out := Vector2(INF, -INF)
 	for x in texture.width:
 		for y in texture.height:
-#           The course text states that the seeming illogical order or x and y have been fixed
-#           in a version > 3.2.2 and yes that's fixed, especiall now in Godot 4 :-)
-#			var value := texture.noise.get_noise_2d(y, x)
 			var value := texture.noise.get_noise_2d(x, y)
 			out.x = min(out.x, value)
 			out.y = max(out.y, value)
