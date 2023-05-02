@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://RandomWalker/Levels/tiles.svg" type="Texture" id=1]
+[ext_resource path="res://RandomWalker/Actors/Player.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 11.185, 29.5827 )
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 15.0
+height = 30.0
+
+[node name="Player" type="KinematicBody2D" groups=[
+"player",
+]]
+collision_layer = 0
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+offset = Vector2( 0, -30 )
+region_enabled = true
+region_rect = Rect2( 300, 240, 30, 60 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -30 )
+shape = SubResource( 1 )
+
+[node name="DangerDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DangerDetector"]
+position = Vector2( 0, -30 )
+shape = SubResource( 2 )
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+
+[node name="Tween" type="Tween" parent="."]
+[connection signal="body_entered" from="DangerDetector" to="." method="_on_DangerDetector_body_entered"]

@@ -1,0 +1,263 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://ModularWeapons/ModularWeapon/src/ProjectileEvents/Events/ExplosionEvent/Explosion.gd" type="Script" id=1]
+[ext_resource path="res://ModularWeapons/ModularWeapon/src/ProjectileEvents/Events/ExplosionEvent/explosion_gradient.tres" type="Texture" id=2]
+[ext_resource path="res://ModularWeapons/ModularWeapon/src/ProjectileEvents/Events/ExplosionEvent/puff.png" type="Texture" id=3]
+[ext_resource path="res://ModularWeapons/ModularWeapon/src/ProjectileEvents/Events/ExplosionEvent/puff_smooth.png" type="Texture" id=4]
+[ext_resource path="res://ModularWeapons/ModularWeapon/src/ProjectileEvents/Events/ExplosionEvent/sparkle.png" type="Texture" id=5]
+[ext_resource path="res://ModularWeapons/ModularWeapon/src/ProjectileEvents/Events/ExplosionEvent/scraps_gradient.tres" type="Texture" id=6]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 0.377273 ), 0.0, 2.60769, 0, 0, Vector2( 0.761062, 0.986364 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.322727 ), -0.564845, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=2]
+curve = SubResource( 1 )
+
+[sub_resource type="ParticlesMaterial" id=3]
+trail_divisor = 50
+emission_shape = 1
+emission_sphere_radius = 15.0
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1000.0
+initial_velocity_random = 0.4
+orbit_velocity = 0.3
+orbit_velocity_random = 1.0
+tangential_accel = 1000.0
+tangential_accel_random = 1.0
+damping = 1500.0
+scale = 0.2
+scale_random = 0.2
+scale_curve = SubResource( 2 )
+color_ramp = ExtResource( 6 )
+
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 0.0409091 ), 0.0, 8.35303, 0, 0, Vector2( 0.251678, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.993289, 0.0136364 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 350.0
+initial_velocity_random = 0.5
+angular_velocity = 80.0
+angular_velocity_random = 0.8
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+damping = 100.0
+damping_random = 0.85
+angle = 220.0
+angle_random = 1.0
+scale = 2.0
+scale_random = 0.2
+scale_curve = SubResource( 5 )
+color_ramp = ExtResource( 2 )
+
+[sub_resource type="Gradient" id=7]
+offsets = PoolRealArray( 0, 0.130909, 0.345455, 0.607273, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 0.648972, 0.164062, 1, 1, 0.475624, 0.136719, 1, 0.888672, 0.17704, 0.17704, 1, 0.203922, 0.203922, 0.203922, 1 )
+
+[sub_resource type="GradientTexture" id=8]
+gradient = SubResource( 7 )
+
+[sub_resource type="Curve" id=9]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.483222, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=10]
+curve = SubResource( 9 )
+
+[sub_resource type="ParticlesMaterial" id=11]
+lifetime_randomness = 0.6
+emission_shape = 1
+emission_sphere_radius = 50.0
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = 200.0
+radial_accel_random = 0.3
+tangential_accel = 100.0
+scale = 0.1
+scale_random = 0.3
+scale_curve = SubResource( 10 )
+color_ramp = SubResource( 8 )
+
+[sub_resource type="Animation" id=12]
+length = 1.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("FireBurstParticles2D:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("SparkleParticles2D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("FireTrails/FireTrailParticles2D5:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("FireTrails/FireTrailParticles2D4:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.05, 0.55 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("FireTrails/FireTrailParticles2D3:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.1, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("FireTrails/FireTrailParticles2D2:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.15, 0.65 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("FireTrails/FireTrailParticles2D:emitting")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="CircleShape2D" id=13]
+radius = 130.0
+
+[node name="Explosion" type="Node2D"]
+z_index = 1
+z_as_relative = false
+script = ExtResource( 1 )
+
+[node name="FireTrails" type="Node2D" parent="."]
+
+[node name="FireTrailParticles2D" type="Particles2D" parent="FireTrails"]
+modulate = Color( 1.2, 1.2, 1.2, 1 )
+amount = 50
+lifetime = 0.5
+randomness = 0.5
+local_coords = false
+process_material = SubResource( 3 )
+texture = ExtResource( 4 )
+
+[node name="FireTrailParticles2D2" type="Particles2D" parent="FireTrails"]
+modulate = Color( 1.2, 1.2, 1.2, 1 )
+amount = 50
+lifetime = 0.5
+randomness = 0.5
+local_coords = false
+draw_order = 1
+process_material = SubResource( 3 )
+texture = ExtResource( 4 )
+
+[node name="FireTrailParticles2D3" type="Particles2D" parent="FireTrails"]
+modulate = Color( 1.2, 1.2, 1.2, 1 )
+amount = 50
+lifetime = 0.5
+randomness = 0.5
+local_coords = false
+draw_order = 1
+process_material = SubResource( 3 )
+texture = ExtResource( 4 )
+
+[node name="FireTrailParticles2D4" type="Particles2D" parent="FireTrails"]
+modulate = Color( 1.2, 1.2, 1.2, 1 )
+amount = 50
+lifetime = 0.5
+randomness = 0.5
+local_coords = false
+draw_order = 1
+process_material = SubResource( 3 )
+texture = ExtResource( 4 )
+
+[node name="FireTrailParticles2D5" type="Particles2D" parent="FireTrails"]
+modulate = Color( 1.2, 1.2, 1.2, 1 )
+amount = 50
+lifetime = 0.5
+randomness = 0.5
+local_coords = false
+draw_order = 1
+process_material = SubResource( 3 )
+texture = ExtResource( 4 )
+
+[node name="FireBurstParticles2D" type="Particles2D" parent="."]
+modulate = Color( 1.2, 1.2, 1.2, 1 )
+amount = 64
+lifetime = 0.5
+explosiveness = 0.3
+randomness = 1.0
+local_coords = false
+draw_order = 1
+process_material = SubResource( 6 )
+texture = ExtResource( 3 )
+
+[node name="SparkleParticles2D" type="Particles2D" parent="."]
+modulate = Color( 1.2, 1.2, 1.2, 1 )
+amount = 32
+explosiveness = 0.2
+randomness = 1.0
+process_material = SubResource( 11 )
+texture = ExtResource( 5 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Explode"
+anims/Explode = SubResource( 12 )
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 13 )

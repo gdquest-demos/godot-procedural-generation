@@ -1,0 +1,49 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://WorldMap/height_map.tres" type="Texture" id=1]
+[ext_resource path="res://WorldMap/heat_map.tres" type="Texture" id=2]
+[ext_resource path="res://WorldMap/WorldMap.gd" type="Script" id=3]
+[ext_resource path="res://WorldMap/moisture_map.tres" type="Texture" id=4]
+[ext_resource path="res://WorldMap/color_map.tres" type="Texture" id=5]
+[ext_resource path="res://WorldMap/sobel.shader" type="Shader" id=6]
+[ext_resource path="res://WorldMap/biomes.shader" type="Shader" id=7]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 7 )
+shader_param/color_map_offsets_n = 0
+shader_param/heat_map_minmax = Vector2( 0, 1 )
+shader_param/moisture_map_minmax = Vector2( 0, 1 )
+shader_param/color_map = ExtResource( 5 )
+shader_param/height_map = ExtResource( 1 )
+shader_param/heat_map = ExtResource( 2 )
+shader_param/moisture_map = ExtResource( 4 )
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 6 )
+shader_param/edge_color = Color( 0.0156863, 0.0705882, 0.290196, 1 )
+shader_param/edge_width = Vector2( 0.1, 0.1 )
+
+[node name="WorldMap" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewer" type="ColorRect" parent="."]
+material = SubResource( 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 256, 256 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PostProcess" type="ColorRect" parent="."]
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
