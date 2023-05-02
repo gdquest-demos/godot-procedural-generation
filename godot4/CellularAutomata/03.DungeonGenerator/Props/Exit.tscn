@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://6mc8wksgfkjv"]
+
+[ext_resource type="Texture2D" uid="uid://kljk8s0n2oek" path="res://CellularAutomata/03.DungeonGenerator/Props/exit.png" id="1"]
+[ext_resource type="Script" path="res://CellularAutomata/03.DungeonGenerator/Props/Exit.gd" id="2"]
+
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(64, 64)
+
+[node name="Exit" type="Area2D"]
+collision_layer = 0
+monitoring = false
+monitorable = false
+script = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1")
+
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

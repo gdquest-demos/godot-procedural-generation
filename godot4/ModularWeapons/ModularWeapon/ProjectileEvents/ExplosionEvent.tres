@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ExplosionEvent" load_steps=2 format=3 uid="uid://cskdbh5h0q7hu"]
+
+[ext_resource type="Script" path="res://ModularWeapons/ModularWeapon/src/ProjectileEvents/Events/ExplosionEvent/ExplosionEvent.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+explosion_radius = 130.0
+explosion_damage = 30.0
+damage_scales_with_distances = true
+collision_mask = 10
+triggers_on_misses = false

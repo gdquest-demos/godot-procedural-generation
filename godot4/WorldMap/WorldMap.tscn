@@ -1,0 +1,45 @@
+[gd_scene load_steps=10 format=3 uid="uid://dgcoys4pvb81j"]
+
+[ext_resource type="Texture2D" uid="uid://xiuixk03bk01" path="res://WorldMap/height_map.tres" id="1"]
+[ext_resource type="Texture2D" uid="uid://c7jknlv8nn8b1" path="res://WorldMap/heat_map.tres" id="2"]
+[ext_resource type="Script" path="res://WorldMap/WorldMap.gd" id="3"]
+[ext_resource type="Texture2D" uid="uid://cqwb1i7iftarx" path="res://WorldMap/moisture_map.tres" id="4"]
+[ext_resource type="Texture2D" uid="uid://b3nphp8j4yemi" path="res://WorldMap/color_map.tres" id="5"]
+[ext_resource type="Shader" path="res://WorldMap/sobel.gdshader" id="6"]
+[ext_resource type="Shader" path="res://WorldMap/biomes.gdshader" id="7"]
+
+[sub_resource type="ShaderMaterial" id="1"]
+shader = ExtResource("7")
+shader_parameter/color_map_offsets_n = 0
+shader_parameter/heat_map_minmax = Vector2(0, 1)
+shader_parameter/moisture_map_minmax = Vector2(0, 1)
+shader_parameter/color_map = ExtResource("5")
+shader_parameter/height_map = ExtResource("1")
+shader_parameter/heat_map = ExtResource("2")
+shader_parameter/moisture_map = ExtResource("4")
+
+[sub_resource type="ShaderMaterial" id="2"]
+shader = ExtResource("6")
+shader_parameter/edge_color = Color(0.0156863, 0.0705882, 0.290196, 1)
+shader_parameter/edge_width = Vector2(0.1, 0.1)
+
+[node name="WorldMap" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3")
+
+[node name="Viewer" type="ColorRect" parent="."]
+material = SubResource("1")
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="PostProcess" type="ColorRect" parent="."]
+material = SubResource("2")
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0

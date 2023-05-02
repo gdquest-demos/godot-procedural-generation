@@ -1,0 +1,32 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://vsh1t5kh20en"]
+
+[ext_resource type="Texture2D" uid="uid://dt0cqfdspvphx" path="res://Common/assets-prototype.svg" id="1"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_075ro"]
+texture = ExtResource("1")
+texture_region_size = Vector2i(60, 60)
+0:0/next_alternative_id = 8
+0:0/0 = 0
+0:0/1 = 1
+0:0/1/flip_h = true
+0:0/2 = 2
+0:0/2/flip_v = true
+0:0/3 = 3
+0:0/3/flip_h = true
+0:0/3/flip_v = true
+0:0/4 = 4
+0:0/4/transpose = true
+0:0/5 = 5
+0:0/5/flip_h = true
+0:0/5/transpose = true
+0:0/6 = 6
+0:0/6/flip_v = true
+0:0/6/transpose = true
+0:0/7 = 7
+0:0/7/flip_h = true
+0:0/7/flip_v = true
+0:0/7/transpose = true
+
+[resource]
+tile_size = Vector2i(60, 60)
+sources/0 = SubResource("TileSetAtlasSource_075ro")

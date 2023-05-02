@@ -1,0 +1,21 @@
+[gd_resource type="TileSet" load_steps=4 format=3 uid="uid://cvfdg1ii7f6yx"]
+
+[ext_resource type="Texture2D" uid="uid://cynfusrsk0wiv" path="res://CellularAutomata/02.CavernGenerator/tiles_basic.png" id="1"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nyixi"]
+texture = ExtResource("1")
+margins = Vector2i(64, 0)
+texture_region_size = Vector2i(64, 64)
+0:0/next_alternative_id = 8
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cyifi"]
+texture = ExtResource("1")
+texture_region_size = Vector2i(64, 64)
+0:0/next_alternative_id = 8
+0:0/0 = 0
+
+[resource]
+tile_size = Vector2i(64, 64)
+sources/0 = SubResource("TileSetAtlasSource_nyixi")
+sources/1 = SubResource("TileSetAtlasSource_cyifi")

@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3 uid="uid://d1c8kw70jw5gj"]
+
+[ext_resource type="PackedScene" uid="uid://b6dyithfkwp8q" path="res://RandomWalker/Levels/Level.tscn" id="1"]
+[ext_resource type="Script" path="res://RandomWalker/RandomWalker.gd" id="2"]
+[ext_resource type="Script" path="res://RandomWalker/Camera2D.gd" id="4"]
+[ext_resource type="Texture2D" uid="uid://dd81onfr8y8ep" path="res://RandomWalker/Levels/background-hills.svg" id="5"]
+[ext_resource type="Texture2D" uid="uid://bq6nhkm55ilof" path="res://RandomWalker/Levels/background-trees.svg" id="6"]
+[ext_resource type="Texture2D" uid="uid://c623sgd222egq" path="res://RandomWalker/Levels/background-gradient.svg" id="8"]
+
+[node name="RandomWalker" type="Node2D"]
+process_mode = 3
+script = ExtResource("2")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+drag_left_margin = 0.0
+drag_right_margin = 0.0
+script = ExtResource("4")
+
+[node name="Level" parent="." instance=ExtResource("1")]
+process_mode = 1
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.15
+autostart = true
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -128
+
+[node name="TextureRect" type="TextureRect" parent="BackgroundLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scroll_ignore_camera_zoom = true
+
+[node name="ParallaxLayerTrees" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.1, 0.1)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerTrees"]
+texture_repeat = 2
+texture = ExtResource("6")
+region_enabled = true
+region_rect = Rect2(0, 0, 7980, 1200)
+
+[node name="ParallaxLayerHills" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.25, 0.1)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerHills"]
+texture_repeat = 2
+texture = ExtResource("5")
+region_enabled = true
+region_rect = Rect2(0, 0, 7200, 1400)
+
+[connection signal="level_completed" from="." to="Camera2D" method="_on_LevelGenerator_level_completed"]
+[connection signal="zoom_changed" from="Camera2D" to="." method="_on_Camera2D_zoom_changed"]

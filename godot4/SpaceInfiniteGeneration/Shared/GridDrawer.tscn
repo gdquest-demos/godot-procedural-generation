@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dropctlxnbvds"]
+
+[ext_resource type="Script" path="res://SpaceInfiniteGeneration/Shared/GridDrawer.gd" id="1"]
+
+[node name="GridDrawer" type="Node2D"]
+script = ExtResource("1")

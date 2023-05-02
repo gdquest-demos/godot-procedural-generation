@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://cocufxhvdr5dm"]
+
+[ext_resource type="Script" path="res://SpaceInfiniteGeneration/BlueNoiseWorldGenerator.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://bo16yl58lvfnr" path="res://SpaceInfiniteGeneration/Shared/Player/Player.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://1nbvdtr0s2lj" path="res://SpaceInfiniteGeneration/Shared/Asteroid.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://dropctlxnbvds" path="res://SpaceInfiniteGeneration/Shared/GridDrawer.tscn" id="4"]
+
+[node name="BlueNoiseWorldGenerator" type="Node2D"]
+script = ExtResource("1")
+Asteroid = ExtResource("3")
+start_seed = "blue_noise_generation"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.0666667, 0.133333, 0.333333, 1)
+
+[node name="Player" parent="." instance=ExtResource("2")]
+
+[node name="GridDrawer" parent="." instance=ExtResource("4")]

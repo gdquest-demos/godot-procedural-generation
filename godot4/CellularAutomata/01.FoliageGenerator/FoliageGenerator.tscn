@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://c72hicbnktppy"]
+
+[ext_resource type="TileSet" uid="uid://brghypklahquq" path="res://CellularAutomata/01.FoliageGenerator/FoliageGenerator.tres" id="1"]
+[ext_resource type="Script" path="res://CellularAutomata/01.FoliageGenerator/FoliageGenerator.gd" id="2"]
+
+[node name="FoliageGenerator" type="Node2D"]
+script = ExtResource("2")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.152941, 0.152941, 0.211765, 1)
+
+[node name="FoliageTileMap" type="TileMap" parent="."]
+position = Vector2(0, 16)
+tile_set = ExtResource("1")
+format = 2
+
+[node name="ButtonStep" type="Button" parent="."]
+offset_left = 1184.0
+offset_top = 649.0
+offset_right = 1261.0
+offset_bottom = 703.0
+text = "Step"
+
+[connection signal="pressed" from="ButtonStep" to="." method="update_grid"]

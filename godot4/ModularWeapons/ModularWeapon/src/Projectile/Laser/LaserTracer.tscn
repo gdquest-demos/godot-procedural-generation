@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://cuywmrsrrocdk"]
+
+[ext_resource type="Script" path="res://ModularWeapons/ModularWeapon/src/Projectile/Laser/LaserTracer.gd" id="2"]
+[ext_resource type="Material" uid="uid://dni4dt5lfv8jn" path="res://ModularWeapons/ModularWeapon/src/Projectile/Laser/ImpactParticles.tres" id="3"]
+[ext_resource type="Texture2D" uid="uid://bjac1usritmo0" path="res://ModularWeapons/ModularWeapon/src/Projectile/Laser/glowing_circle.png" id="4"]
+
+[sub_resource type="CircleShape2D" id="1"]
+radius = 5.0
+
+[sub_resource type="GDScript" id="2"]
+script/source = "extends GPUParticles2D
+
+
+func _ready() -> void:
+	set_as_top_level(true)
+"
+
+[node name="LaserTracer" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1")
+
+[node name="ImpactParticles" type="GPUParticles2D" parent="."]
+modulate = Color(1.44, 0.75, 0.2, 1)
+emitting = false
+amount = 16
+process_material = ExtResource("3")
+texture = ExtResource("4")
+lifetime = 0.3
+visibility_rect = Rect2(-2500, -2500, 5000, 5000)
+script = SubResource("2")

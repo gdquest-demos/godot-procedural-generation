@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://ModularWeapons/ModularWeapon/src/FiringConfiguration/WeaponLocation.gd" type="Script" id=1]
+
+
+
+[node name="WeaponLocation" type="Marker2D"]
+script = ExtResource( 1 )
+__meta__ = {
+"_gizmo_extents_": 30.0
+}

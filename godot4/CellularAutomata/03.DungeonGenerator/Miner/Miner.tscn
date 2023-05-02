@@ -1,0 +1,61 @@
+[gd_scene load_steps=8 format=3 uid="uid://boxn8556n0sbw"]
+
+[ext_resource type="Script" path="res://CellularAutomata/03.DungeonGenerator/Miner/Miner.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://cee0ouf5k3gta" path="res://CellularAutomata/03.DungeonGenerator/Miner/miner.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://c3amtka5awdf5" path="res://CellularAutomata/03.DungeonGenerator/Miner/drill-top.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://bi5tr8vt4hmiu" path="res://CellularAutomata/03.DungeonGenerator/Miner/drill-blade.png" id="4"]
+
+[sub_resource type="CircleShape2D" id="1"]
+radius = 24.0
+
+[sub_resource type="Animation" id="2"]
+resource_name = "walk"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Drill/Blade:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 360.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_u5ryw"]
+_data = {
+"walk": SubResource("2")
+}
+
+[node name="Miner" type="CharacterBody2D"]
+collision_layer = 3
+collision_mask = 2
+safe_margin = 1.0
+script = ExtResource("1")
+
+[node name="Pivot" type="Marker2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Pivot"]
+texture = ExtResource("2")
+
+[node name="Drill" type="Sprite2D" parent="Pivot"]
+position = Vector2(56, 0)
+rotation = 1.5708
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("3")
+
+[node name="Blade" type="Sprite2D" parent="Pivot/Drill"]
+show_behind_parent = true
+rotation = 5.86397
+texture = ExtResource("4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "walk"
+libraries = {
+"": SubResource("AnimationLibrary_u5ryw")
+}

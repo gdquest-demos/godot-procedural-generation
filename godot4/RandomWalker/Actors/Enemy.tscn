@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://bvbk1abn8b804"]
+
+[ext_resource type="Texture2D" uid="uid://cqv8s40eawu7i" path="res://RandomWalker/Levels/tiles.svg" id="1"]
+[ext_resource type="Script" path="res://RandomWalker/Actors/Enemy.gd" id="2"]
+
+[sub_resource type="CapsuleShape2D" id="1"]
+custom_solver_bias = 0.1
+radius = 15.0
+
+[node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
+process_mode = 1
+collision_layer = 2
+script = ExtResource("2")
+speed = Vector2(300, 1000)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1")
+offset = Vector2(0, -15)
+region_enabled = true
+region_rect = Rect2(331, 270, 28, 30)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -15)
+shape = SubResource("1")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+position = Vector2(0, -15)
+rect = Rect2(-15, -15, 30, 30)
+enable_mode = 1

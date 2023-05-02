@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://hebwin41t2f"]
+
+[ext_resource type="Script" path="res://MSTDungeon/Room.gd" id="1"]
+
+[sub_resource type="RectangleShape2D" id="1"]
+resource_local_to_scene = true
+
+[node name="Node3D" type="RigidBody2D"]
+gravity_scale = 0.0
+script = ExtResource("1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1")

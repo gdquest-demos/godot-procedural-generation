@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dapwbytibyleq"]
+
+[ext_resource type="Script" path="res://ModularWeapons/ModularWeapon/src/Projectile/Basic/BasicEmitter.gd" id="1"]
+
+[node name="BasicEmitter" type="Node2D"]
+script = ExtResource("1")
+projectiles_per_second = 3.0
+projectile_lifetime = 0.85
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

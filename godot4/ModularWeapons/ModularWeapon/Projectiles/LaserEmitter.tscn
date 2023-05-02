@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://cgwk053sjmjot"]
+
+[ext_resource type="PackedScene" path="res://ModularWeapons/ModularWeapon/src/Projectile/Laser/LaserTracer.tscn" id="1"]
+[ext_resource type="Script" path="res://ModularWeapons/ModularWeapon/src/Projectile/Laser/LaserEmitter.gd" id="2"]
+[ext_resource type="Material" uid="uid://hgugamkrjpg5" path="res://ModularWeapons/ModularWeapon/src/Projectile/Laser/CastingParticles.tres" id="3"]
+[ext_resource type="Texture2D" uid="uid://bjac1usritmo0" path="res://ModularWeapons/ModularWeapon/src/Projectile/Laser/glowing_circle.png" id="4"]
+
+[sub_resource type="GDScript" id="1"]
+script/source = "extends Line2D
+
+func _ready() -> void:
+	set_as_top_level(true)
+"
+
+[node name="LaserEmitter" type="Node2D"]
+script = ExtResource("2")
+projectile_lifetime = 2.0
+
+[node name="LaserTracer" parent="." instance=ExtResource("1")]
+visible = false
+
+[node name="Line2D" type="Line2D" parent="."]
+default_color = Color(1.43922, 0.74902, 0.2, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+script = SubResource("1")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="CastingParticles" type="GPUParticles2D" parent="."]
+modulate = Color(1.43922, 0.745098, 0.2, 1)
+emitting = false
+process_material = ExtResource("3")
+texture = ExtResource("4")
+lifetime = 0.3
+visibility_rect = Rect2(-16.3859, -29.8711, 35.7076, 29.8554)
+
+[connection signal="collided" from="LaserTracer" to="." method="_on_projectile_collided"]

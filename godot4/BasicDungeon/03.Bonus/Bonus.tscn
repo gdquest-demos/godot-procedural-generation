@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bcx4phl1k7no0"]
+
+[ext_resource type="TileSet" uid="uid://vsh1t5kh20en" path="res://Common/tileset-prototype.tres" id="1"]
+[ext_resource type="Script" path="res://BasicDungeon/03.Bonus/Bonus.gd" id="2"]
+
+[node name="BasicDungeonBonus" type="Node2D"]
+script = ExtResource("2")
+
+[node name="Level" type="TileMap" parent="."]
+tile_set = ExtResource("1")
+format = 2
+
+[node name="Camera2D" type="Camera2D" parent="."]

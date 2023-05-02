@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://6erjb4mfmrdk"]
+
+[ext_resource type="PackedScene" uid="uid://bo16yl58lvfnr" path="res://SpaceInfiniteGeneration/Shared/Player/Player.tscn" id="1"]
+[ext_resource type="Script" path="res://SpaceInfiniteGeneration/PersistentWorldGenerator.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://dropctlxnbvds" path="res://SpaceInfiniteGeneration/Shared/GridDrawer.tscn" id="3"]
+
+[node name="PersistentWorldGenerator" type="Node2D"]
+script = ExtResource("2")
+show_debug = true
+sector_axis_count = 16
+start_seed = "persistent_world"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.0666667, 0.133333, 0.333333, 1)
+
+[node name="Player" parent="." instance=ExtResource("1")]
+speed_max = 1350.0
+
+[node name="Camera2D" parent="Player" index="2"]
+zoom = Vector2(0.1, 0.1)
+
+[node name="GridDrawer" parent="." instance=ExtResource("3")]
+
+[editable path="Player"]

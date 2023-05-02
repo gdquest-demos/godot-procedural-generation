@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="SineMotion" load_steps=2 format=3 uid="uid://cugqdrkcuqum2"]
+
+[ext_resource type="Script" path="res://ModularWeapons/ModularWeapon/src/ProjectileMotion/Motions/SineMotion.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+amplitude = 100.0
+frequency = 2

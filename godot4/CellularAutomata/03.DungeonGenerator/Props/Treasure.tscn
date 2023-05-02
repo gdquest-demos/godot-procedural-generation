@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://gfs65v4lsajh"]
+
+[ext_resource type="Texture2D" uid="uid://hwahvfhugmxa" path="res://CellularAutomata/03.DungeonGenerator/Props/chest.png" id="1"]
+[ext_resource type="Script" path="res://CellularAutomata/03.DungeonGenerator/Props/Treasure.gd" id="2"]
+
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(64, 64)
+
+[node name="Treasure" type="Area2D" groups=["treasure"]]
+position = Vector2(-118.49, -118.49)
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(32, 32)
+shape = SubResource("1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(32, 32)
+texture = ExtResource("1")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://djar46m4afhmk"]
+
+[ext_resource type="TileSet" uid="uid://vsh1t5kh20en" path="res://Common/tileset-prototype.tres" id="1"]
+[ext_resource type="Script" path="res://BasicDungeon/02.AndOrganic/AndOrganic.gd" id="2"]
+
+[node name="BasicDungeonAndOrganic" type="Node2D"]
+script = ExtResource("2")
+
+[node name="Level" type="TileMap" parent="."]
+tile_set = ExtResource("1")
+format = 2
+
+[node name="Camera2D" type="Camera2D" parent="."]

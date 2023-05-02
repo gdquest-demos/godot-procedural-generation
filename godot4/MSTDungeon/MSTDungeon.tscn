@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dj5pamcw527p5"]
+
+[ext_resource type="TileSet" uid="uid://vsh1t5kh20en" path="res://Common/tileset-prototype.tres" id="1"]
+[ext_resource type="Script" path="res://MSTDungeon/MSTDungeon.gd" id="2"]
+
+[node name="MSTDungeon" type="Node2D"]
+script = ExtResource("2")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.125, 0.125)
+
+[node name="Level" type="TileMap" parent="."]
+show_behind_parent = true
+tile_set = ExtResource("1")
+format = 2
+
+[node name="Rooms" type="Node2D" parent="."]

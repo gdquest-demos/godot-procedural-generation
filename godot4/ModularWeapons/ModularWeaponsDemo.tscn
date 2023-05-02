@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3 uid="uid://c54j2df6ndkqp"]
+
+[ext_resource type="PackedScene" uid="uid://se32spj17ca2" path="res://ModularWeapons/PlayerShip/PlayerShip.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://ModularWeapons/ModularWeapon/SpawnedObjects.tscn" id="2"]
+
+[sub_resource type="GDScript" id="1"]
+script/source = "extends StaticBody2D
+
+
+func _draw() -> void:
+	draw_circle(Vector2.ZERO, 30, Color.BLUE_VIOLET)
+"
+
+[sub_resource type="CircleShape2D" id="2"]
+radius = 30.0
+
+[sub_resource type="Environment" id="3"]
+background_mode = 3
+glow_enabled = true
+glow_levels/2 = 1.0
+glow_levels/4 = 1.0
+glow_bloom = 0.01
+glow_blend_mode = 0
+
+[node name="ModularWeaponsDemo" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.0470588, 0.121569, 0.290196, 1)
+
+[node name="SpawnedObjects" parent="." instance=ExtResource("2")]
+
+[node name="PlayerShip" parent="." instance=ExtResource("1")]
+position = Vector2(158, 547)
+collision_layer = 9
+collision_mask = 2
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(644.58, 283.689)
+collision_layer = 2
+collision_mask = 5
+script = SubResource("1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("2")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("3")
+
+[editable path="PlayerShip"]

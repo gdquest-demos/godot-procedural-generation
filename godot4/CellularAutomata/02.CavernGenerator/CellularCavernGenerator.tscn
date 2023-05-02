@@ -1,0 +1,191 @@
+[gd_scene load_steps=4 format=3 uid="uid://bs5e36rdubb80"]
+
+[ext_resource type="TileSet" uid="uid://cvfdg1ii7f6yx" path="res://CellularAutomata/02.CavernGenerator/tileset_basic.tres" id="1"]
+[ext_resource type="Script" path="res://CellularAutomata/02.CavernGenerator/UISettings.gd" id="2"]
+[ext_resource type="Script" path="res://CellularAutomata/02.CavernGenerator/CellularCavernGenerator.gd" id="3"]
+
+[node name="CavernGenerator" type="Node2D"]
+script = ExtResource("3")
+
+[node name="TileMapDungeon" type="TileMap" parent="."]
+tile_set = ExtResource("1")
+format = 2
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+zoom = Vector2(0.25, 0.25)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UISettings" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2")
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/UISettings"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 600.0
+offset_right = 562.0
+offset_bottom = 720.0
+color = Color(0, 0, 0, 0.258824)
+
+[node name="ButtonGenerate" type="Button" parent="CanvasLayer/UISettings"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -861.0
+offset_top = -91.0
+offset_right = -731.0
+offset_bottom = -26.0001
+grow_horizontal = 0
+grow_vertical = 0
+focus_mode = 0
+text = "Generate"
+
+[node name="WallChance" type="HBoxContainer" parent="CanvasLayer/UISettings"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 597.0
+offset_right = 400.0
+offset_bottom = 623.0
+
+[node name="Description" type="Label" parent="CanvasLayer/UISettings/WallChance"]
+custom_minimum_size = Vector2(132, 0)
+layout_mode = 2
+tooltip_text = "The chance a cell initially spawns as a wall tile."
+mouse_filter = 1
+text = "Wall Chance"
+
+[node name="Slider" type="HSlider" parent="CanvasLayer/UISettings/WallChance" groups=["slider"]]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+focus_mode = 0
+max_value = 1.0
+step = 0.01
+value = 0.5
+
+[node name="Value" type="Label" parent="CanvasLayer/UISettings/WallChance"]
+layout_mode = 2
+text = "0.5"
+
+[node name="WallConversion" type="HBoxContainer" parent="CanvasLayer/UISettings"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 617.0
+offset_right = 400.0
+offset_bottom = 643.0
+
+[node name="Description" type="Label" parent="CanvasLayer/UISettings/WallConversion"]
+custom_minimum_size = Vector2(132, 0)
+layout_mode = 2
+tooltip_text = "Each step, a floor cell turns into a wall if it has less than this number of floor neighbors."
+mouse_filter = 1
+text = "Wall Conversion"
+
+[node name="Slider" type="HSlider" parent="CanvasLayer/UISettings/WallConversion" groups=["slider"]]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+focus_mode = 0
+max_value = 8.0
+value = 4.0
+
+[node name="Value" type="Label" parent="CanvasLayer/UISettings/WallConversion"]
+layout_mode = 2
+text = "< 4"
+
+[node name="FloorConversion" type="HBoxContainer" parent="CanvasLayer/UISettings"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 637.0
+offset_right = 400.0
+offset_bottom = 663.0
+
+[node name="Description" type="Label" parent="CanvasLayer/UISettings/FloorConversion"]
+custom_minimum_size = Vector2(132, 0)
+layout_mode = 2
+tooltip_text = "Each step, a wall cell turns into a floor if it has greater than this number of floor neighbors."
+mouse_filter = 1
+text = "Floor Conversion"
+
+[node name="Slider" type="HSlider" parent="CanvasLayer/UISettings/FloorConversion" groups=["slider"]]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+focus_mode = 0
+max_value = 8.0
+value = 4.0
+
+[node name="Value" type="Label" parent="CanvasLayer/UISettings/FloorConversion"]
+layout_mode = 2
+text = "> 4"
+
+[node name="StepCount" type="HBoxContainer" parent="CanvasLayer/UISettings"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 677.0
+offset_right = 400.0
+offset_bottom = 703.0
+
+[node name="Description" type="Label" parent="CanvasLayer/UISettings/StepCount"]
+custom_minimum_size = Vector2(132, 0)
+layout_mode = 2
+text = "Step Count"
+
+[node name="Slider" type="HSlider" parent="CanvasLayer/UISettings/StepCount" groups=["slider"]]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+focus_mode = 0
+max_value = 20.0
+value = 10.0
+
+[node name="Value" type="Label" parent="CanvasLayer/UISettings/StepCount"]
+layout_mode = 2
+text = "10"
+
+[node name="StepSpeed" type="HBoxContainer" parent="CanvasLayer/UISettings"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 697.0
+offset_right = 400.0
+offset_bottom = 723.0
+
+[node name="Description" type="Label" parent="CanvasLayer/UISettings/StepSpeed"]
+custom_minimum_size = Vector2(132, 0)
+layout_mode = 2
+text = "Step Time"
+
+[node name="Slider" type="HSlider" parent="CanvasLayer/UISettings/StepSpeed" groups=["slider"]]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+focus_mode = 0
+max_value = 0.5
+step = 0.1
+value = 0.1
+
+[node name="Value" type="Label" parent="CanvasLayer/UISettings/StepSpeed"]
+layout_mode = 2
+text = "0.1"
+
+[connection signal="floor_conversion_changed" from="CanvasLayer/UISettings" to="." method="set_floor_conversion"]
+[connection signal="step_count_changed" from="CanvasLayer/UISettings" to="." method="set_step_count"]
+[connection signal="step_time_changed" from="CanvasLayer/UISettings" to="." method="set_step_time"]
+[connection signal="wall_chance_changed" from="CanvasLayer/UISettings" to="." method="set_wall_chance"]
+[connection signal="wall_conversion_changed" from="CanvasLayer/UISettings" to="." method="set_wall_conversion"]
+[connection signal="pressed" from="CanvasLayer/UISettings/ButtonGenerate" to="." method="generate_new_dungeon"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/WallChance/Slider" to="CanvasLayer/UISettings" method="_on_SliderWallChance_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/WallConversion/Slider" to="CanvasLayer/UISettings" method="_on_SliderWallConversion_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/FloorConversion/Slider" to="CanvasLayer/UISettings" method="_on_SliderFloorConversion_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/StepCount/Slider" to="CanvasLayer/UISettings" method="_on_SliderStepCount_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UISettings/StepSpeed/Slider" to="CanvasLayer/UISettings" method="_on_SliderStepSpeed_value_changed"]

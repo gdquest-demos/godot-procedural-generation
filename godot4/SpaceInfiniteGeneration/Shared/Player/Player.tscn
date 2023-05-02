@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bo16yl58lvfnr"]
+
+[ext_resource type="Script" path="res://SpaceInfiniteGeneration/Shared/Player/Player.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://t2pdwfdsmdqa" path="res://SpaceInfiniteGeneration/Shared/Player/topdown-player.svg" id="2"]
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(0, -40, 30, 0, 40, 35, -40, 35, -30, 0)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.2, 0.2)

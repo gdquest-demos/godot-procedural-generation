@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://b643i3ri61xab"]
+
+[ext_resource type="PackedScene" path="res://ModularWeapons/ModularWeapon/src/FiringConfiguration/WeaponLocation.tscn" id="1"]
+
+[node name="Cone3Configuration" type="Node2D"]
+
+[node name="WeaponLocation" parent="." instance=ExtResource("1")]
+position = Vector2(-15, -33.8697)
+rotation = -0.436332
+
+[node name="WeaponLocation2" parent="." instance=ExtResource("1")]
+position = Vector2(0, -44.0319)
+
+[node name="WeaponLocation3" parent="." instance=ExtResource("1")]
+position = Vector2(15, -33.8697)
+rotation = 0.436332
